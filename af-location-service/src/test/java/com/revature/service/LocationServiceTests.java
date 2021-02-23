@@ -2,11 +2,8 @@ package com.revature.service;
 
 import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
+import java.util.*;
 import org.junit.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
