@@ -1,2 +1,4 @@
-package com.revature.repository;public interface RoomRepository {
+package com.revature.repository;
+
+public interface RoomRepository {
 }

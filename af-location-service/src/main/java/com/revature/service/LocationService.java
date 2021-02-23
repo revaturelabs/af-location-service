@@ -1,2 +1,4 @@
-package com.revature.service;public interface LocationService {
+package com.revature.service;
+
+public interface LocationService {
 }

@@ -1,2 +1,4 @@
-package com.revature.service;public class BuildingServiceImpl {
+package com.revature.service;
+
+public class BuildingServiceImpl {
 }

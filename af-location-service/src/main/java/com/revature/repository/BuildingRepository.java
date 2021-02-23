@@ -1,2 +1,4 @@
-package com.revature.repository;public interface BuildingRepository {
+package com.revature.repository;
+
+public interface BuildingRepository {
 }

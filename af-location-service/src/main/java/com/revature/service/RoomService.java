@@ -1,2 +1,4 @@
-package com.revature.service;public interface RoomService {
+package com.revature.service;
+
+public interface RoomService {
 }
