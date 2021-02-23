@@ -1,6 +1,8 @@
 package com.revature.statics;
 
-public class RoomOccupation {
+public enum RoomOccupation {
 
+    TRAINING,
+    MEETING
 
 }
