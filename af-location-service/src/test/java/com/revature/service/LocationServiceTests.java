@@ -167,7 +167,7 @@ public class LocationServiceTests {
 	public void createBadLocation() {
 		LocationDto badSampleLocationDto = new LocationDto();
 		// TODO instantiation
-		Mockito.when(locationRepository.findById(badSampleLocationDto.id)).thenReturn(Optional.empty());
+		Mockito.when(locationRepository.findById(badSampleLocationDto.getId())).thenReturn(Optional.empty());
 		Mockito.when(locationRepository.save(badSampleLocation)).thenAnswer(new Answer<Location>() {
 			@Override
 			public Location answer(InvocationOnMock invocation) throws Throwable {
@@ -188,16 +188,16 @@ public class LocationServiceTests {
 	public void createGoodLocation() {
 		LocationDto goodSampleLocationDto = new LocationDto();
 		// TODO instantiation 
-		Mockito.when(locationRepository.findById( goodSampleLocationDto.id)).thenReturn(Optional.of(goodSampleLocation));
+		Mockito.when(locationRepository.findById(goodSampleLocationDto.getId())).thenReturn(Optional.of(goodSampleLocation));
 		locationService.createLocation( goodSampleLocationDto );
-		LocationDto result = locationService.getLocation( goodSampleLocationDto.id );
+		LocationDto result = locationService.getLocation( goodSampleLocationDto.getId() );
 		assertFalse( "Didn't find location in repository", result == null );
-		assertEquals( result.city, goodSampleLocationDto.city, "city didn't match" );
-		assertEquals( result.state,goodSampleLocationDto.state, "state didn't match" );
-		assertEquals( result.zipCode,goodSampleLocationDto.zipCode,"zip code didn't match" );
-		assertTrue( "Building Lists not the same size", result.buildings.size() == goodSampleLocationDto.buildings.size() );
-		Iterator<BuildingDto> iteratorSample = goodSampleLocationDto.buildings.iterator();
-		Iterator<BuildingDto> iteratorResult = result.buildings.iterator();
+		assertEquals( result.getCity(), goodSampleLocationDto.getCity(), "city didn't match" );
+		assertEquals( result.getState(),goodSampleLocationDto.getState(), "state didn't match" );
+		assertEquals( result.getZipCode(),goodSampleLocationDto.getZipCode(),"zip code didn't match" );
+		assertTrue( "Building Lists not the same size", result.getBuildings().size() == goodSampleLocationDto.getBuildings().size() );
+		Iterator<BuildingDto> iteratorSample = goodSampleLocationDto.getBuildings().iterator();
+		Iterator<BuildingDto> iteratorResult = result.getBuildings().iterator();
 		while( iteratorSample.hasNext () ) {
 			BuildingDto buildingSample = iteratorSample.next();
 			BuildingDto buildingResult = iteratorResult.next();
@@ -224,7 +224,7 @@ public class LocationServiceTests {
 		Location loc = new Location();
 		assertNotNull(loc);
 		assertNotNull(loc.getBuildings());
-		assertionEquals(loc.getBuildings(), Building.class,"what is received from the list of buildings is not a building object list");
+		assertEquals("what is received from the list of buildings is not a building object list", loc.getBuildings(), Building.class);
 	}
 
 	@Test
@@ -240,7 +240,7 @@ public class LocationServiceTests {
 		String state = "Virginia";
 		List<LocationDto> locations = locationService.getLocationsByState(state);
 		for(LocationDto ld : locations) {
-			if(!ld.state.equals(state)) {
+			if(!ld.getState().equals(state)) {
 				result = false;
 			}
 		}
@@ -253,7 +253,7 @@ public class LocationServiceTests {
 		String city = "Reston";
 		List<LocationDto> locations = locationService.getLocationsByCity(city);
 		for(LocationDto ld : locations) {
-			if(!ld.city.equals(city)) {
+			if(!ld.getCity().equals(city)) {
 				result = false;
 			}
 		}
@@ -266,7 +266,7 @@ public class LocationServiceTests {
 		String zipcode = "20190";
 		List<LocationDto> locations = locationService.getLocationsByZipCode(zipcode);
 		for(LocationDto ld : locations) {
-			if(!ld.zipCode.equals(zipcode)) {
+			if(!ld.getZipCode().equals(zipcode)) {
 				result = false;
 			}
 		}

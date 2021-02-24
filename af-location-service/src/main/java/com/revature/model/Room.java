@@ -2,7 +2,9 @@ package com.revature.model;
 
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
+import lombok.Data;
 
+@Data
 public class Room {
 
     private int id;

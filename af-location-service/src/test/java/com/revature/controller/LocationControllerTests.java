@@ -3,6 +3,7 @@ package com.revature.controller;
 import com.revature.service.BuildingService;
 import com.revature.service.LocationService;
 import com.revature.service.RoomService;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +100,7 @@ public class LocationControllerTests {
                 .param("city", " ")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
+
     }
 
     @Test
@@ -108,6 +110,7 @@ public class LocationControllerTests {
                 .param("zipCode", "75075")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
     }
 
     @Test
@@ -117,6 +120,7 @@ public class LocationControllerTests {
                 .param("zipCode", "76467")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
+
     }
 
     @Test
@@ -125,6 +129,7 @@ public class LocationControllerTests {
         this.mockMvc.perform(delete("/locations/{id}/", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
     }
 
     @Test
@@ -133,6 +138,7 @@ public class LocationControllerTests {
         this.mockMvc.perform(delete("/locations/{id}/", "0")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+
     }
 
     @Test
@@ -142,6 +148,7 @@ public class LocationControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\""))
                 .andExpect(status().isOk());
+
     }
 
     @Test
@@ -151,6 +158,7 @@ public class LocationControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\""))
                 .andExpect(status().isBadRequest());
+
     }
 
 }
