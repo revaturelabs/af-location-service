@@ -1,12 +1,22 @@
 package com.revature.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Location {
 
     private int id;
     private String state;
     private String city;
+    private String zipCode;
     private List<Building> buildings;
 	/**
 	 * @return the id
@@ -59,4 +69,10 @@ public class Location {
     
     
 
+    public Location(int id, String state, String city, String zipCode) {
+        this.id = id;
+        this.state = state;
+        this.city = city;
+        this.zipCode = zipCode;
+    }
 }
