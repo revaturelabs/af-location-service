@@ -5,13 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.dto.BuildingDto;
 import com.revature.dto.LocationDto;
@@ -24,8 +28,8 @@ import com.revature.repository.LocationRepository;
 @RunWith(MockitoJUnitRunner.class)
 public class LocationServiceTests {
 	
-	
-	LocationService locationService = Mockito.mock( LocationService.class );
+	@Autowired
+	LocationService locationService;
 	LocationRepository locationRepository = Mockito.mock( LocationRepository.class );
 	BuildingService buildingService = Mockito.mock( BuildingService.class );
 	public static Location goodSampleLocation;
@@ -40,8 +44,31 @@ public class LocationServiceTests {
 	}
 	
 	@Test
+	public void createBadLocation() {
+		LocationDto badSampleLocationDto = new LocationDto();
+		// TODO instantiation
+		Mockito.when(locationRepository.findById(badSampleLocationDto.id)).thenReturn(Optional.empty());
+		Mockito.when(locationRepository.save(badSampleLocation)).thenAnswer(new Answer<Location>() {
+			@Override
+			public Location answer(InvocationOnMock invocation) throws Throwable {
+				Location location = invocation.getArgument(0, Location.class);
+				if(location.getId() == badSampleLocation.getId()) {
+					throw new Exception("bad entity");
+				}
+				return null;
+			}
+		});
+		Exception exception = assertThrows(Exception.class, () ->{
+			locationService.createLocation(badSampleLocationDto);
+		});
+		assertTrue("bad entity".contains(exception.getMessage()));
+	}
+	
+	@Test
 	public void createGoodLocation() {
 		LocationDto goodSampleLocationDto = new LocationDto();
+		// TODO instantiation 
+		Mockito.when(locationRepository.findById( goodSampleLocationDto.id)).thenReturn(Optional.of(goodSampleLocation));
 		locationService.createLocation( goodSampleLocationDto );
 		LocationDto result = locationService.getLocation( goodSampleLocationDto.id );
 		assertFalse( "Didn't find location in repository", result == null );
