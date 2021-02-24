@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.revature.dto.BuildingDto;
 import com.revature.dto.LocationDto;
 import com.revature.dto.RoomDto;
+import com.revature.model.Building;
 import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
 
@@ -76,6 +77,7 @@ public class LocationServiceTests {
 		Location loc = new Location();
 		assertNotNull(loc);
 		assertNotNull(loc.getBuildings());
+		assertionEquals(loc.getBuildings(), Building.class,"what is received from the list of buildings is not a building object list");
 	}
 
 
