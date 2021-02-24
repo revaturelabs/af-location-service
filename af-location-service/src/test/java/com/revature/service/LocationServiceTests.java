@@ -1,8 +1,7 @@
 package com.revature.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +73,9 @@ public class LocationServiceTests {
 	
 	@Test
 	public void checkToSeeIfWeGetBuildingsAtLocation() {
-		Assert.assertNotEquals(null, locationRepository.getBuildings());
+		Location loc = new Location();
+		assertNotNull(loc);
+		assertNotNull(loc.getBuildings());
 	}
 
 
