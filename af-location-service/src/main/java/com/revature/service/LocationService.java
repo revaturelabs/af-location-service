@@ -1,6 +1,7 @@
 package com.revature.service;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 public interface LocationService {
 =======
 import java.util.List;
@@ -67,4 +68,7 @@ public class LocationService {
 		
 	}
 >>>>>>> d57213c71dd5399c82558a38d8a9c8cfbc915b7b
+=======
+public class LocationService {
+>>>>>>> d80a76a4bad2d6e72769100379087ae9cdf45708
 }
