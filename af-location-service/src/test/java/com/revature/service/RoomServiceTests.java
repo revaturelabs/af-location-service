@@ -77,12 +77,14 @@ public class RoomServiceTests {
     }
 
     @Test
-    public void whenRequestingAllRooms_ALlRoomsReturned(){
+    public void whenRequestingAllRooms_ALlRoomsReturned() {
         assertEquals ( allRooms, roomService.getAlLRooms () );
 
     }
 
     @Test
-    public void 
+    public void whenRequestingMeetingRooms_OnlyRooms() {
+
+    }
 
 }
