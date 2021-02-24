@@ -1,15 +1,11 @@
 package com.revature.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
+
+@Data
 @NoArgsConstructor
 public class Location {
 
