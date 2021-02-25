@@ -20,8 +20,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class RoomServiceTests {
 
-    @Test
-    public void W
+
     @MockBean
     private RoomRepository roomRepository;
     private RoomService roomService;
@@ -35,6 +34,7 @@ public class RoomServiceTests {
     private List<Room> remoteRoomList;
     private List<Room> physicalTrainingRoomList;
     private List<Room> physicalMeetingRoomList;
+    private List<Room> virtualTrainingRoomList;
     private Room physicalMeetingRoom1;
     private Room physicalMeetingRoom1WithId;
     private Room physicalMeetingRoom2;
@@ -50,6 +50,7 @@ public class RoomServiceTests {
     private Room remoteTrainingRoom1;
     private Room remoteTrainingRoom1WithId;
     private Room virtualRoomWithId;
+
 
     private static RoomDto mapRoomModelToDto( Room room ) {
         RoomDto roomDto = new RoomDto ();
@@ -245,6 +246,7 @@ public class RoomServiceTests {
         virtualRoomWithId.setType ( RoomType.VIRTUAL );
 
 
+        //Room service
         allRooms = Arrays.asList ( physicalMeetingRoom2WithId,
                 physicalMeetingRoom1WithId,
                 physicalTrainingRoom1WithId,
@@ -255,6 +257,7 @@ public class RoomServiceTests {
 
         );
 
+
         trainingRoomList = Arrays.asList ( physicalTrainingRoom1WithId, physicalTrainingRoom2WithId, remoteTrainingRoom1WithId );
         meetingRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId, remoteMeetingRoom1WithId, remoteMeetingRoom2WithId );
         physicalRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId, physicalTrainingRoom1WithId, physicalTrainingRoom2WithId );
@@ -262,6 +265,7 @@ public class RoomServiceTests {
         remoteRoomList = Arrays.asList ( remoteMeetingRoom1WithId, remoteMeetingRoom2WithId, remoteTrainingRoom1WithId );
         physicalTrainingRoomList = Arrays.asList ( physicalTrainingRoom1WithId, physicalTrainingRoom2WithId );
         physicalMeetingRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId );
+        virtualTrainingRoomList = Arrays.asList ( v)
 
         //Stage Mocks
         when ( roomRepository.findAll () ).thenReturn ( allRooms );
@@ -271,7 +275,7 @@ public class RoomServiceTests {
         when ( roomRepository.findByType ( RoomType.PHYSICAL ) ).thenReturn ( physicalRoomList );
         when ( roomRepository.findByType ( RoomType.REMOTE ) ).thenReturn ( remoteRoomList );
         when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.TRAINING ) ).thenReturn ( physicalTrainingRoomList );
-        when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.MEETING )).thenReturn (physicalMeetingRoomList );
+        when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.MEETING ) ).thenReturn ( physicalMeetingRoomList );
         when ( roomRepository.findById ( 1 ) ).thenReturn ( Optional.of ( physicalMeetingRoom1WithId ) );
         when ( roomRepository.save ( physicalMeetingRoom1 ) ).thenReturn ( physicalMeetingRoom1WithId );
         when ( roomRepository.findById ( 2 ) ).thenReturn ( Optional.of ( physicalMeetingRoom2WithId ) );
@@ -349,7 +353,7 @@ public class RoomServiceTests {
     @Test
     public void whenRequestingVirtualTrainingRooms_AllVirtualTrainingRoomsAreReturned() {
 
-        assertEquals (listMapper())
+        assertEquals ( listMapper ( virualTrainingRoomList ), roomService.getVirtualTrainingRooms () );
     }
 
 }
