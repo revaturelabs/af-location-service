@@ -161,4 +161,68 @@ public class LocationControllerTests {
 
     }
 
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByState() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{state}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetAllLocationsByState() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{state}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByCity() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{city}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetAllLocationsByCity() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{city}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByZipcode() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{zipcode}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetAllLocationsByZipcode() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{zipcode}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn200IsOkGetLocationById() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{id}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetLocationById() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{id}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+
 }
