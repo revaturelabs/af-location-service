@@ -19,7 +19,7 @@ create table building(
 	building_id serial primary key, 
 	city text, 
 	street_address text,
-	location_id int not null references location(location_id) on delete cascade; 
+	location_id int not null references location(location_id) on delete cascade;
 );
 
 create table room_type(

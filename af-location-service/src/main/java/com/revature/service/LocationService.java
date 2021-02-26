@@ -7,12 +7,14 @@ import com.revature.dto.LocationRequestDto;
 import com.revature.model.Building;
 import com.revature.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.revature.dto.BuildingDto;
 import com.revature.dto.LocationDto;
 import com.revature.repository.BuildingRepository;
 import com.revature.repository.LocationRepository;
 
+@Service
 public class LocationService {
 
 	@Autowired
