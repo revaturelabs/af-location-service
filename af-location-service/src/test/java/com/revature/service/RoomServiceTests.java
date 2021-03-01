@@ -52,7 +52,7 @@ public class RoomServiceTests {
     private Room virtualRoomWithId;
 
 
-    private static RoomDto mapRoomModelToDto( Room room ) {
+    private static RoomDto roomMapper( Room room ) {
         RoomDto roomDto = new RoomDto ();
         roomDto.id = room.getId ();
         roomDto.capacity = room.getCapacity ();
@@ -64,7 +64,7 @@ public class RoomServiceTests {
 
     private static List<RoomDto> listMapper( List<Room> list ) {
 
-        return list.stream ().map ( RoomServiceTests::mapRoomModelToDto ).collect ( Collectors.toList () );
+        return list.stream ().map ( RoomServiceTests::roomMapper ).collect ( Collectors.toList () );
     }
 
     @Before
@@ -257,7 +257,7 @@ public class RoomServiceTests {
 
         );
 
-
+        //Lists
         trainingRoomList = Arrays.asList ( physicalTrainingRoom1WithId, physicalTrainingRoom2WithId, remoteTrainingRoom1WithId );
         meetingRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId, remoteMeetingRoom1WithId, remoteMeetingRoom2WithId );
         physicalRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId, physicalTrainingRoom1WithId, physicalTrainingRoom2WithId );
@@ -265,7 +265,10 @@ public class RoomServiceTests {
         remoteRoomList = Arrays.asList ( remoteMeetingRoom1WithId, remoteMeetingRoom2WithId, remoteTrainingRoom1WithId );
         physicalTrainingRoomList = Arrays.asList ( physicalTrainingRoom1WithId, physicalTrainingRoom2WithId );
         physicalMeetingRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId );
-        virtualTrainingRoomList = Arrays.asList ( v)
+
+
+        //TODO: Figure out virtual vs remote rooms
+        //virtualTrainingRoomList = Arrays.asList ( v)
 
         //Stage Mocks
         when ( roomRepository.findAll () ).thenReturn ( allRooms );
@@ -350,10 +353,24 @@ public class RoomServiceTests {
         assertEquals ( listMapper ( physicalMeetingRoomList ), roomService.getPhysicalMeetingRooms () );
     }
 
-    @Test
-    public void whenRequestingVirtualTrainingRooms_AllVirtualTrainingRoomsAreReturned() {
+//    @Test
+//    public void whenRequestingVirtualTrainingRooms_AllVirtualTrainingRoomsAreReturned() {
+//
+//        assertEquals ( listMapper ( virualTrainingRoomList ), roomService.getVirtualTrainingRooms () );
+//    }
 
-        assertEquals ( listMapper ( virualTrainingRoomList ), roomService.getVirtualTrainingRooms () );
+    @Test
+    public void whenRequestingRoomById_RoomDtoCorrespondingToThatIdIsReturned(){
+        assertEquals( roomMapper ( physicalTrainingRoom1WithId ), roomService.getRoom(1));
+        assertEquals( roomMapper ( physicalTrainingRoom2WithId ), roomService.getRoom(2));
     }
+
+    @Test(expected = NullPointerException.class)
+
+    public void whenRequestingRoomByIdThatDoesntExist_notFoundExceptionIsThrown(){
+
+        assertThrows()
+    }
+
 
 }
