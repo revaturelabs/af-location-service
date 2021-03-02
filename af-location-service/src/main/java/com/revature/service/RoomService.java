@@ -1,10 +1,27 @@
 package com.revature.service;
 
-<<<<<<< HEAD
+import com.revature.dto.RoomDto;
+
+import java.util.List;
 public interface RoomService {
 
 
-=======
-public class RoomService {
->>>>>>> 5ec92f4fe20eb3496637b65d3f4e23deabaa67b8
+    RoomDto getRoom( int i );
+
+    List<RoomDto> getPhysicalMeetingRooms();
+
+
+    List<RoomDto> getPhysicalTrainingRooms();
+
+    List<RoomDto> getRemoteRooms();
+
+    List<RoomDto> getPhysicalRooms();
+
+    List<RoomDto> getVirtualRooms();
+
+    List<RoomDto> getMeetingRooms();
+
+    List<RoomDto> getTrainingRooms();
+
+    List<RoomDto> getAllRooms();
 }

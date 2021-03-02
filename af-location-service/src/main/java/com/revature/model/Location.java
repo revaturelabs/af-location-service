@@ -65,43 +65,4 @@ public class Location {
     
     
 
-<<<<<<< HEAD
-    public int getId() {
-        return id;
-    }
-
-    public void setId( int id ) {
-        this.id = id;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState( String state ) {
-        this.state = state;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity( String city ) {
-        this.city = city;
-    }
-
-    public List<Building> getBuildings() {
-        return buildings;
-    }
-
-    public void setBuildings( List<Building> buildings ) {
-        this.buildings = buildings;
-=======
-    public Location(int id, String state, String city, String zipCode) {
-        this.id = id;
-        this.state = state;
-        this.city = city;
-        this.zipCode = zipCode;
->>>>>>> 5ec92f4fe20eb3496637b65d3f4e23deabaa67b8
-    }
 }
