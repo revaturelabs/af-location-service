@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.dto.LocationDetailsDto;
+import com.revature.repository.BuildingRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,7 +83,7 @@ public class LocationServiceTests {
 		badBuildings.add(badBuilding);
 		badBuildings.add(otherBadBuilding);
 		//instantiate rooms
-		
+
 		List<Room> goodRooms = new ArrayList<Room>();
 		List<Room> otherGoodRooms = new ArrayList<Room>();
 		goodBuilding.setRooms(goodRooms);
@@ -118,7 +120,7 @@ public class LocationServiceTests {
 		goodRooms.add(goodRoom2);
 		otherGoodRooms.add(goodRoom3);
 		otherGoodRooms.add(goodRoom4);
-		
+
 		List<Room> badRooms = new ArrayList<Room>();
 		List<Room> otherBadRooms = new ArrayList();
 		badBuilding.setRooms(badRooms);
@@ -155,19 +157,19 @@ public class LocationServiceTests {
 		badRooms.add(badRoom2);
 		otherBadRooms.add(badRoom3);
 		otherBadRooms.add(badRoom4);
-		
-		
-		
-		
-		
-	
+
+
+
+
+
+
 	}
-	
+
 	@Test
 	public void createBadLocation() {
-		LocationDto badSampleLocationDto = new LocationDto();
+		Location badSampleLocation1 = new Location();
 		// TODO instantiation
-		Mockito.when(locationRepository.findById(badSampleLocationDto.getId())).thenReturn(Optional.empty());
+		Mockito.when(locationRepository.findById(badSampleLocation1.getId())).thenReturn(Optional.empty());
 		Mockito.when(locationRepository.save(badSampleLocation)).thenAnswer(new Answer<Location>() {
 			@Override
 			public Location answer(InvocationOnMock invocation) throws Throwable {
@@ -179,46 +181,46 @@ public class LocationServiceTests {
 			}
 		});
 		Exception exception = assertThrows(Exception.class, () ->{
-			locationService.createLocation(badSampleLocationDto);
+			locationService.createLocation(badSampleLocation1);
 		});
 		assertTrue("bad entity".contains(exception.getMessage()));
 	}
-	
+
 	@Test
 	public void createGoodLocation() {
-		LocationDto goodSampleLocationDto = new LocationDto();
-		// TODO instantiation 
-		Mockito.when(locationRepository.findById(goodSampleLocationDto.getId())).thenReturn(Optional.of(goodSampleLocation));
-		locationService.createLocation( goodSampleLocationDto );
-		LocationDto result = locationService.getLocation( goodSampleLocationDto.getId() );
+		Location goodSampleLocation1 = new Location();
+		// TODO instantiation
+		Mockito.when(locationRepository.findById(goodSampleLocation1.getId())).thenReturn(Optional.of(goodSampleLocation));
+		locationService.createLocation(goodSampleLocation1);
+		LocationDetailsDto result = locationService.getLocation( goodSampleLocation1.getId() );
 		assertFalse( "Didn't find location in repository", result == null );
-		assertEquals( result.getCity(), goodSampleLocationDto.getCity(), "city didn't match" );
-		assertEquals( result.getState(),goodSampleLocationDto.getState(), "state didn't match" );
-		assertEquals( result.getZipCode(),goodSampleLocationDto.getZipCode(),"zip code didn't match" );
-		assertTrue( "Building Lists not the same size", result.getBuildings().size() == goodSampleLocationDto.getBuildings().size() );
-		Iterator<BuildingDto> iteratorSample = goodSampleLocationDto.getBuildings().iterator();
-		Iterator<BuildingDto> iteratorResult = result.getBuildings().iterator();
+		assertEquals( "city didn't match", result.getCity(), goodSampleLocation1.getCity() );
+		assertEquals( "state didn't match", result.getState(),goodSampleLocation1.getState() );
+		assertEquals( "zip code didn't match", result.getZipCode(),goodSampleLocation1.getZipcode() );
+		assertTrue( "Building Lists not the same size", result.getBuildings().size() == goodSampleLocation1.getBuildings().size() );
+		Iterator<Building> iteratorSample = goodSampleLocation1.getBuildings().iterator();
+		Iterator<Building> iteratorResult = locationRepository.getOne(result.getId()).getBuildings().iterator();
 		while( iteratorSample.hasNext () ) {
-			BuildingDto buildingSample = iteratorSample.next();
-			BuildingDto buildingResult = iteratorResult.next();
-			assertEquals( buildingSample.city,buildingResult.city, "city doesn't match" );
-			assertTrue( "id doesn't match", buildingSample.id == buildingResult.id);
-			assertEquals( buildingSample.streetAddress,buildingResult.streetAddress, "address doesn't match" );
-			assertTrue( "Room list not the same size", buildingSample.rooms.size() == buildingResult.rooms.size() );
-			Iterator<RoomDto> iteratorSampleRoom = buildingSample.rooms.iterator();
-			Iterator<RoomDto> iteratorResultRoom = buildingResult.rooms.iterator();
+			Building buildingSample = iteratorSample.next();
+			Building buildingResult = iteratorResult.next();
+			assertEquals( "city doesn't match", buildingSample.getCity(),buildingResult.getCity() );
+			assertTrue( "id doesn't match", buildingSample.getId() == buildingResult.getId());
+			assertEquals( "address doesn't match", buildingSample.getStreetAddress(),buildingResult.getStreetAddress() );
+			assertTrue( "Room list not the same size", buildingSample.getRooms().size() == buildingResult.getRooms().size() );
+			Iterator<Room> iteratorSampleRoom = buildingSample.getRooms().iterator();
+			Iterator<Room> iteratorResultRoom = buildingResult.getRooms().iterator();
 			while( iteratorSampleRoom.hasNext() ) {
-				RoomDto sampleRoom = iteratorSampleRoom.next();
-				RoomDto resultRoom = iteratorResultRoom.next();
-				assertTrue( "capacity doesn't match", sampleRoom.capacity == resultRoom.capacity );
-				assertEquals(sampleRoom.name, resultRoom.name, "name doesn't match for room");
-				assertTrue("id doesn't match", sampleRoom.id == resultRoom.id);
-				assertEquals(sampleRoom.type, resultRoom.type, "type doesn't match for room");
-				assertEquals(sampleRoom.occupation, resultRoom.occupation, "occupation doesn't match for room");
+				Room sampleRoom = iteratorSampleRoom.next();
+				Room resultRoom = iteratorResultRoom.next();
+				assertTrue( "capacity doesn't match", sampleRoom.getCapacity() == resultRoom.getCapacity() );
+				assertEquals( "name doesn't match for room", sampleRoom.getName(), resultRoom.getName() );
+				assertTrue( "id doesn't match", sampleRoom.getId() == resultRoom.getId() );
+				assertEquals( "type doesn't match for room", sampleRoom.getType(), resultRoom.getType() );
+				assertEquals( "occupation doesn't match for room", sampleRoom.getOccupation(), resultRoom.getOccupation() );
 			}
 		}
 	}
-	
+
 	@Test
 	public void checkToSeeIfWeGetBuildingsAtLocation() {
 		Location loc = new Location();
