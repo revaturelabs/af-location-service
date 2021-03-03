@@ -1,6 +1,19 @@
 package com.revature.repository;
 
+import com.revature.model.Room;
+import com.revature.statics.RoomOccupation;
+import com.revature.statics.RoomType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoomRepository<Room,Integer> extends JpaRepository{
+import java.util.List;
+
+public interface RoomRepository extends JpaRepository <Room, Integer> {
+
+
+    List<Room> findByOccupation(RoomOccupation training);
+
+    List<Room> findByType(RoomType virtual);
+
+    List<Room> findByTypeAndOccupation(RoomType physical, RoomOccupation training);
+
 }
