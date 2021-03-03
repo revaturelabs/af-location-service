@@ -1,10 +1,5 @@
 package com.revature.service;
 
-import com.revature.dto.RoomDetailsDto;
-import com.revature.dto.RoomDto;
+public interface RoomService {
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RoomService {
 }

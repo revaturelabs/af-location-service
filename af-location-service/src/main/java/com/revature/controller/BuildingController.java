@@ -11,9 +11,9 @@ import com.revature.service.BuildingService;
 @RequestMapping("building")
 @CrossOrigin
 public class BuildingController {
-	
+
 	private BuildingService bs;
-	
+
 	@Autowired
 	public BuildingController(BuildingService bs) {
 		this.bs=bs;
