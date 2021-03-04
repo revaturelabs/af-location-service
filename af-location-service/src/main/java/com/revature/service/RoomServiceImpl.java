@@ -1,12 +1,15 @@
 package com.revature.service;
 
+import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 
 import java.util.List;
 
-public class RoomServiceImpl implements RoomService{
+public class RoomServiceImpl implements RoomService {
+
+
     @Override
-    public RoomDto getRoom( int i ) {
+    public RoomDetailsDto getRoom( int i ) {
         return null;
     }
 
@@ -49,4 +52,16 @@ public class RoomServiceImpl implements RoomService{
     public List<RoomDto> getAllRooms() {
         return null;
     }
+
+    @Override
+    public List<RoomDto> getRemoteTrainingRooms() {
+        return null;
+    }
+
+    @Override
+    public List<RoomDto> getRemoteMeetingRooms() {
+        return null;
+    }
+
+
 }

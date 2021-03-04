@@ -1,11 +1,32 @@
 package com.revature.service;
 
-<<<<<<< HEAD
+import com.revature.dto.LocationDto;
+import com.revature.model.Building;
+import com.revature.model.Location;
+import com.revature.model.Room;
+import com.revature.repository.LocationRepository;
+import com.revature.statics.RoomOccupation;
+import com.revature.statics.RoomType;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class LocationServiceTests {
 
-=======
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static assertThrows;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,7 +75,7 @@ public class LocationServiceTests {
 		goodSampleLocation.setState("FL");
 		badSampleLocation.setState("CA");
 		//instantiate building list
-		List<Building> goodBuildings = new ArrayList();
+		List<Building> goodBuildings = new ArrayList ();
 		List<Building> badBuildings = new ArrayList();
 		goodSampleLocation.setBuildings(goodBuildings);
 		badSampleLocation.setBuildings(badBuildings);
@@ -94,9 +115,9 @@ public class LocationServiceTests {
 		goodRoom.setBuilding(goodBuilding);
 		goodRoom.setCapacity(3);
 		goodRoom.setId(7);
-		goodRoom.setType(RoomType.PHYSICAL);
+		goodRoom.setType( RoomType.PHYSICAL);
 		goodRoom.setName("James");
-		goodRoom.setOccupation(RoomOccupation.MEETING);
+		goodRoom.setOccupation( RoomOccupation.MEETING);
 		Room goodRoom2 = new Room();
 		goodRoom2.setBuilding(goodBuilding);
 		goodRoom2.setCapacity(4);
@@ -171,10 +192,10 @@ public class LocationServiceTests {
 	public void createBadLocation() {
 		LocationDto badSampleLocationDto = new LocationDto();
 		// TODO instantiation
-		Mockito.when(locationRepository.findById(badSampleLocationDto.getId())).thenReturn(Optional.empty());
-		Mockito.when(locationRepository.save(badSampleLocation)).thenAnswer(new Answer<Location>() {
+		Mockito.when(locationRepository.findById(badSampleLocationDto.getId())).thenReturn( Optional.empty());
+		Mockito.when(locationRepository.save(badSampleLocation)).thenAnswer(new Answer<Location> () {
 			@Override
-			public Location answer(InvocationOnMock invocation) throws Throwable {
+			public Location answer( InvocationOnMock invocation) throws Throwable {
 				Location location = invocation.getArgument(0, Location.class);
 				if(location.getId() == badSampleLocation.getId()) {
 					throw new Exception("bad entity");

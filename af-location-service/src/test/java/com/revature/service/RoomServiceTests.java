@@ -10,6 +10,7 @@ import com.revature.statics.RoomType;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -25,6 +26,7 @@ public class RoomServiceTests {
 
     @MockBean
     private RoomRepository roomRepository;
+    @Autowired
     private RoomService roomService;
     private Location testLocation1;
     private Building testBuilding1;
@@ -36,7 +38,8 @@ public class RoomServiceTests {
     private List<Room> remoteRoomList;
     private List<Room> physicalTrainingRoomList;
     private List<Room> physicalMeetingRoomList;
-    private List<Room> virtualTrainingRoomList;
+    private List<Room> remoteTrainingRoomList;
+    private List<Room> remoteMeetingRoomList;
     private Room physicalMeetingRoom1;
     private Room physicalMeetingRoom1WithId;
     private Room physicalMeetingRoom2;
@@ -267,7 +270,8 @@ public class RoomServiceTests {
         remoteRoomList = Arrays.asList ( remoteMeetingRoom1WithId, remoteMeetingRoom2WithId, remoteTrainingRoom1WithId );
         physicalTrainingRoomList = Arrays.asList ( physicalTrainingRoom1WithId, physicalTrainingRoom2WithId );
         physicalMeetingRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId );
-
+        remoteTrainingRoomList = Collections.singletonList ( remoteTrainingRoom1WithId );
+        remoteMeetingRoomList = Arrays.asList (remoteMeetingRoom1WithId, remoteMeetingRoom2WithId);
 
         //TODO: Figure out virtual vs remote rooms
         //virtualTrainingRoomList = Arrays.asList ( v)
@@ -363,15 +367,29 @@ public class RoomServiceTests {
 
     @Test
     public void whenRequestingRoomById_RoomDtoCorrespondingToThatIdIsReturned(){
+
         assertEquals( roomMapper ( physicalTrainingRoom1WithId ), roomService.getRoom(1));
+
         assertEquals( roomMapper ( physicalTrainingRoom2WithId ), roomService.getRoom(2));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
 
     public void whenRequestingRoomByIdThatDoesntExist_notFoundExceptionIsThrown(){
-
 //        assertThrows()
+    }
+
+
+
+    @Test
+    public void whenRequestingListOfRemoteTrainingRooms_ListOfAllRemoteTrainingRoomsIsReturned(){
+
+        assertEquals(listMapper (  remoteTrainingRoomList), roomService.getRemoteTrainingRooms());
+    }
+
+    @Test
+    public void whenRequestingListOfRemoteMeetingRooms_ListOfAllRemoteMeetingRoomsIsReturned(){
+        assertEquals ( listMapper ( remoteMeetingRoomList ), roomService.getRemoteMeetingRooms() );
     }
 
 

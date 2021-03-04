@@ -1,12 +1,13 @@
 package com.revature.service;
 
+import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 
 import java.util.List;
 public interface RoomService {
 
 
-    RoomDto getRoom( int i );
+    RoomDetailsDto getRoom( int id );
 
     List<RoomDto> getPhysicalMeetingRooms();
 
@@ -24,4 +25,10 @@ public interface RoomService {
     List<RoomDto> getTrainingRooms();
 
     List<RoomDto> getAllRooms();
+
+    List<RoomDto> getRemoteTrainingRooms();
+
+    List<RoomDto> getRemoteMeetingRooms();
+
+
 }
