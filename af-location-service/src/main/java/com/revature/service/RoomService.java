@@ -1,5 +1,6 @@
 package com.revature.service;
 
+<<<<<<< HEAD
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 
@@ -31,4 +32,8 @@ public interface RoomService {
     List<RoomDto> getRemoteMeetingRooms();
 
 
+=======
+public interface RoomService {
+
+>>>>>>> 8f12375a520c78cfe2654ef20ae39bf8d4fb937b
 }

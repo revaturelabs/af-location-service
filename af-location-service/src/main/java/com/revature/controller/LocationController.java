@@ -1,22 +1,19 @@
 package com.revature.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.service.RoomService;
+import com.revature.service.LocationService;
 
 @RestController
-@RequestMapping("room")
+@RequestMapping("location")
 @CrossOrigin
-public class RoomController {
+public class LocationController {
+
+	private LocationService ls;
 	
-	private RoomService rs;
-	
-	@Autowired
-	public RoomController(RoomService rs) {
-		this.rs=rs;
+	public LocationController(LocationService ls) {
+		this.ls=ls;
 	}
-	
 }

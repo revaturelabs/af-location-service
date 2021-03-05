@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+<<<<<<< HEAD
 import com.revature.service.BuildingService;
 import com.revature.service.LocationService;
 import com.revature.service.RoomService;
@@ -161,4 +162,18 @@ public class LocationControllerTests {
 
     }
 
+=======
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import com.revature.dto.BuildingDto;
+import com.revature.service.LocationService;
+
+public class LocationControllerTests {
+	
+	private LocationService ls;	
+>>>>>>> 8f12375a520c78cfe2654ef20ae39bf8d4fb937b
 }

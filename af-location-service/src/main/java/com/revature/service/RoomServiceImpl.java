@@ -1,5 +1,6 @@
 package com.revature.service;
 
+<<<<<<< HEAD
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.model.Room;
@@ -115,5 +116,21 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.revature.repository.RoomRepository;
+
+@Service
+public class RoomServiceImpl implements RoomService {
+	
+	private RoomRepository rr;
+	
+	@Autowired
+	public RoomServiceImpl(RoomRepository rr) {
+		this.rr = rr;
+	}
+>>>>>>> 8f12375a520c78cfe2654ef20ae39bf8d4fb937b
 
 }
