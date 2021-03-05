@@ -2,7 +2,7 @@ drop table location if exists;
 drop table room if exists;
 drop table building if exists;
 drop table room_type if exists;
-dorp table room_occupation if exists;
+drop table room_occupation if exists;
 
 create table location(
 	location_id serial primary key, 
