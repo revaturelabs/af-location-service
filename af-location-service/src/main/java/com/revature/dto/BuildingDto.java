@@ -14,6 +14,6 @@ public class BuildingDto {
 	private int id;
 	private String street_address;
 	private int totalFloors;
-	private int numFloor;
+	private int numRooms;
 
 }

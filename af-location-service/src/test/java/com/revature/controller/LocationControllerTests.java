@@ -196,7 +196,7 @@ public class LocationControllerTests {
     @Test
     public void shouldReturn200IsOkGetAllLocationsByZipcode() throws Exception {
 
-        this.mockMvc.perform(get("/locations/{zipcode}/")
+        this.mockMvc.perform(get("/locations/{zipCode}/")
                 .contentType(MediaType.APPLICATION_JSON).content("{}"))
                 .andExpect(status().isOk());
     }
@@ -204,7 +204,7 @@ public class LocationControllerTests {
     @Test
     public void shouldReturn401AccessDeniedGetAllLocationsByZipcode() throws Exception {
 
-        this.mockMvc.perform(get("/locations/{zipcode}/")
+        this.mockMvc.perform(get("/locations/{zipCode}/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")).andExpect(status().isUnauthorized());
     }

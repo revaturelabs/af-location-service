@@ -16,13 +16,12 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "rooms")
 public class Room {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="room_id")
-	private int id;
+	private int roomId;
 
 
 	private String name;
@@ -40,7 +39,7 @@ public class Room {
 	private Building building;
 
 	@ElementCollection
-	private Set<String> amenities;
+	private Set<String> roomAmenities;
 
 	private int floorNumber;
 
@@ -53,9 +52,9 @@ public class Room {
 		result = prime * result + capacity;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((occupation == null) ? 0 : occupation.hashCode());
-		result = prime * result + id;
+		result = prime * result + roomId;
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + ((amenities == null) ? 0: amenities.hashCode());
+		result = prime * result + (( roomAmenities == null) ? 0: roomAmenities.hashCode());
 		result = prime * result + floorNumber;
 		return result;
 	}
@@ -83,11 +82,11 @@ public class Room {
 			return false;
 		if (occupation != other.occupation)
 			return false;
-		if (id != other.id)
+		if (roomId != other.roomId)
 			return false;
 		if (type != other.type)
 			return false;
-		if(!amenities.equals(other.amenities))
+		if(!roomAmenities.equals(other.roomAmenities))
 			return false;
 		if(floorNumber != other.floorNumber)
 			return false;
@@ -96,8 +95,8 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room [roomId=" + id + ", name=" + name + ", type=" + type + ", occupation=" + occupation
-				+ ", capacity=" + capacity + ", building=" + building +  "amenities=" + amenities.toString()
+		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
+				+ ", capacity=" + capacity + ", building=" + building +  "roomAmenities=" + roomAmenities.toString()
 				+ "floorNumber=" + floorNumber + "]";
 	}
 }

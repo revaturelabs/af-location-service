@@ -14,19 +14,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "locations")
 public class Location {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="location_id")
-	private int id;
+	private int locationId;
 
 	private String state;
 
 	private String city;
 
-	private String zipcode;
+	private String zipCode;
 
 	@OneToMany
 	private List<Building> buildings;
@@ -37,9 +36,9 @@ public class Location {
 		int result = 1;
 		result = prime * result + ((buildings == null) ? 0 : buildings.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + id;
+		result = prime * result + locationId;
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		result = prime * result + ((zipcode == null) ? 0 : zipcode.hashCode());
+		result = prime * result + (( zipCode == null) ? 0 : zipCode.hashCode());
 		return result;
 	}
 
@@ -62,24 +61,24 @@ public class Location {
 				return false;
 		} else if (!city.equals(other.city))
 			return false;
-		if (id != other.id)
+		if (locationId != other.locationId)
 			return false;
 		if (state == null) {
 			if (other.state != null)
 				return false;
 		} else if (!state.equals(other.state))
 			return false;
-		if (zipcode == null) {
-			if (other.zipcode != null)
+		if (zipCode == null) {
+			if (other.zipCode != null)
 				return false;
-		} else if (!zipcode.equals(other.zipcode))
+		} else if (!zipCode.equals(other.zipCode))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Location [locationId=" + id + ", state=" + state + ", city=" + city + ", zipcode=" + zipcode
+		return "Location [locationId=" + locationId + ", state=" + state + ", city=" + city + ", zipCode=" + zipCode
 				+ ", buildings=" + buildings + "]";
 	}
 
