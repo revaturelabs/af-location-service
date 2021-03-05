@@ -584,7 +584,7 @@ public class LocationServiceTests {
 				return false;
 			}
 			return true;
-			
+
 		}
 		private boolean roomDtoEquals( RoomDto roomA, RoomDto roomB) {
 			if( roomA == roomB ) {
