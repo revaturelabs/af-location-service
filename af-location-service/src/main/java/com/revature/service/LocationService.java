@@ -1,14 +1,14 @@
 package com.revature.service;
 
 
-public interface LocationService {
 
-<<<<<<< HEAD
-=======
 import com.revature.dto.BuildingDto;
 import com.revature.dto.LocationDto;
 import com.revature.repository.BuildingRepository;
 import com.revature.repository.LocationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class LocationService {
 	
@@ -64,5 +64,4 @@ public class LocationService {
 	public void updateLocation(int index, LocationDto locationDto) {
 		
 	}
->>>>>>> 0c4d1e3732fbfea9c5e714a01953b7b38d28bc40
 }

@@ -5,12 +5,17 @@ import com.revature.statics.RoomType;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Map;
 
 
 @Data
 public class Room {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private RoomType type;

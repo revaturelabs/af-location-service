@@ -23,24 +23,11 @@ import java.util.Optional;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class LocationServiceTests {
 
 import static org.junit.Assert.*;
-import static assertThrows;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.dto.BuildingDto;
 import com.revature.dto.LocationDto;
@@ -251,7 +238,6 @@ public class LocationServiceTests {
 		assertNotNull(loc.getBuildings());
 		assertEquals("what is received from the list of buildings is not a building object list", loc.getBuildings(), Building.class);
 	}
->>>>>>> 5ec92f4fe20eb3496637b65d3f4e23deabaa67b8
 
 	@Test
 	public void checkWeCanGetAllLocations() {
