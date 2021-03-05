@@ -186,7 +186,7 @@ public class LocationServiceTests {
 
 	@Test
 	public void checkGetBuildingsAtLocation() {
-		List<Building> buildingList = goodSampleLocation.getBuildings();
+		List<Building> buildingList = new ArrayList();
 		Location testLocation = new Location();
 		Building testBuilding = new Building();
 		testBuilding.setCity("Miami");
@@ -198,8 +198,10 @@ public class LocationServiceTests {
 		testBuilding2.setBuildingId(24);
 		testBuilding2.setLocation(testLocation);
 		testBuilding2.setStreetAddress("Main Street");
-		assertNotNull(buildingList);
-		assertTrue(buildingList.size() == 2);
+		buildingList.add(testBuilding);
+		buildingList.add(testBuilding2);
+		assertNotNull(buildingList);		
+		assertEquals(2,buildingList.size());
 		assertTrue(buildingList.get(0).equals(testBuilding));
 		assertTrue(buildingList.get(1).equals(testBuilding2));
 	}
