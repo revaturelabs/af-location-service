@@ -1,6 +1,5 @@
 package com.revature.controller;
 
-<<<<<<< HEAD
 import com.revature.service.BuildingService;
 import com.revature.service.LocationService;
 import com.revature.service.RoomService;
@@ -162,18 +161,79 @@ public class LocationControllerTests {
 
     }
 
-=======
-import static org.junit.Assert.*;
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByState() throws Exception {
 
-import java.util.List;
+        this.mockMvc.perform(get("/locations/{state}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
 
-import org.junit.Test;
+    @Test
+    public void shouldReturn401AccessDeniedGetAllLocationsByState() throws Exception {
 
-import com.revature.dto.BuildingDto;
-import com.revature.service.LocationService;
+        this.mockMvc.perform(get("/locations/{state}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
 
-public class LocationControllerTests {
-	
-	private LocationService ls;	
->>>>>>> 8f12375a520c78cfe2654ef20ae39bf8d4fb937b
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByCity() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{city}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetAllLocationsByCity() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{city}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByZipcode() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{zipCode}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetAllLocationsByZipcode() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{zipCode}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn200IsOkGetLocationById() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{id}/")
+                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn401AccessDeniedGetLocationById() throws Exception {
+
+        this.mockMvc.perform(get("/locations/{id}/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")).andExpect(status().isUnauthorized());
+    }
+	@Test
+	public void checkGetBuildingsAtLocationControllerValid() throws Exception {
+		this.mockMvc.perform(get("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
+				.andExpect(status().isOk());
+
+	}
+
+	@Test
+	public void checkGetBuildingsAtLocationConrtollerInvalid() throws Exception {
+		this.mockMvc.perform(get("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
+				.andExpect(status().isUnauthorized());
+	}
 }

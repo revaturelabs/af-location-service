@@ -12,7 +12,7 @@ import com.revature.service.LocationService;
 public class LocationController {
 
 	private LocationService ls;
-	
+
 	public LocationController(LocationService ls) {
 		this.ls=ls;
 	}

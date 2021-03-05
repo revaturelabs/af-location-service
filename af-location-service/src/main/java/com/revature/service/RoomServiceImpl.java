@@ -118,9 +118,10 @@ public class RoomServiceImpl implements RoomService {
 
 =======
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.revature.repository.RoomRepository;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -129,7 +130,7 @@ public class RoomServiceImpl implements RoomService {
 	
 	@Autowired
 	public RoomServiceImpl(RoomRepository rr) {
-		this.rr = rr;
+		this.rr=rr;
 	}
 >>>>>>> 8f12375a520c78cfe2654ef20ae39bf8d4fb937b
 
