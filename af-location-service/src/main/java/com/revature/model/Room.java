@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,23 +25,30 @@ public class Room {
 	private int roomId;
 
 
+	@NotNull
 	private String name;
 
 
+	@NotNull
 	private RoomType type;
 
 
+	@NotNull
 	private RoomOccupation occupation;
 
 
+	@NotNull
 	private int capacity;
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "building_id")
 	private Building building;
 
 	@ElementCollection
 	private Set<String> roomAmenities;
 
+	@Column(name = "floor_number")
+	@NotNull
 	private int floorNumber;
 
 

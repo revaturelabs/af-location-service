@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,17 @@ public class Location {
 	@Column(name="location_id")
 	private int locationId;
 
+	@NotNull
 	private String state;
 
+	@NotNull
 	private String city;
 
+	@Column(name = "zipcode")
+	@NotNull
 	private String zipCode;
 
-	@OneToMany
+	@OneToMany(mappedBy = "location")
 	private List<Building> buildings;
 
 	@Override

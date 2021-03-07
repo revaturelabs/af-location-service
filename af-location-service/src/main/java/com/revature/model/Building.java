@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,17 +22,22 @@ public class Building {
 	@Column(name="building_id")
 	private int buildingId;
 
+	@NotNull
 	private String city;
 
 	@Column(name = "street_address")
+	@NotNull
 	private String streetAddress;
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "location_id")
 	private Location location;
 
-	@OneToMany
+	@OneToMany(mappedBy = "building")
 	private List<Room> rooms;
 
+	@Column(name = "total_floors")
+	@NotNull
 	private int totalFloors;
 
 
