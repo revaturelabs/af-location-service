@@ -1,19 +1,175 @@
 package com.revature.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.revature.dto.BuildingRequestDto;
+import com.revature.dto.LocationDto;
+import com.revature.dto.LocationRequestDto;
+import com.revature.repository.LocationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNullApi;
+import org.springframework.web.bind.annotation.*;
 
 import com.revature.service.LocationService;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("location")
+@RequestMapping("/")
 @CrossOrigin
 public class LocationController {
 
-	private LocationService ls;
+	@Autowired
+	private LocationService locationService;
 
-	public LocationController(LocationService ls) {
-		this.ls=ls;
+
+	@PostMapping("/locations")
+	public ResponseEntity<String> createLocation(@RequestBody LocationRequestDto locationRequestDto){
+
+		try{
+			locationService.createLocation(locationRequestDto);
+		}
+		catch(HttpClientErrorException.BadRequest badRequest){
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+badRequest.getMessage()+"\"}");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Location created successfully+\"}");
+
 	}
+
+	@GetMapping("/locations")
+	public ResponseEntity<List<LocationDto>> getLocations() {
+
+		List<LocationDto> locations = locationService.getAllLocations();
+		return ResponseEntity.ok(locations);
+
+		}
+
+	@PatchMapping("/locations/{id}/updateState")
+	public ResponseEntity<String> updateState(@PathVariable int id, @RequestParam String state){
+
+		try{
+			locationService.updateState(id, state);
+		}
+		catch(Exception e){
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Location's State has been updated successfully+\"}");
+
+	}
+
+	@PatchMapping("/locations/{id}/updateCity")
+	public ResponseEntity<String> updateCity(@PathVariable int id, @RequestParam String city){
+		try {
+
+			locationService.updateCity(id,city);
+
+		}
+		catch(Exception e){
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Location's City has been updated successfully+\"}");
+
+	}
+
+	@PatchMapping("/locations/{id}/updateZipCode")
+	public ResponseEntity<String> updateZipCode(@PathVariable int id, @RequestParam String zipCode) {
+
+		try{
+			locationService.updateZipCode(id,zipCode);
+		}
+		catch(Exception e){
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Location's Zipcode has been updated successfully+\"}");
+
+	}
+
+	@DeleteMapping("/locations/{id}")
+	public ResponseEntity<String> deleteLocation(@PathVariable int id){
+
+		try {
+
+			locationService.deleteLocation(id);
+
+		}
+		catch(Exception e){
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Location has been deleted successfully+\"}");
+
+	}
+
+	@PatchMapping("/locations/{id}/addBuilding")
+	public ResponseEntity<String> addBuilding(@PathVariable int id, @RequestBody BuildingRequestDto buildingRequestDto) {
+
+		try{
+
+			locationService.addBuilding(id, buildingRequestDto);
+
+		}
+		catch(Exception e) {
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Building has been added to the Location +\"}");
+
+	}
+
+	@PutMapping("/locations/{id}")
+	public ResponseEntity<String> updateLocation(@PathVariable int id, @RequestBody LocationRequestDto locationRequestDto) {
+
+		try {
+			locationService.updateLocation(id, locationRequestDto);
+		}
+		catch(Exception e){
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Location has been updated successfully+\"}");
+
+	}
+
 }
+
+
