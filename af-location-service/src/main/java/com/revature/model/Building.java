@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Building {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="building_id")
 	private int buildingId;
 
