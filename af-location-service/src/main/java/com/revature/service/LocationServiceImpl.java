@@ -1,12 +1,12 @@
 package com.revature.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.revature.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.dto.BuildingDto;
-import com.revature.dto.LocationDto;
 import com.revature.model.Building;
 import com.revature.model.Location;
 import com.revature.repository.BuildingRepository;
@@ -15,15 +15,17 @@ import com.revature.repository.LocationRepository;
 @Service
 public class LocationServiceImpl implements LocationService{
 	
-	private LocationRepository lr;
+	private LocationRepository locationRepository;
 	
 	@Autowired
-	public LocationServiceImpl(LocationRepository lr) {
-		this.lr=lr;
+	public LocationServiceImpl(LocationRepository locationRepository) {
+
+		this.locationRepository=locationRepository;
+
 	}
 
 	@Override
-	public void createLocation(Location location) {
+	public void createLocation(LocationRequestDto locationRequestDto) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -53,7 +55,7 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public LocationDto getLocation(int index) {
+	public LocationDetailsDto getLocation(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -83,24 +85,18 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public void addBuilding(int index, BuildingDto buildingDto) {
+	public void addBuilding(int index, BuildingRequestDto buildingRequestDto) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateLocation(int index, Location location) {
+	public void updateLocation(int index, LocationRequestDto locationRequestDto) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public List<BuildingDto> getAllBuildings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	
 	
 	
 }

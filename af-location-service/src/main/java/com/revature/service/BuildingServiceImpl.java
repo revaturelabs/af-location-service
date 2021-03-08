@@ -7,9 +7,9 @@ import com.revature.repository.BuildingRepository;
 
 @Service
 public class BuildingServiceImpl implements BuildingService{
-	
+
 	private BuildingRepository bd;
-	
+
 	@Autowired
 	public BuildingServiceImpl(BuildingRepository bd) {
 		this.bd=bd;

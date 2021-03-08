@@ -22,197 +22,217 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class LocationControllerTests {
 
-	@Autowired
-	private MockMvc mockMvc;
-	@MockBean
-	private LocationService locationService;
-	@MockBean
-	private BuildingService buildingService;
-	@MockBean
-	private RoomService roomService;
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private LocationService locationService;
+    @MockBean
+    private BuildingService buildingService;
+    @MockBean
+    private RoomService roomService;
 
-	@Test
-	public void shouldReturn200AcceptedForCreateLocation() throws Exception {
+    @Test
+    public void shouldReturn202AcceptedForCreateLocation() throws Exception {
 
-		this.mockMvc
-				.perform(post("/locations").contentType(MediaType.APPLICATION_JSON)
-						.content("{\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\"}"))
-				.andExpect(status().isCreated());
-	}
+        this.mockMvc.perform(post("/locations")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\"}"))
+                .andExpect(status().isAccepted());
+    }
 
-	@Test
-	public void shouldReturn400BadRequestForCreateLocation() throws Exception {
+    @Test
+    public void shouldReturn400BadRequestForCreateLocation() throws Exception {
 
-		this.mockMvc.perform(post("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isBadRequest());
-	}
+        this.mockMvc.perform(post("/locations")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(""))
+                .andExpect(status().isBadRequest());
+    }
 
-	@Test
-	public void shouldReturn200IsOkGetAllLocations() throws Exception {
 
-		this.mockMvc.perform(get("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn200IsOkGetAllLocations() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedGetAllLocations() throws Exception {
+        this.mockMvc.perform(get("/locations")
+                .contentType(MediaType.APPLICATION_JSON).content(""))
+                .andExpect(status().isOk());
+    }
 
-		this.mockMvc.perform(get("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isUnauthorized());
-	}
+    @Test
+    public void shouldReturn404NotFoundGetAllLocations() throws Exception {
 
-	@Test
-	public void shouldReturn200AcceptedUpdateLocationState() throws Exception {
+        this.mockMvc.perform(get("/location")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 
-		this.mockMvc.perform(
-				patch("/locations/{id}/", "1").param("state", "New York").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn202AcceptedUpdateLocationState() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedUpdateLocationState() throws Exception {
+        this.mockMvc.perform(patch("/locations/{id}/updateState", "1")
+                .param("state", "New York")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+    }
 
-		this.mockMvc.perform(patch("/locations/{id}/", "0").param("state", "").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnauthorized());
-	}
+    @Test
+    public void shouldReturn400BadRequestUpdateLocationState() throws Exception {
 
-	@Test
-	public void shouldReturn200AcceptedUpdateLocationCity() throws Exception {
+        this.mockMvc.perform(patch("/locations/{id}/updateState", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 
-		this.mockMvc
-				.perform(patch("/locations/{id}/", "1").param("city", "Plano").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn202AcceptedUpdateLocationCity() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedUpdateLocationCity() throws Exception {
+        this.mockMvc.perform(patch("/locations/{id}/updateCity", "1")
+                .param("city", "Plano")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+    }
 
-		this.mockMvc.perform(patch("/locations/{id}/", "0").param("city", " ").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnauthorized());
+    @Test
+    public void shouldReturn400BadRequestUpdateLocationCity() throws Exception {
 
-	}
+        this.mockMvc.perform(patch("/locations/{id}/updateCity", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
-	@Test
-	public void shouldReturn200AcceptedUpdateLocationZipCode() throws Exception {
+    }
 
-		this.mockMvc.perform(
-				patch("/locations/{id}/", "1").param("zipCode", "75075").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+    @Test
+    public void shouldReturn202AcceptedUpdateLocationZipCode() throws Exception {
 
-	}
+        this.mockMvc.perform(patch("/locations/{id}/updateZipCode", "1")
+                .param("zipCode", "75075")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
 
-	@Test
-	public void shouldReturn401AccessDeniedUpdateLocationZipCode() throws Exception {
+    }
 
-		this.mockMvc.perform(
-				patch("/locations/{id}/", "0").param("zipCode", "76467").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnauthorized());
+    @Test
+    public void shouldReturn400BadRequestUpdateLocationZipCode() throws Exception {
 
-	}
+        this.mockMvc.perform(patch("/locations/{id}/updateZipCode", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
-	@Test
-	public void shouldReturn200AcceptedDeleteLocation() throws Exception {
+    }
 
-		this.mockMvc.perform(delete("/locations/{id}/", "1").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+    @Test
+    public void shouldReturn202AcceptedDeleteLocation() throws Exception {
 
-	}
+        this.mockMvc.perform(delete("/locations/{id}", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
 
-	@Test
-	public void shouldReturn400BadRequestDeleteLocation() throws Exception {
+    }
 
-		this.mockMvc.perform(delete("/locations/{id}/", "0").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest());
+    @Test
+    public void shouldReturn400BadRequestDeleteLocation() throws Exception {
 
-	}
+        this.mockMvc.perform(delete("/locations/{id}", "j")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
-	@Test
-	public void shouldReturn200AcceptedUpdateLocation() throws Exception {
+    }
 
-		this.mockMvc
-				.perform(put("/locations/{id}/", "1").contentType(MediaType.APPLICATION_JSON)
-						.content("\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\""))
-				.andExpect(status().isOk());
+    @Test
+    public void shouldReturn200AcceptedUpdateLocation() throws Exception {
 
-	}
+        this.mockMvc.perform(put("/locations/{id}", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\"}"))
+                .andExpect(status().isAccepted());
 
-	@Test
-	public void shouldReturn400BadRequestUpdateLocation() throws Exception {
+    }
 
-		this.mockMvc
-				.perform(put("/locations/{id}/", "0").contentType(MediaType.APPLICATION_JSON)
-						.content("\"state\": \"Texas\",\"city\": \"Plano\", \"zipCode\": \"75023\""))
-				.andExpect(status().isBadRequest());
+    @Test
+    public void shouldReturn400BadRequestUpdateLocation() throws Exception {
 
-	}
+        this.mockMvc.perform(put("/locations/{id}", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(""))
+                .andExpect(status().isBadRequest());
 
-	@Test
-	public void shouldReturn200IsOkGetAllLocationsByState() throws Exception {
+    }
 
-		this.mockMvc.perform(get("/locations/{state}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByState() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedGetAllLocationsByState() throws Exception {
+        this.mockMvc.perform(get("/locations/getByState/{state}", "VA")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
-		this.mockMvc.perform(get("/locations/{state}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isUnauthorized());
-	}
+    @Test
+    public void shouldReturn400BadRequestGetAllLocationsByState() throws Exception {
 
-	@Test
-	public void shouldReturn200IsOkGetAllLocationsByCity() throws Exception {
+        this.mockMvc.perform(get("/locations/getByState/{state}", "")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 
-		this.mockMvc.perform(get("/locations/{city}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByCity() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedGetAllLocationsByCity() throws Exception {
+        this.mockMvc.perform(get("/locations/getByCity/{city}", "Reston")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
-		this.mockMvc.perform(get("/locations/{city}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isUnauthorized());
-	}
+    @Test
+    public void shouldReturn400BadRequestGetAllLocationsByCity() throws Exception {
 
-	@Test
-	public void shouldReturn200IsOkGetAllLocationsByZipcode() throws Exception {
+        this.mockMvc.perform(get("/locations/getByCity/{city}", "")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 
-		this.mockMvc.perform(get("/locations/{zipcode}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn200IsOkGetAllLocationsByZipcode() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedGetAllLocationsByZipcode() throws Exception {
+        this.mockMvc.perform(get("/locations/getByZipCode/{zipCode}", "75023")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
-		this.mockMvc.perform(get("/locations/{zipcode}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isUnauthorized());
-	}
+    @Test
+    public void shouldReturn400BadRequestGetAllLocationsByZipcode() throws Exception {
 
-	@Test
-	public void shouldReturn200IsOkGetLocationById() throws Exception {
+        this.mockMvc.perform(get("/locations/getByZipCode/{zipCode}", "")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 
-		this.mockMvc.perform(get("/locations/{id}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturn200IsOkGetLocationById() throws Exception {
 
-	@Test
-	public void shouldReturn401AccessDeniedGetLocationById() throws Exception {
+        this.mockMvc.perform(get("/locations/{id}", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
-		this.mockMvc.perform(get("/locations/{id}/").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isUnauthorized());
-	}
+    @Test
+    public void shouldReturn400BadRequestGetLocationById() throws Exception {
 
+        this.mockMvc.perform(get("/locations/{id}", "")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 	@Test
 	public void checkGetBuildingsAtLocationControllerValid() throws Exception {
-		this.mockMvc.perform(get("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
+		this.mockMvc.perform(get("/locations/{id}/buildings", "1")
+                .contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
 	}
 
 	@Test
-	public void checkGetBuildingsAtLocationConrtollerInvalid() throws Exception {
-		this.mockMvc.perform(get("/locations").contentType(MediaType.APPLICATION_JSON).content("{}"))
-				.andExpect(status().isUnauthorized());
+	public void checkGetBuildingsAtLocationControllerInvalid() throws Exception {
+		this.mockMvc.perform(get("/locations/{id}/buildings", "")
+                .contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
 	}
-
 }

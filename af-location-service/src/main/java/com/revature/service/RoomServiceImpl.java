@@ -1,9 +1,10 @@
 package com.revature.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.revature.repository.RoomRepository;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -12,7 +13,7 @@ public class RoomServiceImpl implements RoomService {
 	
 	@Autowired
 	public RoomServiceImpl(RoomRepository rr) {
-		this.rr = rr;
+		this.rr=rr;
 	}
 
 }

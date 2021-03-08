@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.dto.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +18,6 @@ import org.mockito.stubbing.Answer;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.revature.dto.BuildingDto;
-import com.revature.dto.LocationDto;
-import com.revature.dto.RoomDto;
 import com.revature.model.Building;
 import com.revature.model.Location;
 import com.revature.model.Room;
@@ -169,19 +167,27 @@ public class LocationServiceTests {
 				return null;
 			}
 		} );
+		LocationRequestDto badSampleRequestDto = new LocationRequestDto();
+		badSampleRequestDto.setCity(badSampleLocation.getCity());
+		badSampleRequestDto.setState(badSampleLocation.getState());
+		badSampleRequestDto.setZipCode(badSampleLocation.getZipCode());
 		Exception exception = assertThrows( Exception.class, () ->{
-			locationService.createLocation( badSampleLocation );
+			locationService.createLocation( badSampleRequestDto );
 		} );
 		assertTrue( "didn't throw exception", "bad entity".contains( exception.getMessage() ) );
 	}
 
 	@Test
 	public void createGoodLocation() {
-		LocationDto goodSampleLocationDto = getLocationDtoFromEntity( goodSampleLocation ); 
-		Mockito.when(locationRepository.findById( goodSampleLocationDto.id ) ).thenReturn(Optional.of( goodSampleLocation ) );
-		locationService.createLocation( goodSampleLocation );
-		LocationDto result = locationService.getLocation( goodSampleLocationDto.id );
-		assertTrue( "locationDto's not equal", locationDtoEquals( goodSampleLocationDto, result ) );
+		LocationDetailsDto goodSampleLocationDto = getLocationDtoFromEntity( goodSampleLocation );
+		Mockito.when(locationRepository.findById( goodSampleLocationDto.getId() ) ).thenReturn(Optional.of( goodSampleLocation ) );
+		LocationRequestDto goodSampleRequestDto = new LocationRequestDto();
+		goodSampleRequestDto.setState(goodSampleLocation.getState());
+		goodSampleRequestDto.setCity(goodSampleLocation.getCity());
+		goodSampleRequestDto.setZipCode(goodSampleLocation.getZipCode());
+		locationService.createLocation( goodSampleRequestDto );
+		LocationDetailsDto result = locationService.getLocation( goodSampleLocationDto.getId() );
+		assertTrue( "locationDetailsDto's not equal", locationDetailsDtoEquals( goodSampleLocationDto, result ) );
 	}
 
 	@Test
@@ -210,49 +216,101 @@ public class LocationServiceTests {
 	public void checkWeCanGetAllLocations() {
 		List<LocationDto> locations = locationService.getAllLocations();
 		assertNotNull(locations);
-		assertTrue(locations.size() == 5);
+		assertTrue(locations.size() == 3);
 	}
 
 	@Test
 	public void checkWeCanGetLocationsByState() {
-		boolean result = true;
-		String state = "Virginia";
-		List<LocationDto> locations = locationService.getLocationsByState(state);
-		for (LocationDto ld : locations) {
-			if (!ld.state.equals(state)) {
-				result = false;
+		boolean result1 = false;
+		boolean result2 = false;
+
+		String[] stateInputs1 = {"VA", "TX", "FL"};
+		String[] stateInputs2 = {"Virginia", "Texas", "Florida"};
+
+		for( String s : stateInputs1 ) {
+			List<LocationDto> l = locationService.getLocationsByState(s);
+			if( l.get(0).getState().equals(s) ) {
+				result1 = true;
+			} else if( l.get(1).getState().equals(s) ) {
+				result1 = true;
+			} else if ( l.get(2).getState().equals(s) ) {
+				result1 = true;
 			}
 		}
-		assertTrue(result);
+		assertTrue(result1);
+
+		for( String s : stateInputs2 ) {
+			List<LocationDto> l = locationService.getLocationsByState(s);
+			if( l.get(0).getState().equals(s) ) {
+				result2 = true;
+			} else if( l.get(1).getState().equals(s) ) {
+				result2 = true;
+			} else if ( l.get(2).getState().equals(s) ) {
+				result2 = true;
+			}
+		}
+		assertTrue(result2);
 	}
 
 	@Test
 	public void checkWeCanGetLocationsByCity() {
-		boolean result = true;
-		String city = "Reston";
-		List<LocationDto> locations = locationService.getLocationsByCity(city);
-		for (LocationDto ld : locations) {
-			if (!ld.city.equals(city)) {
-				result = false;
+		boolean result = false;
+		String[] cityInputs = {"Reston", "Arlington", "Tampa"};
+
+		for( String c : cityInputs ) {
+			List<LocationDto> l = locationService.getLocationsByCity(c);
+			if( l.get(0).getCity().equals(c) ) {
+				result = true;
+			} else if( l.get(1).getCity().equals(c) ) {
+				result = true;
+			} else if ( l.get(2).getCity().equals(c) ) {
+				result = true;
 			}
 		}
+
 		assertTrue(result);
 	}
 
 	@Test
 	public void checkWeCanGetLocationsByZipcode() {
+		boolean result = false;
+		String[] zipCodeInputs = {"20190", "33620", "76019"};
+
+		for( String z : zipCodeInputs ) {
+			List<LocationDto> l = locationService.getLocationsByZipCode(z);
+			if( l.get(0).getZipCode().equals(z) ) {
+				result = true;
+			} else if( l.get(1).getZipCode().equals(z) ) {
+				result = true;
+			} else if ( l.get(2).getZipCode().equals(z) ) {
+				result = true;
+			}
+		}
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void checkWeCanGetLocationById() {
 		boolean result = true;
-		String zipcode = "20190";
-		List<LocationDto> locations = locationService.getLocationsByZipCode(zipcode);
-		for (LocationDto ld : locations) {
-			if (!ld.zipCode.equals(zipcode)) {
+		int[] idInputs = {1,2,3};
+
+		for( int i : idInputs ) {
+			LocationDetailsDto l = locationService.getLocation(i);
+			if( l.getBuildings().isEmpty() ) {
+				result = false;
+			} else if( l.getZipCode().isEmpty() ) {
+				result = false;
+			} else if ( l.getCity().isEmpty() ) {
+				result = false;
+			} else if ( l.getState().isEmpty() ) {
 				result = false;
 			}
 		}
+
 		assertTrue(result);
 	}
-	
-	
+
 	@Test 
 	public void updateLocationGood(){
 		final Location goodSampleCopy = cloneLocation( goodSampleLocation );
@@ -267,15 +325,19 @@ public class LocationServiceTests {
 					goodSampleCopy.setBuildings( location.getBuildings() );
 					goodSampleCopy.setCity( location.getCity() );
 					goodSampleCopy.setState( location.getState() );
-					goodSampleCopy.setZipcode( location.getZipcode() );
+					goodSampleCopy.setZipCode( location.getZipCode() );
 				}
 				return goodSampleCopy;
 			}
 		} );
-		locationService.updateLocation( goodSampleCopy.getLocationId(), modifiedSampleCopy );
+		LocationRequestDto locationRequestDto = new LocationRequestDto();
+		locationRequestDto.setState(modifiedSampleCopy.getState());
+		locationRequestDto.setCity(modifiedSampleCopy.getCity());
+		locationRequestDto.setZipCode(modifiedSampleCopy.getZipCode());
+		locationService.updateLocation( goodSampleCopy.getLocationId(), locationRequestDto );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId()) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
-		assertTrue( "Location not persisted", locationDtoEquals( result, getLocationDtoFromEntity(modifiedSampleCopy) ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		assertTrue( "Location not persisted", locationDetailsDtoEquals( result, getLocationDtoFromEntity(modifiedSampleCopy) ) );
 	}
 	@Test 
 	public void updateLocationBad() {
@@ -292,8 +354,12 @@ public class LocationServiceTests {
 				return null;
 			}
 		} );
+		LocationRequestDto locationRequestDto = new LocationRequestDto();
+		locationRequestDto.setState(badSampleCopy.getState());
+		locationRequestDto.setCity(badSampleCopy.getCity());
+		locationRequestDto.setZipCode(badSampleCopy.getZipCode());
 		Exception exception = assertThrows( Exception.class, () ->{
-			locationService.updateLocation( badSampleCopy.getLocationId(), badSampleCopy );
+			locationService.updateLocation( badSampleCopy.getLocationId(), locationRequestDto );
 		} );
 		assertTrue( "didn't throw exception", "bad entity".contains( exception.getMessage() ) );
 	}
@@ -305,8 +371,8 @@ public class LocationServiceTests {
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
 		locationService.updateState( goodSampleCopy.getLocationId(), "wuzz" );
-		LocationDto result = locationService.getLocation(goodSampleCopy.getLocationId());
-		assertTrue( "state not persisted", "wuzz".equals( result.state ) );
+		LocationDetailsDto result = locationService.getLocation(goodSampleCopy.getLocationId());
+		assertTrue( "state not persisted", "wuzz".equals( result.getState() ) );
 	}
 	@Test
 	public void updateStateBad() {
@@ -316,8 +382,8 @@ public class LocationServiceTests {
 			Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 			Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
 			locationService.updateState( goodSampleCopy.getLocationId(), "wuzz" );
-			LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
-			assertFalse( "bad state changed", "wuzz".equals( result.state ) );
+			LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+			assertFalse( "bad state changed", "wuzz".equals( result.getState() ) );
 		}
 		
 	}
@@ -329,8 +395,8 @@ public class LocationServiceTests {
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
 		locationService.updateCity( goodSampleCopy.getLocationId(), "wuzz" );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
-		assertTrue( "city not persisted", "wuzz".equals( result.city ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		assertTrue( "city not persisted", "wuzz".equals( result.getCity() ) );
 	}
 	
 	@Test
@@ -340,8 +406,8 @@ public class LocationServiceTests {
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
 		locationService.updateCity( goodSampleCopy.getLocationId(), "wuzz" );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
-		assertFalse( "city should not persist", "wuzz".equals( result.city ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		assertFalse( "city should not persist", "wuzz".equals( result.getCity() ) );
 	}
 	
 	@Test
@@ -351,8 +417,8 @@ public class LocationServiceTests {
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
 		locationService.updateZipCode( goodSampleCopy.getLocationId(), "wuzz" );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
-		assertTrue( "zip code not persisted", "wuzz".equals( result.zipCode ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		assertTrue( "zip code not persisted", "wuzz".equals( result.getZipCode() ) );
 	}
 	@Test
 	public void updateZipCodeBad() {
@@ -361,8 +427,8 @@ public class LocationServiceTests {
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
 		locationService.updateZipCode( goodSampleCopy.getLocationId(), "wuzz" );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
-		assertFalse( "zip code should not persist", "wuzz".equals( result.zipCode ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		assertFalse( "zip code should not persist", "wuzz".equals( result.getZipCode() ) );
 	}
 	
 	@Test
@@ -378,10 +444,10 @@ public class LocationServiceTests {
 		
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
-		locationService.addBuilding( goodSampleCopy.getLocationId(), getBuildingDtoFromEntity( newBuilding ) );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		locationService.addBuilding( goodSampleCopy.getLocationId(), getBuildingRequestDtoFromEntity( newBuilding ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
 		boolean flag = false;
-		Iterator<BuildingDto> iterator = result.buildings.iterator();
+		Iterator<BuildingDto> iterator = result.getBuildings().iterator();
 		BuildingDto newBuildingDto = getBuildingDtoFromEntity( newBuilding );
 		while( iterator.hasNext() ) {
 			if( BuildingDtoEquals( iterator.next(), newBuildingDto ) ) {
@@ -405,10 +471,10 @@ public class LocationServiceTests {
 		
 		Mockito.when( locationRepository.save( goodSampleCopy )).thenReturn( goodSampleCopy );
 		Mockito.when( locationRepository.findById( goodSampleCopy.getLocationId() ) ).thenReturn( ( Optional.of( goodSampleCopy ) ) );
-		locationService.addBuilding( goodSampleCopy.getLocationId(), getBuildingDtoFromEntity( newBuilding ) );
-		LocationDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
+		locationService.addBuilding( goodSampleCopy.getLocationId(), getBuildingRequestDtoFromEntity( newBuilding ) );
+		LocationDetailsDto result = locationService.getLocation( goodSampleCopy.getLocationId() );
 		boolean flag = false;
-		Iterator<BuildingDto> iterator = result.buildings.iterator();
+		Iterator<BuildingDto> iterator = result.getBuildings().iterator();
 		BuildingDto newBuildingDto = getBuildingDtoFromEntity(newBuilding);
 		while(iterator.hasNext()) {
 			if( BuildingDtoEquals( iterator.next(), newBuildingDto ) ) {
@@ -460,7 +526,7 @@ public class LocationServiceTests {
 			result.setCity( location.getCity() );
 			result.setLocationId( location.getLocationId() );
 			result.setState( location.getState() );
-			result.setZipcode( location.getZipcode() );
+			result.setZipCode( location.getZipCode() );
 			List<Building> list = new ArrayList<Building>();
 			Iterator<Building> iterator = location.getBuildings().iterator();
 			while( iterator.hasNext() ) {
@@ -469,53 +535,70 @@ public class LocationServiceTests {
 			result.setBuildings( list );
 			return result;
 		}
-		
-		private boolean locationDtoEquals( LocationDto locationA, LocationDto locationB ) {
+
+		private boolean locationDetailsDtoEquals( LocationDetailsDto locationA, LocationDetailsDto locationB ) {
+
 			if( locationA == locationB ) {
 				return true;
 			}
-			if( locationA.id != locationB.id ) {
+			if( locationA.getId() != locationB.getId() ) {
 				return false;
 			}
-			if( !locationA.city.equals( locationB.city ) ) {
+			if( !locationA.getCity().equals( locationB.getCity() ) ) {
 				return false;
 			}
-			if( !locationA.state.equals( locationB.state ) ) {
+			if( !locationA.getState().equals( locationB.getState() ) ) {
 				return false;
 			}
-			if( !locationA.zipCode.equals( locationB.zipCode ) ) {
+			if( !locationA.getZipCode().equals( locationB.getZipCode() ) ) {
 				return false;
 			}
-			if( locationA.buildings.size() != locationB.buildings.size() ) {
+			if( locationA.getBuildings().size() != locationB.getBuildings().size() ) {
 				return false;
 			}
-			Iterator<BuildingDto> iteratorA = locationA.buildings.iterator();
-			Iterator<BuildingDto> iteratorB = locationB.buildings.iterator();
+			Iterator<BuildingDto> iteratorA = locationA.getBuildings().iterator();
+			Iterator<BuildingDto> iteratorB = locationB.getBuildings().iterator();
 			while( iteratorA.hasNext() ) {
 				if( !BuildingDtoEquals( iteratorA.next(), iteratorB.next() ) ) {
 					return false;
 				}
 			}
 			return true;
-			
+
+		}
+		private boolean locationDtoEquals( LocationDto locationA, LocationDto locationB ) {
+			if( locationA == locationB ) {
+				return true;
+			}
+			if( locationA.getId() != locationB.getId() ) {
+				return false;
+			}
+			if( !locationA.getCity().equals( locationB.getCity() ) ) {
+				return false;
+			}
+			if( !locationA.getState().equals( locationB.getState() ) ) {
+				return false;
+			}
+			if( !locationA.getZipCode().equals( locationB.getZipCode() ) ) {
+				return false;
+			}
+			if( locationA.getNumBuildings() != locationB.getNumBuildings() ) {
+				return false;
+			}
+			return true;
+
 		}
 		private boolean roomDtoEquals( RoomDto roomA, RoomDto roomB) {
 			if( roomA == roomB ) {
 				return true;
 			}
-			if( roomA.id != roomB.id ) {
+			if( roomA.getId() != roomB.getId() ) {
 				return false;
 			}
-			if( roomA.capacity != roomB.capacity ) {
+			if( !roomA.getOccupation().equals( roomB.getOccupation() ) ) {
 				return false;
 			}
-			if( !roomA.name.equals( roomB.name ) ) {
-				return false;
-			}
-			if( !roomA.occupation.equals( roomB.occupation ) ) {
-				return false;
-			}
-			if( !roomA.type.equals( roomB.type ) ) {
+			if( !roomA.getType().equals( roomB.getType() ) ) {
 				return false;
 			}
 			
@@ -526,45 +609,47 @@ public class LocationServiceTests {
 			if( buildingA == buildingB ) {
 				return true;
 			}
-			if( !buildingA.city.equals( buildingB.city ) ) {
+			if( !buildingA.getStreet_address().equals( buildingB.getStreet_address() ) ) {
 				return false;
 			}
-			if( !buildingA.streetAddress.equals( buildingB.streetAddress ) ) {
+			if( buildingA.getId() != buildingB.getId() ) {
 				return false;
 			}
-			if( buildingA.id != buildingB.id ) {
+			if( buildingA.getNumRooms()!= buildingB.getNumRooms() ) {
 				return false;
-			}
-			if( buildingA.rooms.size() != buildingB.rooms.size() ) {
-				return false;
-			}
-			Iterator<RoomDto> iteratorRoomsA = buildingA.rooms.iterator();
-			Iterator<RoomDto> iteratorRoomsB = buildingB.rooms.iterator();
-			while(iteratorRoomsA.hasNext()) {
-				if( !roomDtoEquals( iteratorRoomsA.next(),iteratorRoomsB.next() ) ) {
-					return false;
-				}
 			}
 			return true;
 		}
 		
-		private LocationDto getLocationDtoFromEntity( Location location ) {
-			LocationDto locationDto = new LocationDto();
-			locationDto.city = location.getCity();
-			locationDto.id = location.getLocationId();
-			locationDto.state = location.getState();
-			locationDto.zipCode = location.getZipcode();
-			locationDto.buildings = this.getBuidlingDtoListFromEntityList( location.getBuildings() );
-			return locationDto;
+		private LocationDetailsDto getLocationDtoFromEntity( Location location ) {
+			LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+			locationDetailsDto.setCity(location.getCity());
+			locationDetailsDto.setId(location.getLocationId());
+			locationDetailsDto.setState(location.getState());
+			locationDetailsDto.setZipCode(location.getZipCode());
+			locationDetailsDto.setBuildings(this.getBuidlingDtoListFromEntityList( location.getBuildings() ));
+			return locationDetailsDto;
 		}
-		private BuildingDto getBuildingDtoFromEntity( Building building ) {
-			BuildingDto resultBuilding = new BuildingDto();
-			resultBuilding.city = building.getCity();
-			resultBuilding.id = building.getBuildingId();
-			resultBuilding.streetAddress = building.getStreetAddress();
-			resultBuilding.rooms = getRoomsDtoListFromEntityList( building.getRooms() );
+		private BuildingRequestDto getBuildingRequestDtoFromEntity( Building building ) {
+			BuildingRequestDto resultBuilding = new BuildingRequestDto();
+			resultBuilding.setCity(building.getCity());
+			resultBuilding.setStreet_address(building.getStreetAddress());
+			resultBuilding.setZipCode(building.getLocation().getZipCode());
+			resultBuilding.setTotalFloors(getRoomsDtoListFromEntityList( building.getRooms()).size());
 			return resultBuilding;
 		}
+
+		private BuildingDto getBuildingDtoFromEntity(Building building)
+		{
+			BuildingDto buildingDto = new BuildingDto();
+			buildingDto.setNumRooms(building.getRooms().size());
+			buildingDto.setId(building.getBuildingId());
+			buildingDto.setTotalFloors(building.getTotalFloors());
+			buildingDto.setStreet_address(building.getStreetAddress());
+			return buildingDto;
+		}
+
+
 		private List<BuildingDto>   getBuidlingDtoListFromEntityList( List<Building> buildings ){
 			List<BuildingDto> result = new ArrayList<BuildingDto>();
 			Iterator<Building> iterator = buildings.iterator();
@@ -582,9 +667,7 @@ public class LocationServiceTests {
 			while( iterator.hasNext() ) {
 				RoomDto resultRoom = new RoomDto();
 				Room room = iterator.next();
-				resultRoom.capacity = room.getCapacity();
-				resultRoom.id = room.getRoomId();
-				resultRoom.name = room.getName();
+				resultRoom.setId(room.getRoomId());
 				// TODO implement conversion of occupation and type string to and from enum
 //				resultRoom.occupation = room.getOccupation();
 //				resultRoom.type = room.getType()

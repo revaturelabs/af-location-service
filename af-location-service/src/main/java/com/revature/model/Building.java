@@ -5,79 +5,41 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
 public class Building {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="building_id")
-    private int buildingId;
-	
-    private String city;
-    
-    @Column(name = "street_address")
-    private String streetAddress;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Location location;
-    
-    @OneToMany
-    private List<Room> rooms;
-    
-    public Building() {
-    	
-    }
-    
-	public Building(int buildingId, String city, String streetAddress, Location location, List<Room> rooms) {
-		super();
-		this.buildingId = buildingId;
-		this.city = city;
-		this.streetAddress = streetAddress;
-		this.location = location;
-		this.rooms = rooms;
-	}
+	private int buildingId;
 
-	public int getBuildingId() {
-		return buildingId;
-	}
+	@NotNull
+	private String city;
 
-	public void setBuildingId(int buildingId) {
-		this.buildingId = buildingId;
-	}
+	@Column(name = "street_address")
+	@NotNull
+	private String streetAddress;
 
-	public String getCity() {
-		return city;
-	}
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "location_id")
+	private Location location;
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+	@OneToMany(mappedBy = "building")
+	private List<Room> rooms;
 
-	public String getStreetAddress() {
-		return streetAddress;
-	}
+	@Column(name = "total_floors")
+	@NotNull
+	private int totalFloors;
 
-	public void setStreetAddress(String streetAddress) {
-		this.streetAddress = streetAddress;
-	}
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	public List<Room> getRooms() {
-		return rooms;
-	}
-
-	public void setRooms(List<Room> rooms) {
-		this.rooms = rooms;
-	}
 
 	@Override
 	public int hashCode() {
@@ -88,6 +50,7 @@ public class Building {
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((rooms == null) ? 0 : rooms.hashCode());
 		result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
+		result = prime * result + totalFloors;
 		return result;
 	}
 
@@ -122,17 +85,14 @@ public class Building {
 				return false;
 		} else if (!streetAddress.equals(other.streetAddress))
 			return false;
+		if(this.totalFloors != other.totalFloors )
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Building [buildingId=" + buildingId + ", city=" + city + ", streetAddress=" + streetAddress
-				+ ", location=" + location + ", rooms=" + rooms + "]";
+				+ ", location=" + location + ", rooms=" + rooms + "total floors=" + totalFloors + "]";
 	}
-
-	
-    
-    
-    
 }

@@ -11,12 +11,12 @@ import com.revature.service.RoomService;
 @RequestMapping("room")
 @CrossOrigin
 public class RoomController {
-	
+
 	private RoomService rs;
-	
+
 	@Autowired
 	public RoomController(RoomService rs) {
 		this.rs=rs;
 	}
-	
+
 }
