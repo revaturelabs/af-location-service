@@ -1,23 +1,22 @@
 package com.revature.service;
 
-<<<<<<< HEAD
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.model.Room;
 import com.revature.repository.RoomRepository;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
-import lombok.Data;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Data
+@Service
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
 
 
-    public RoomServiceImpl(RoomRepository roomRepository){
+    public RoomServiceImpl( RoomRepository roomRepository ) {
         this.roomRepository = roomRepository;
     }
 
@@ -25,46 +24,37 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDetailsDto getRoom( int i ) {
         Optional<Room> roomOptional = roomRepository.findById ( i );
+        RoomDetailsDto detailsDto = new RoomDetailsDto ();
 
-        if(roomOptional.isPresent ()){
-            Room room = roomOptional.get ();
+        if ( roomOptional.isPresent () ) {
+             Room   room = roomOptional.get ();
 
-            RoomDetailsDto detailsDto = new RoomDetailsDto ();
             detailsDto.setCapacity ( room.getCapacity () );
             detailsDto.setFloorNumber ( room.getFloorNumber () );
             detailsDto.setName ( room.getName () );
             detailsDto.setType ( room.getType ().toString () );
 
-            Set<String> detailsSet = new HashSet<> ();
-            Map<String, Integer> roomAmenities = room.getRoomAmenities ();
+            Set<String> roomAmenities = room.getRoomAmenities ();
+            detailsDto.setAmenities ( roomAmenities  );
 
-            roomAmenities.forEach ( (key, value) -> {
-                detailsSet.add ( key + ": "+value);
 
-            });
-
-            detailsDto.setAmenities ( detailsSet );
-             return detailsDto;
+            return detailsDto;
 
         }
 
 
-
-        return null;
+        return detailsDto;
     }
 
     @Override
     public List<RoomDto> getPhysicalMeetingRooms() {
-        List<RoomDto> physicalMeetingRooms = new ArrayList<>();
+        List<RoomDto> physicalMeetingRooms = new ArrayList<> ();
 
 
-        roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.MEETING ).forEach ( room ->{
+        roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.MEETING ).forEach ( room -> {
             RoomDto roomDto = new RoomDto ();
-            roomDto.id = room.getId ();
-            roomDto.capacity = room.getCapacity ();
-            roomDto.name = room.getName ();
-            roomDto.occupation = room.getOccupation ().name ();
-            roomDto.type = room.getType ().name ();
+            roomDto.setOccupation (  room.getOccupation ().name ());
+            roomDto.setType( room.getType ().name ());
             physicalMeetingRooms.add ( roomDto );
         } );
 
@@ -116,22 +106,5 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
-=======
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.revature.repository.RoomRepository;
-import org.springframework.stereotype.Service;
-
-
-@Service
-public class RoomServiceImpl implements RoomService {
-	
-	private RoomRepository rr;
-	
-	@Autowired
-	public RoomServiceImpl(RoomRepository rr) {
-		this.rr=rr;
-	}
->>>>>>> 8f12375a520c78cfe2654ef20ae39bf8d4fb937b
 
 }

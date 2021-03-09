@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.model.Building;
 import com.revature.model.Location;
@@ -8,24 +9,29 @@ import com.revature.repository.RoomRepository;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
 import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@RunWith (SpringRunner.class)
 public class RoomServiceTests {
-
 
     @MockBean
     private RoomRepository roomRepository;
+
+
+
     @Autowired
     private RoomService roomService;
     private Location testLocation1;
@@ -57,13 +63,22 @@ public class RoomServiceTests {
     private Room virtualRoomWithId;
 
 
+    private static RoomDetailsDto roomDetailsMapper(Room room){
+        RoomDetailsDto detailsDto = new RoomDetailsDto ();
+        detailsDto.setCapacity ( room.getCapacity () );
+        detailsDto.setFloorNumber ( room.getFloorNumber () );
+        detailsDto.setName ( room.getName () );
+        detailsDto.setType ( room.getType ().toString () );
+
+        Set<String> roomAmenities = room.getRoomAmenities ();
+        detailsDto.setAmenities ( roomAmenities  );
+        return detailsDto;
+    }
     private static RoomDto roomMapper( Room room ) {
         RoomDto roomDto = new RoomDto ();
-        roomDto.id = room.getId ();
-        roomDto.capacity = room.getCapacity ();
-        roomDto.name = room.getName ();
-        roomDto.occupation = room.getOccupation ().name ();
-        roomDto.type = room.getType ().name ();
+        roomDto.setId(room.getRoomId ());
+        roomDto.setOccupation (  room.getOccupation ().name ());
+        roomDto.setType (room.getType ().name ());
         return roomDto;
     }
 
@@ -82,13 +97,13 @@ public class RoomServiceTests {
         testBuilding1 = new Building ();
         testBuilding1.setCity ( "Test City" );
         testBuilding1.setLocation ( testLocation1 );
-        testBuilding1.setId ( 1 );
+        testBuilding1.setBuildingId ( 1 );
 
         //LOCATIONS
 
 
         testLocation1 = new Location ();
-        testLocation1.setId ( 1 );
+        testLocation1.setLocationId ( 1 );
         testLocation1.setCity ( "Test City" );
         testLocation1.setState ( "Test State" );
         testLocation1.setBuildings ( Collections.singletonList ( testBuilding1 ) );
@@ -97,8 +112,8 @@ public class RoomServiceTests {
         //PHYSICAL ROOMS
 
         physicalMeetingRoom1 = new Room ();
-        Map<String, Integer> amenities = new HashMap<> ();
-        amenities.put ( "HD PROJECTORS", 1 );
+        Set<String> amenities = new HashSet<> (2);
+        amenities.addAll ( Collections.singletonList ( "AIR CONDITIONING" ) );
 
         physicalMeetingRoom1.setBuilding ( testBuilding1 );
         physicalMeetingRoom1.setCapacity ( 20 );
@@ -109,7 +124,7 @@ public class RoomServiceTests {
         physicalMeetingRoom1.setType ( RoomType.PHYSICAL );
 
         physicalMeetingRoom1WithId = new Room ();
-        physicalMeetingRoom1WithId.setId ( 1 );
+        physicalMeetingRoom1WithId.setRoomId ( 1 );
         physicalMeetingRoom1WithId.setBuilding ( testBuilding1 );
         physicalMeetingRoom1WithId.setCapacity ( 20 );
         physicalMeetingRoom1WithId.setName ( "PHYSICAL MEETING 1" );
@@ -128,7 +143,7 @@ public class RoomServiceTests {
         physicalMeetingRoom2.setType ( RoomType.PHYSICAL );
 
         physicalMeetingRoom2WithId = new Room ();
-        physicalMeetingRoom2WithId.setId ( 2 );
+        physicalMeetingRoom2WithId.setRoomId ( 2 );
         physicalMeetingRoom2WithId.setBuilding ( testBuilding1 );
         physicalMeetingRoom2WithId.setCapacity ( 20 );
         physicalMeetingRoom2WithId.setName ( "PHYSICAL MEETING 2" );
@@ -149,7 +164,7 @@ public class RoomServiceTests {
 
 
         physicalTrainingRoom1WithId = new Room ();
-        physicalTrainingRoom1WithId.setId ( 3 );
+        physicalTrainingRoom1WithId.setRoomId ( 3 );
         physicalTrainingRoom1WithId.setBuilding ( testBuilding1 );
         physicalTrainingRoom1WithId.setCapacity ( 20 );
         physicalTrainingRoom1WithId.setName ( "PHYSICAL TRAINING 1" );
@@ -170,7 +185,7 @@ public class RoomServiceTests {
 
 
         physicalTrainingRoom2WithId = new Room ();
-        physicalTrainingRoom2WithId.setId ( 4 );
+        physicalTrainingRoom2WithId.setRoomId ( 4 );
         physicalTrainingRoom2WithId.setBuilding ( testBuilding1 );
         physicalTrainingRoom2WithId.setCapacity ( 20 );
         physicalTrainingRoom2WithId.setName ( "PHYSICAL TRAINING 2" );
@@ -193,7 +208,7 @@ public class RoomServiceTests {
 
 
         remoteMeetingRoom1WithId = new Room ();
-        remoteMeetingRoom1WithId.setId ( 5 );
+        remoteMeetingRoom1WithId.setRoomId ( 5 );
         remoteMeetingRoom1WithId.setBuilding ( testBuilding1 );
         remoteMeetingRoom1WithId.setCapacity ( 20 );
         remoteMeetingRoom1WithId.setName ( "REMOTE MEETING 1" );
@@ -213,7 +228,7 @@ public class RoomServiceTests {
         remoteMeetingRoom2.setType ( RoomType.REMOTE );
 
         remoteMeetingRoom2WithId = new Room ();
-        remoteMeetingRoom2WithId.setId ( 6 );
+        remoteMeetingRoom2WithId.setRoomId ( 6 );
         remoteMeetingRoom2WithId.setBuilding ( testBuilding1 );
         remoteMeetingRoom2WithId.setCapacity ( 20 );
         remoteMeetingRoom2WithId.setName ( "REMOTE MEETING 2" );
@@ -275,7 +290,7 @@ public class RoomServiceTests {
 
         //TODO: Figure out virtual vs remote rooms
         //virtualTrainingRoomList = Arrays.asList ( v)
-
+//        roomRepository = mock(RoomRepository.class);
         //Stage Mocks
         when ( roomRepository.findAll () ).thenReturn ( allRooms );
         when ( roomRepository.findByOccupation ( RoomOccupation.TRAINING ) ).thenReturn ( trainingRoomList );
@@ -366,11 +381,11 @@ public class RoomServiceTests {
 //    }
 
     @Test
-    public void whenRequestingRoomById_RoomDtoCorrespondingToThatIdIsReturned(){
+    public void whenRequestingRoomById_RoomDetailsDtoCorrespondingToThatIdIsReturned(){
 
-        assertEquals( roomMapper ( physicalTrainingRoom1WithId ), roomService.getRoom(1));
+        assertEquals( roomDetailsMapper ( physicalMeetingRoom1WithId ), roomService.getRoom(1));
 
-        assertEquals( roomMapper ( physicalTrainingRoom2WithId ), roomService.getRoom(2));
+        assertEquals( roomDetailsMapper ( physicalMeetingRoom2WithId ), roomService.getRoom(2));
     }
 
     @Test

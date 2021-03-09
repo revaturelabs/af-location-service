@@ -23,7 +23,6 @@ public class RoomRepositoryTests {
     @Autowired
     private RoomRepository repository;
 
-    private List<Room> allRooms;
     private Building testBuilding1;
     private Location testLocation1;
     private Room physicalMeetingRoom1;
@@ -38,8 +37,8 @@ public class RoomRepositoryTests {
     @BeforeEach
     public void setUp() {
 
-        allRooms = repository.findAll ();
-        allRooms.forEach ( repository::delete );
+//        List<Room> allRooms = repository.findAll ();
+//        allRooms.forEach ( repository::delete );
 
         //LISTS
 
@@ -59,8 +58,8 @@ public class RoomRepositoryTests {
         //PHYSICAL ROOMS
 
         physicalMeetingRoom1 = new Room ();
-        Map<String, Integer> amenities = new HashMap<> ();
-        amenities.put ( "HD PROJECTORS", 1 );
+        Set<String> amenities = new HashSet<> ();
+        amenities.add ( "HD PROJECTORS" );
 
         physicalMeetingRoom1.setBuilding ( testBuilding1 );
         physicalMeetingRoom1.setCapacity ( 20 );
