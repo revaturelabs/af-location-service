@@ -20,16 +20,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@RunWith (SpringRunner.class)
+@RunWith(SpringRunner.class)
 public class RoomServiceTests {
 
     @MockBean
     private RoomRepository roomRepository;
-
 
 
     @Autowired
@@ -63,7 +61,7 @@ public class RoomServiceTests {
     private Room virtualRoomWithId;
 
 
-    private static RoomDetailsDto roomDetailsMapper(Room room){
+    private static RoomDetailsDto roomDetailsMapper( Room room ) {
         RoomDetailsDto detailsDto = new RoomDetailsDto ();
         detailsDto.setCapacity ( room.getCapacity () );
         detailsDto.setFloorNumber ( room.getFloorNumber () );
@@ -71,14 +69,15 @@ public class RoomServiceTests {
         detailsDto.setType ( room.getType ().toString () );
 
         Set<String> roomAmenities = room.getRoomAmenities ();
-        detailsDto.setAmenities ( roomAmenities  );
+        detailsDto.setAmenities ( roomAmenities );
         return detailsDto;
     }
+
     private static RoomDto roomMapper( Room room ) {
         RoomDto roomDto = new RoomDto ();
-        roomDto.setId(room.getRoomId ());
-        roomDto.setOccupation (  room.getOccupation ().name ());
-        roomDto.setType (room.getType ().name ());
+        roomDto.setId ( room.getRoomId () );
+        roomDto.setOccupation ( room.getOccupation ().name () );
+        roomDto.setType ( room.getType ().name () );
         return roomDto;
     }
 
@@ -112,7 +111,7 @@ public class RoomServiceTests {
         //PHYSICAL ROOMS
 
         physicalMeetingRoom1 = new Room ();
-        Set<String> amenities = new HashSet<> (2);
+        Set<String> amenities = new HashSet<> ( 2 );
         amenities.addAll ( Collections.singletonList ( "AIR CONDITIONING" ) );
 
         physicalMeetingRoom1.setBuilding ( testBuilding1 );
@@ -286,7 +285,7 @@ public class RoomServiceTests {
         physicalTrainingRoomList = Arrays.asList ( physicalTrainingRoom1WithId, physicalTrainingRoom2WithId );
         physicalMeetingRoomList = Arrays.asList ( physicalMeetingRoom1WithId, physicalMeetingRoom2WithId );
         remoteTrainingRoomList = Collections.singletonList ( remoteTrainingRoom1WithId );
-        remoteMeetingRoomList = Arrays.asList (remoteMeetingRoom1WithId, remoteMeetingRoom2WithId);
+        remoteMeetingRoomList = Arrays.asList ( remoteMeetingRoom1WithId, remoteMeetingRoom2WithId );
 
         //TODO: Figure out virtual vs remote rooms
         //virtualTrainingRoomList = Arrays.asList ( v)
@@ -300,6 +299,8 @@ public class RoomServiceTests {
         when ( roomRepository.findByType ( RoomType.REMOTE ) ).thenReturn ( remoteRoomList );
         when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.TRAINING ) ).thenReturn ( physicalTrainingRoomList );
         when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.MEETING ) ).thenReturn ( physicalMeetingRoomList );
+        when ( roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.TRAINING )).thenReturn ( remoteTrainingRoomList );
+        when ( roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.MEETING )).thenReturn ( remoteMeetingRoomList);
         when ( roomRepository.findById ( 1 ) ).thenReturn ( Optional.of ( physicalMeetingRoom1WithId ) );
         when ( roomRepository.save ( physicalMeetingRoom1 ) ).thenReturn ( physicalMeetingRoom1WithId );
         when ( roomRepository.findById ( 2 ) ).thenReturn ( Optional.of ( physicalMeetingRoom2WithId ) );
@@ -327,7 +328,7 @@ public class RoomServiceTests {
     @Test
     public void whenRequestingAllRooms_ALlRoomsReturned() {
 
-       assertEquals ( listMapper ( allRooms ), roomService.getAllRooms () );
+        assertEquals ( listMapper ( allRooms ), roomService.getAllRooms () );
     }
 
     @Test
@@ -381,31 +382,34 @@ public class RoomServiceTests {
 //    }
 
     @Test
-    public void whenRequestingRoomById_RoomDetailsDtoCorrespondingToThatIdIsReturned(){
+    public void whenRequestingRoomById_RoomDetailsDtoCorrespondingToThatIdIsReturned() {
 
-        assertEquals( roomDetailsMapper ( physicalMeetingRoom1WithId ), roomService.getRoom(1));
+        assertEquals ( roomDetailsMapper ( physicalMeetingRoom1WithId ), roomService.getRoom ( 1 ) );
 
-        assertEquals( roomDetailsMapper ( physicalMeetingRoom2WithId ), roomService.getRoom(2));
+        assertEquals ( roomDetailsMapper ( physicalMeetingRoom2WithId ), roomService.getRoom ( 2 ) );
     }
 
     @Test
 
-    public void whenRequestingRoomByIdThatDoesntExist_notFoundExceptionIsThrown(){
+    public void whenRequestingRoomByIdThatDoesntExist_notFoundExceptionIsThrown() {
 //        assertThrows()
     }
 
 
-
     @Test
-    public void whenRequestingListOfRemoteTrainingRooms_ListOfAllRemoteTrainingRoomsIsReturned(){
+    public void whenRequestingListOfRemoteTrainingRooms_ListOfAllRemoteTrainingRoomsIsReturned() {
 
-        assertEquals(listMapper (  remoteTrainingRoomList), roomService.getRemoteTrainingRooms());
+        assertEquals ( listMapper ( remoteTrainingRoomList ), roomService.getRemoteTrainingRooms () );
     }
 
     @Test
-    public void whenRequestingListOfRemoteMeetingRooms_ListOfAllRemoteMeetingRoomsIsReturned(){
-        assertEquals ( listMapper ( remoteMeetingRoomList ), roomService.getRemoteMeetingRooms() );
+    public void whenRequestingListOfRemoteMeetingRooms_ListOfAllRemoteMeetingRoomsIsReturned() {
+        assertEquals ( listMapper ( remoteMeetingRoomList ), roomService.getRemoteMeetingRooms () );
     }
 
+    @Test
+    public void whenRequestingToUpdateRoomName_RoomNameIsSuccessfullyUpdated(){
+
+    }
 
 }

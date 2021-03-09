@@ -2,13 +2,17 @@ package com.revature.service;
 
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
+import com.revature.dto.RoomRequestDto;
 import com.revature.model.Room;
 import com.revature.repository.RoomRepository;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -27,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
         RoomDetailsDto detailsDto = new RoomDetailsDto ();
 
         if ( roomOptional.isPresent () ) {
-             Room   room = roomOptional.get ();
+            Room room = roomOptional.get ();
 
             detailsDto.setCapacity ( room.getCapacity () );
             detailsDto.setFloorNumber ( room.getFloorNumber () );
@@ -35,7 +39,7 @@ public class RoomServiceImpl implements RoomService {
             detailsDto.setType ( room.getType ().toString () );
 
             Set<String> roomAmenities = room.getRoomAmenities ();
-            detailsDto.setAmenities ( roomAmenities  );
+            detailsDto.setAmenities ( roomAmenities );
 
 
             return detailsDto;
@@ -62,17 +66,17 @@ public class RoomServiceImpl implements RoomService {
     private RoomDto mapDto( Room room ) {
         RoomDto roomDto = new RoomDto ();
         roomDto.setId ( room.getRoomId () );
-        roomDto.setOccupation (  room.getOccupation ().name ());
-        roomDto.setType( room.getType ().name ());
+        roomDto.setOccupation ( room.getOccupation ().name () );
+        roomDto.setType ( room.getType ().name () );
         return roomDto;
     }
 
     @Override
     public List<RoomDto> getPhysicalTrainingRooms() {
-        List<RoomDto> physicalTrainingRooms = new ArrayList<>();
-        roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.TRAINING ).forEach ( room->{
+        List<RoomDto> physicalTrainingRooms = new ArrayList<> ();
+        roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.TRAINING ).forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
-            physicalTrainingRooms.add ( roomDto);
+            physicalTrainingRooms.add ( roomDto );
         } );
         return physicalTrainingRooms;
     }
@@ -80,38 +84,38 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDto> getRemoteRooms() {
         List<RoomDto> remoteRooms = new ArrayList<> ();
-        roomRepository.findByType(RoomType.REMOTE ).forEach ( room ->{
+        roomRepository.findByType ( RoomType.REMOTE ).forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
             remoteRooms.add ( roomDto );
-        });
+        } );
 
         return remoteRooms;
     }
 
     @Override
     public List<RoomDto> getPhysicalRooms() {
-        List<RoomDto> physicalRooms = new ArrayList<>();
-        roomRepository.findByType ( RoomType.PHYSICAL).forEach ( room ->{
+        List<RoomDto> physicalRooms = new ArrayList<> ();
+        roomRepository.findByType ( RoomType.PHYSICAL ).forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
             physicalRooms.add ( roomDto );
-        });
+        } );
         return physicalRooms;
     }
 
     @Override
     public List<RoomDto> getVirtualRooms() {
-        List<RoomDto> virtualRooms = new ArrayList<>();
-        roomRepository.findByType(RoomType.VIRTUAL).forEach ( room ->{
+        List<RoomDto> virtualRooms = new ArrayList<> ();
+        roomRepository.findByType ( RoomType.VIRTUAL ).forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
-            virtualRooms.add ( roomDto);
+            virtualRooms.add ( roomDto );
         } );
         return virtualRooms;
     }
 
     @Override
     public List<RoomDto> getMeetingRooms() {
-        List<RoomDto> meetingRooms = new ArrayList<>();
-        roomRepository.findByOccupation ( RoomOccupation.MEETING ).forEach ( room ->{
+        List<RoomDto> meetingRooms = new ArrayList<> ();
+        roomRepository.findByOccupation ( RoomOccupation.MEETING ).forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
             meetingRooms.add ( roomDto );
         } );
@@ -120,10 +124,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> getTrainingRooms() {
-        List<RoomDto> trainingRooms = new ArrayList<>();
-        roomRepository.findByOccupation ( RoomOccupation.TRAINING).forEach ( room -> {
-            RoomDto roomDto  = mapDto ( room );
-            trainingRooms.add(roomDto);
+        List<RoomDto> trainingRooms = new ArrayList<> ();
+        roomRepository.findByOccupation ( RoomOccupation.TRAINING ).forEach ( room -> {
+            RoomDto roomDto = mapDto ( room );
+            trainingRooms.add ( roomDto );
         } );
         return trainingRooms;
     }
@@ -132,7 +136,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDto> getAllRooms() {
 
         List<RoomDto> allRooms = new ArrayList<> ();
-        roomRepository.findAll () .forEach ( room ->{
+        roomRepository.findAll ().forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
             allRooms.add ( roomDto );
         } );
@@ -141,12 +145,58 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> getRemoteTrainingRooms() {
-        return null;
+        List<RoomDto> remoteTrainingRooms = new ArrayList<>();
+        roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.TRAINING ).forEach ( room -> {
+            RoomDto roomDto = mapDto ( room );
+            remoteTrainingRooms.add ( roomDto );
+        } );
+        return remoteTrainingRooms;
     }
 
     @Override
     public List<RoomDto> getRemoteMeetingRooms() {
-        return null;
+        List<RoomDto> remoteMeetingRooms = new ArrayList<>();
+        roomRepository.findByTypeAndOccupation ( RoomType.REMOTE,  RoomOccupation.MEETING).forEach ( room ->{
+            RoomDto roomDto = mapDto ( room);
+            remoteMeetingRooms.add(roomDto);
+        });
+
+        return remoteMeetingRooms;
+    }
+
+    @Override
+    public void updateName( int id, String name ) {
+
+    }
+
+    @Override
+    public void updateRoomType( int id, String type ) {
+
+    }
+
+    @Override
+    public void updateCapacity( int id, int capacity ) {
+
+    }
+
+    @Override
+    public void removeAmenity( int id, String amenity ) {
+
+    }
+
+    @Override
+    public void addAmenity( int id, String amenity ) {
+
+    }
+
+    @Override
+    public void deleteRoom( int id ) {
+
+    }
+
+    @Override
+    public void updateRoom( int id, RoomRequestDto roomRequestDto ) {
+
     }
 
 

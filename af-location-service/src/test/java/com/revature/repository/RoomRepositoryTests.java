@@ -6,18 +6,21 @@ import com.revature.model.Location;
 import com.revature.model.Room;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class RoomRepositoryTests {
 
     @Autowired
@@ -34,7 +37,7 @@ public class RoomRepositoryTests {
     private Room physicalTrainingRoom2;
 
 
-    @BeforeEach
+    @Before
     public void setUp() {
 
 //        List<Room> allRooms = repository.findAll ();
@@ -196,30 +199,20 @@ public class RoomRepositoryTests {
                 remoteTrainingRoom1 ) );
 
 
-        int size = repository.findByBuildingAndFloorNumber ( testBuilding1, 0 ).size();
+        int size = repository.findByBuildingAndFloorNumber ( testBuilding1, 0 ).size ();
 
-        assertEquals (3 ,size);
+        assertEquals ( 3, size );
 
-        size = repository.findByBuildingAndFloorNumber ( testBuilding1, 1 ).size();
+        size = repository.findByBuildingAndFloorNumber ( testBuilding1, 1 ).size ();
 
-        assertEquals (3 ,size);
+        assertEquals ( 3, size );
 
-        size = repository.findByBuildingAndFloorNumber ( testBuilding1, 2 ).size();
+        size = repository.findByBuildingAndFloorNumber ( testBuilding1, 2 ).size ();
 
-        assertEquals (1 ,size);
-
+        assertEquals ( 1, size );
 
 
     }
-
-
-
-
-
-
-
-
-
 
 
 }
