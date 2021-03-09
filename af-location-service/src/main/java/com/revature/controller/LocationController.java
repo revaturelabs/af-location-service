@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.service.LocationService;
 
 @RestController
-@RequestMapping("location")
+@RequestMapping("/locations")
 @CrossOrigin
 public class LocationController {
 
