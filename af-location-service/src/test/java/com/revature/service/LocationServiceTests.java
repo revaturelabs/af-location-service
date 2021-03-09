@@ -12,6 +12,8 @@ import com.revature.dto.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -29,7 +31,8 @@ import com.revature.statics.RoomType;
 public class LocationServiceTests {
 
 	@Autowired
-	LocationService locationService;
+	private LocationService locationService;
+	private LocationServiceImpl locationServiceImpl;
 	LocationRepository locationRepository = Mockito.mock(LocationRepository.class);
 	BuildingService buildingService = Mockito.mock(BuildingService.class);
 	public static Location goodSampleLocation;
@@ -212,7 +215,7 @@ public class LocationServiceTests {
 
 	@Test
 	public void checkWeCanGetAllLocations() {
-		List<LocationDto> locations = locationService.getAllLocations();
+		List<LocationDto> locations = locationServiceImpl.getAllLocations();
 		assertNotNull(locations);
 		assertTrue(locations.size() == 3);
 	}
