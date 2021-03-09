@@ -15,7 +15,7 @@ import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
 
 @Service
-public class LocationServiceImpl implements LocationService{
+public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;

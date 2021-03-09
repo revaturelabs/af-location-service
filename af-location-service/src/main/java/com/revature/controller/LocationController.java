@@ -1,9 +1,12 @@
 package com.revature.controller;
 
 import com.revature.dto.BuildingRequestDto;
+import com.revature.dto.LocationDetailsDto;
 import com.revature.dto.LocationDto;
 import com.revature.dto.LocationRequestDto;
+import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
+import com.revature.service.LocationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ public class LocationController {
 
 	@Autowired
 	private LocationService locationService;
+
+	@Autowired
+	private LocationServiceImpl locationServiceImpl;
 
 
 	@PostMapping("/locations")
@@ -49,7 +55,7 @@ public class LocationController {
 		List<LocationDto> locations = locationService.getAllLocations();
 		return ResponseEntity.ok(locations);
 
-		}
+	}
 
 	@PatchMapping("/locations/{id}/updateState")
 	public ResponseEntity<String> updateState(@PathVariable int id, @RequestParam String state){
@@ -170,6 +176,24 @@ public class LocationController {
 
 	}
 
+	@GetMapping("/locations/state/{state}")
+	public List<LocationDto> getLocationsByState(@PathVariable String state) {
+		return locationServiceImpl.getLocationsByState(state);
+	}
+
+	@GetMapping("/locations/city/{city}")
+	public List<LocationDto> getLocationsByCity(@PathVariable String city) {
+		return locationServiceImpl.getLocationsByCity(city);
+	}
+
+	@GetMapping("/locations/zip/{zipCode}")
+	public List<LocationDto> getLocationsByZipCode(@PathVariable String zipCode) {
+		return locationServiceImpl.getLocationsByZipCode(zipCode);
+	}
+
+	@GetMapping("/locations/id/{index}")
+	public LocationDetailsDto getLocationById(@PathVariable int index) {
+		return locationServiceImpl.getLocation(index);
+	}
+
 }
-
-

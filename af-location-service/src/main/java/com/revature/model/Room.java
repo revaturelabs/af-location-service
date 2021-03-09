@@ -20,28 +20,28 @@ import java.util.Set;
 public class Room {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="room_id")
 	private int roomId;
 
 
-	@NotNull
+//	@NotNull
 	private String name;
 
 
-	@NotNull
+//	@NotNull
 	private RoomType type;
 
 
-	@NotNull
+//	@NotNull
 	private RoomOccupation occupation;
 
 
-	@NotNull
+//	@NotNull
 	private int capacity;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "building_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "building_id", nullable = false)
 	private Building building;
 
 	@ElementCollection
@@ -101,10 +101,15 @@ public class Room {
 		return true;
 	}
 
+//	@Override
+//	public String toString() {
+//		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
+//				+ ", capacity=" + capacity + ", building=" + building.getBuildingId() +  "roomAmenities=" + roomAmenities.toString()
+//				+ "floorNumber=" + floorNumber + "]";
+//	}
+
 	@Override
 	public String toString() {
-		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
-				+ ", capacity=" + capacity + ", building=" + building +  "roomAmenities=" + roomAmenities.toString()
-				+ "floorNumber=" + floorNumber + "]";
+		return "Room [roomId=" + roomId + "]";
 	}
 }
