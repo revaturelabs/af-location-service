@@ -18,5 +18,6 @@ public class BuildingController {
 	public BuildingController(BuildingService bs) {
 		this.bs=bs;
 	}
+	
 
 }
