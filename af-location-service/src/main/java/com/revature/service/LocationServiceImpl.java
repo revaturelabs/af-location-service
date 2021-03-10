@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.dto.*;
+
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +96,11 @@ public class LocationServiceImpl implements LocationService{
 	public void updateLocation(int index, LocationRequestDto locationRequestDto) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Building> findBuildingsByLocation(int id) {
+		return locationRepository.findBuildingsAtLocation(id);
 	}
 
 
