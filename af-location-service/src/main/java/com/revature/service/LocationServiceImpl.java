@@ -19,6 +19,8 @@ public class LocationServiceImpl implements LocationService{
 
 	@Autowired
 	private LocationRepository locationRepository;
+	@Autowired 
+	private BuildingService bs;
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -123,6 +125,6 @@ public class LocationServiceImpl implements LocationService{
 
 	@Override
 	public List<BuildingDto> findBuildingsByLocation(int id) {
-		return locationRepository.findBuildingsAtLocation(id);
+		return bs.getAllBuildingsAtLocation(id);
 	}
 }
