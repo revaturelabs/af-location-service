@@ -1,8 +1,6 @@
 package com.revature.controller;
 
-import com.revature.service.BuildingService;
-import com.revature.service.LocationService;
-import com.revature.service.RoomService;
+import com.revature.service.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +23,9 @@ public class LocationControllerTests {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private LocationService locationService;
+    private LocationServiceImpl locationService;
     @MockBean
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
     @MockBean
     private RoomService roomService;
 
@@ -161,78 +159,65 @@ public class LocationControllerTests {
     @Test
     public void shouldReturn200IsOkGetAllLocationsByState() throws Exception {
 
-        this.mockMvc.perform(get("/locations/getByState/{state}", "VA")
+        this.mockMvc.perform(get("/locations/state/{state}", "VA")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldReturn400BadRequestGetAllLocationsByState() throws Exception {
+    public void shouldReturn405NotAllowedGetAllLocationsByState() throws Exception {
 
-        this.mockMvc.perform(get("/locations/getByState/{state}", "")
+        this.mockMvc.perform(get("/locations/state/{state}", "")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     public void shouldReturn200IsOkGetAllLocationsByCity() throws Exception {
 
-        this.mockMvc.perform(get("/locations/getByCity/{city}", "Reston")
+        this.mockMvc.perform(get("/locations/city/{city}", "Reston")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldReturn400BadRequestGetAllLocationsByCity() throws Exception {
+    public void shouldReturn405NotAllowedAllLocationsByCity() throws Exception {
 
-        this.mockMvc.perform(get("/locations/getByCity/{city}", "")
+        this.mockMvc.perform(get("/locations/city/{city}", "")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     public void shouldReturn200IsOkGetAllLocationsByZipcode() throws Exception {
 
-        this.mockMvc.perform(get("/locations/getByZipCode/{zipCode}", "75023")
+        this.mockMvc.perform(get("/locations/zip/{zipCode}", "75023")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldReturn400BadRequestGetAllLocationsByZipcode() throws Exception {
+    public void shouldReturn405NotAllowedGetAllLocationsByZipcode() throws Exception {
 
-        this.mockMvc.perform(get("/locations/getByZipCode/{zipCode}", "")
+        this.mockMvc.perform(get("/locations/zip/{zipCode}", "")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     public void shouldReturn200IsOkGetLocationById() throws Exception {
 
-        this.mockMvc.perform(get("/locations/{id}", "1")
+        this.mockMvc.perform(get("/locations/id/{index}", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldReturn400BadRequestGetLocationById() throws Exception {
+    public void shouldReturn400NotAllowedGetLocationById() throws Exception {
 
-        this.mockMvc.perform(get("/locations/{id}", "")
+        this.mockMvc.perform(get("/locations/id/{index}", "")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isMethodNotAllowed());
     }
-	@Test
-	public void checkGetBuildingsAtLocationControllerValid() throws Exception {
-		this.mockMvc.perform(get("/locations/{id}/buildings", "1")
-                .contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
 
-	}
-
-	@Test
-	public void checkGetBuildingsAtLocationControllerInvalid() throws Exception {
-		this.mockMvc.perform(get("/locations/{id}/buildings", "")
-                .contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest());
-	}
 }

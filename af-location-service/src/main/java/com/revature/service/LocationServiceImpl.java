@@ -1,9 +1,7 @@
 package com.revature.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.revature.dto.*;
@@ -15,7 +13,7 @@ import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
 
 @Service
-public class LocationServiceImpl implements LocationService{
+public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
@@ -28,7 +26,7 @@ public class LocationServiceImpl implements LocationService{
 		location.setState(locationRequestDto.getState());
 		location.setZipCode(locationRequestDto.getZipCode());
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -103,7 +101,7 @@ public class LocationServiceImpl implements LocationService{
 		Location location = locationRepository.findById(index).get();
 		location.setState(state);
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -112,7 +110,7 @@ public class LocationServiceImpl implements LocationService{
 		Location location = locationRepository.findById(index).get();
 		location.setCity(city);
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -121,7 +119,7 @@ public class LocationServiceImpl implements LocationService{
 		Location location = locationRepository.findById(index).get();
 		location.setZipCode(zipCode);
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -142,7 +140,7 @@ public class LocationServiceImpl implements LocationService{
 		building.setCity(buildingRequestDto.getCity());
 		location.getBuildings().add(building);
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -153,38 +151,50 @@ public class LocationServiceImpl implements LocationService{
 		location.setCity(locationRequestDto.getCity());
 		location.setZipCode(locationRequestDto.getZipCode());
 		locationRepository.save(location);
-		
+
 	}
 
 	// helper methods
 	private String sanitizeState(String state) {
 		if( state.length() > 2 ) {
-			if( state.equals("Virginia") || state.equals("virginia") || state.equals("VIRGINIA") ) {
-				state = "VA";
-			} else if( state.equals("Texas") || state.equals("texas") || state.equals("TEXAS") ) {
-				state = "TX";
-			} else if( state.equals("Florida") || state.equals("florida") || state.equals("FLORIDA") ) {
-				state = "FL";
+			switch (state) {
+				case "Virginia":
+				case "virginia":
+				case "VIRGINIA":
+					state = "VA";
+					break;
+				case "Texas":
+				case "texas":
+				case "TEXAS":
+					state = "TX";
+					break;
+				case "Florida":
+				case "florida":
+				case "FLORIDA":
+					state = "FL";
+					break;
 			}
 		}
-		String sanitizedState = state.toUpperCase(Locale.ROOT);
 
-		return sanitizedState;
+		return state.toUpperCase(Locale.ROOT);
 	}
 
 	private String sanitizeCity(String city) {
 		city = city.toLowerCase(Locale.ROOT);
 
-		if( city.equals("reston") ) {
-			city = "Reston";
-		} else if( city.equals("arlington") ) {
-			city = "Arlington";
-		} else if( city.equals("tampa") ) {
-			city = "Tampa";
+		switch (city) {
+			case "reston":
+				city = "Reston";
+				break;
+			case "arlington":
+				city = "Arlington";
+				break;
+			case "tampa":
+				city = "Tampa";
+				break;
 		}
 
-		String sanitizedCity = city;
-		return sanitizedCity;
+		return city;
 	}
-	
+
 }
