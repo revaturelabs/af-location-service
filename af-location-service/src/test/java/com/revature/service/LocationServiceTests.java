@@ -1,14 +1,14 @@
 package com.revature.service;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import com.revature.dto.*;
+import com.revature.repository.LocationRepository;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.revature.model.Building;
 import com.revature.model.Location;
@@ -16,12 +16,21 @@ import com.revature.model.Room;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+
 @RunWith(MockitoJUnitRunner.class)
 public class LocationServiceTests {
 
 
-	@Mock
+	@InjectMocks
 	private LocationServiceImpl locationService;
+
+	@Mock
+	private LocationRepository locationRepository;
+
+	@Captor
+	ArgumentCaptor<Location> locationArgumentCaptor;
+
 
 	public static Location goodSampleLocation;
 	public static Location badSampleLocation;
@@ -172,6 +181,11 @@ public class LocationServiceTests {
 		locationRequestDto.setState(badSampleLocation.getState());
 		locationRequestDto.setZipCode(badSampleLocation.getZipCode());
 		locationService.createLocation(locationRequestDto);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getCity(), locationRequestDto.getCity());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getState(), locationRequestDto.getState());
+		Assert.assertNull(locationArgumentCaptor.getValue().getZipCode());
 
 	}
 
@@ -183,162 +197,143 @@ public class LocationServiceTests {
 		locationRequestDto.setState(goodSampleLocation.getState());
 		locationRequestDto.setZipCode(goodSampleLocation.getZipCode());
 		locationService.createLocation(locationRequestDto);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getZipCode(), locationRequestDto.getZipCode());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getCity(), locationRequestDto.getCity());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getState(), locationRequestDto.getState());
 
 	}
 
 	@Test
 	public void updateLocationGood(){
-
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		LocationRequestDto updateLocationRequestDto = new LocationRequestDto();
 		updateLocationRequestDto.setZipCode("78394");
 		updateLocationRequestDto.setCity("Atlanta");
 		updateLocationRequestDto.setState("Georgia");
-		locationService.updateLocation(goodSampleLocation.getLocationId(),updateLocationRequestDto);
+		locationService.updateLocation(goodSampleLocation.getLocationId()
+				,updateLocationRequestDto);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getState(), updateLocationRequestDto.getState());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getCity(), updateLocationRequestDto.getCity());
+		Assert.assertEquals(locationArgumentCaptor.getValue().getZipCode(), updateLocationRequestDto.getZipCode());
 
 	}
 
 
 	@Test
 	public void updateLocationBad() {
-
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		LocationRequestDto locationRequestDto = new LocationRequestDto();
 		locationRequestDto.setState(null);
 		locationRequestDto.setCity(null);
 		locationRequestDto.setZipCode(null);
 		locationService.updateLocation(goodSampleLocation.getLocationId(),locationRequestDto);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertNull(locationArgumentCaptor.getValue().getCity());
+		Assert.assertNull(locationArgumentCaptor.getValue().getState());
+		Assert.assertNull(locationArgumentCaptor.getValue().getZipCode());
 
 	}
 
 	@Test
 	public void updateStateGood() {
 
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		String state = "TX";
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationDetailsDto.setState(state);
-		locationService.updateState(locationDetailsDto.getId(),locationDetailsDto.getState());
+		locationService.updateState(goodSampleLocation.getLocationId(), state);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertEquals(state, locationArgumentCaptor.getValue().getState());
 
 	}
 
 	@Test
 	public void updateStateBad() {
 
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		String state = null;
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationDetailsDto.setState(state);
-		locationService.updateState(locationDetailsDto.getId(),locationDetailsDto.getState());
-		assertEquals(state, locationDetailsDto.getState());
+		locationService.updateState(goodSampleLocation.getLocationId(), state);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertNull(locationArgumentCaptor.getValue().getState());
 
 	}
 
 	@Test
 	public void updateCityGood() {
 
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		String city = "Orlando";
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationDetailsDto.setCity(city);
-		locationService.updateCity(locationDetailsDto.getId(),locationDetailsDto.getState());
-		assertEquals(city, locationDetailsDto.getCity());
+		locationService.updateCity(goodSampleLocation.getLocationId(), city);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertEquals(city, locationArgumentCaptor.getValue().getCity());
 
 	}
 
 	@Test
 	public void updateCityBad() {
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		String city = null;
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationDetailsDto.setCity(city);
-		locationService.updateCity(locationDetailsDto.getId(),locationDetailsDto.getState());
-		assertEquals(city, locationDetailsDto.getCity());
+		locationService.updateCity(goodSampleLocation.getLocationId(), city);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertNull(locationArgumentCaptor.getValue().getCity());
 	}
 
 	@Test
 	public void updateZipCodeGood() {
 
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		String zipCode = "75205";
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationDetailsDto.setZipCode(zipCode);
-		locationService.updateZipCode(locationDetailsDto.getId(),locationDetailsDto.getState());
+		locationService.updateZipCode(goodSampleLocation.getLocationId(), zipCode);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertEquals(zipCode, locationArgumentCaptor.getValue().getZipCode());
 
 	}
 
 	@Test
 	public void updateZipCodeBad() {
 
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		String zipCode = null;
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationDetailsDto.setZipCode(zipCode);
-		locationService.updateZipCode(locationDetailsDto.getId(),locationDetailsDto.getState());
-		assertEquals(zipCode, locationDetailsDto.getZipCode());
-	}
-
-	@Test
-	public void addBuildingGood() {
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		Building building = new Building();
-		building.setBuildingId(1);
-		building.setLocation(goodSampleLocation);
-		building.setCity("Miami");
-		building.setTotalFloors(1);
-		building.setStreetAddress("Main Street");
-		building.setRooms(new ArrayList<>());
-		goodSampleLocation.getBuildings().add(building);
-	}
-
-	@Test
-	public void addBuildingBad() {
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		Building building = new Building();
-		building.setBuildingId(1);
-		building.setLocation(goodSampleLocation);
-		building.setCity(null);
-		building.setTotalFloors(1);
-		building.setStreetAddress("Main Street");
-		building.setRooms(new ArrayList<>());
-		goodSampleLocation.getBuildings().add(building);
+		locationService.updateZipCode(goodSampleLocation.getLocationId(), zipCode);
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.save(locationArgumentCaptor.capture());
+		Assert.assertNull(locationArgumentCaptor.getValue().getZipCode());
 
 	}
 
 	@Test
 	public void deleteLocation() {
 
-		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
-		locationDetailsDto.setCity("Miami");
-		locationDetailsDto.setId(3);
-		locationDetailsDto.setState("FL");
-		locationDetailsDto.setZipCode("87402");
-		locationService.deleteLocation(locationDetailsDto.getId());
+		Mockito.doNothing().when(locationRepository).deleteById(goodSampleLocation.getLocationId());
+		locationService.deleteLocation(goodSampleLocation.getLocationId());
+		Mockito.verify(locationRepository, Mockito.times(1))
+				.deleteById(goodSampleLocation.getLocationId());
+
+	}
+
+	@Test(expected = Exception.class)
+	public void deleteLocationThatDoesNotExist() {
+
+		Mockito.doThrow(Exception.class).when(locationRepository).deleteById(anyInt());
+		locationService.deleteLocation(-1);
+		Mockito.verify(locationRepository, Mockito.times(1)).deleteById(anyInt());
 
 	}
 }
