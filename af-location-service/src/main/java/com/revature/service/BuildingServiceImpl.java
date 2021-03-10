@@ -2,6 +2,9 @@ package com.revature.service;
 
 import java.util.List;
 
+import java.util.stream.Collectors;
+
+import com.revature.model.Building;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,15 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Override
 	public List<BuildingDto> getAllBuildingsAtLocation(int id) {
-		return br.findAllBuildingsByLocationId(id);
+		List<Building> buildings = br.findAllBuildingsByLocationId(id);
+		return buildings.stream().map(building -> {
+			BuildingDto buildingDto = new BuildingDto();
+			buildingDto.setId(building.getBuildingId());
+			buildingDto.setStreet_address(building.getStreetAddress());
+			buildingDto.setNumRooms(building.getRooms().size());
+			buildingDto.setTotalFloors(building.getTotalFloors());
+			return buildingDto;
+		}).collect(Collectors.toList());
 	}
 
 }
