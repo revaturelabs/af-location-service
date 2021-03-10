@@ -1,12 +1,9 @@
 package com.revature.service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +11,8 @@ import org.springframework.stereotype.Service;
 import com.revature.dto.BuildingDetailsDto;
 import com.revature.dto.BuildingDto;
 import com.revature.dto.BuildingRequestDto;
-import com.revature.dto.LocationRequestDto;
 import com.revature.dto.RoomDto;
 import com.revature.model.Building;
-import com.revature.model.Location;
 import com.revature.model.Room;
 import com.revature.repository.BuildingRepository;
 
@@ -111,18 +106,19 @@ public class BuildingServiceImpl implements BuildingService{
 		}
 		Building entity = building.get();
 		entity.getRooms().add(room);
+		room.setBuilding(entity);
 		buildingRepository.save(entity);
 	}
 	@Override 
-	public void deleteRoom(int index, Room room) throws Exception{
-		Optional<Building> building = buildingRepository.findById(index);
+	public void deleteRoom(int indexBuilding, int indexRoom) throws Exception{
+		Optional<Building> building = buildingRepository.findById(indexBuilding);
 		if(!building.isPresent()) {
 			throw new Exception("Building not found");
 		}
 		boolean flag = false;
 		Building entity = building.get();
 		List<Room> rooms = entity.getRooms();
-		Optional<Room> roomOptional = rooms.stream().filter( zeRoom -> zeRoom.getRoomId() == room.getRoomId()).findFirst();
+		Optional<Room> roomOptional = rooms.stream().filter( zeRoom -> zeRoom.getRoomId() == indexRoom).findFirst();
 		if(roomOptional.isPresent()) {
 			rooms.remove(roomOptional.get());
 			buildingRepository.save(entity);

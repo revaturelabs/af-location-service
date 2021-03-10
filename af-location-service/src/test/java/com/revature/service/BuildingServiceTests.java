@@ -428,10 +428,8 @@ public class BuildingServiceTests {
 @Test
 public void deleteRoom() {
 	final Building sampleBuilding = cloneBuilding(goodBuilding);
-	final Room newRoom = cloneRoom(goodRoom, sampleBuilding);
-	newRoom.setRoomId(newRoom.getRoomId()+1000);
-	final boolean[] flag = {false};
-	newRoom.setBuilding(sampleBuilding);
+	final Room deleteRoom = sampleBuilding.getRooms().get(0);
+	final boolean[] flag = {true};
 	Mockito.doAnswer(new Answer<Void>() {
 		@Override
 		public Void answer( InvocationOnMock invocation ) {
@@ -440,20 +438,22 @@ public void deleteRoom() {
 				Iterator<Room> iterator = building.getRooms().iterator();
 				while(iterator.hasNext()) {
 					Room room = iterator.next();
-					if( room.getRoomId() == newRoom.getRoomId()) {
-						flag[0] = true;
+					if( room.getRoomId() == deleteRoom.getRoomId() ) {
+						flag[0] = false;
+						break;
 					}
 				}
+				
 			}
 			return null;
 		}
 	}).when(buildingRepository).save(Mockito.any(Building.class));
 	try {
-		buildingService.addRoom(goodBuilding.getBuildingId(), newRoom);
+		buildingService.deleteRoom(goodBuilding.getBuildingId(),deleteRoom.getRoomId());
 	}catch(Exception e) {
 		Assert.fail("exception thrown");
 	}
-	assertTrue("room save not tripped", flag[0]);
+	assertTrue("deleted room found", flag[0]);
 }
 	
 	//utility functions
