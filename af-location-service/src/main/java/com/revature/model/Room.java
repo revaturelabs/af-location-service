@@ -40,8 +40,8 @@ public class Room {
 	@NotNull
 	private int capacity;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "building_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "building_id", nullable = false)
 	private Building building;
 
 	@ElementCollection
@@ -104,7 +104,8 @@ public class Room {
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
-				+ ", capacity=" + capacity + ", building=" + building +  "roomAmenities=" + roomAmenities.toString()
+				+ ", capacity=" + capacity + ", building=" + building.getBuildingId() +  "roomAmenities=" + roomAmenities.toString()
 				+ "floorNumber=" + floorNumber + "]";
 	}
+
 }
