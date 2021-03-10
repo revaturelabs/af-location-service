@@ -16,7 +16,7 @@ import com.revature.model.Building;
 import com.revature.service.LocationService;
 
 @RestController
-@RequestMapping("location")
+@RequestMapping("locations")
 @CrossOrigin
 public class LocationController {
 
@@ -27,7 +27,7 @@ public class LocationController {
 		this.ls=ls;
 	}
 	
-	@GetMapping({"buildings/{id}"})	
+	@GetMapping({"{id}/buildings"})
 	public ResponseEntity<List<BuildingDto>> getAllBuildingsAtLocation(@PathVariable int id){
 		return new ResponseEntity(ls.findBuildingsByLocation(id),HttpStatus.OK);		
 	}
