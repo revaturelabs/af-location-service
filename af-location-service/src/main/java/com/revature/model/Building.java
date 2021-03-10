@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Building {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="building_id")
 	private int buildingId;
 
@@ -29,11 +29,11 @@ public class Building {
 	@NotNull
 	private String streetAddress;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "location_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "location_id", nullable = false)
 	private Location location;
 
-	@OneToMany(mappedBy = "building")
+	@OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Room> rooms;
 
 	@Column(name = "total_floors")
@@ -93,6 +93,6 @@ public class Building {
 	@Override
 	public String toString() {
 		return "Building [buildingId=" + buildingId + ", city=" + city + ", streetAddress=" + streetAddress
-				+ ", location=" + location + ", rooms=" + rooms + "total floors=" + totalFloors + "]";
+				+ ", location=" + location.getLocationId() + ", rooms=" + rooms.size() + "total floors=" + totalFloors + "]";
 	}
 }
