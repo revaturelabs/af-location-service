@@ -6,15 +6,10 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@NoArgsConstructor
-@Data
-@AllArgsConstructor
 public class Building {
 
 	@Id
@@ -39,6 +34,10 @@ public class Building {
 	@Column(name = "total_floors")
 	@NotNull
 	private int totalFloors;
+
+	public Building() {
+
+	}
 
 
 	@Override
@@ -95,4 +94,65 @@ public class Building {
 		return "Building [buildingId=" + buildingId + ", city=" + city + ", streetAddress=" + streetAddress
 				+ ", location=" + location.getLocationId() + ", rooms=" + rooms.size() + "total floors=" + totalFloors + "]";
 	}
+
+	public int getBuildingId() {
+
+		return buildingId;
+	}
+
+	public void setBuildingId(int buildingId) {
+
+		this.buildingId = buildingId;
+	}
+
+	public String getCity() {
+
+		return city;
+	}
+
+	public void setCity(String city) {
+
+		this.city = city;
+	}
+
+	public String getStreetAddress() {
+
+		return streetAddress;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+
+		this.streetAddress = streetAddress;
+	}
+
+	public Location getLocation() {
+
+		return location;
+	}
+
+	public void setLocation(Location location) {
+
+		this.location = location;
+	}
+
+	public List<Room> getRooms() {
+
+		return rooms;
+	}
+
+	public void setRooms(List<Room> rooms) {
+
+		this.rooms = rooms;
+	}
+
+	public int getTotalFloors() {
+
+		return totalFloors;
+	}
+
+	public void setTotalFloors(int totalFloors) {
+
+		this.totalFloors = totalFloors;
+	}
+
 }
