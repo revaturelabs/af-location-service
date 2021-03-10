@@ -99,11 +99,7 @@ public class LocationServiceImpl implements LocationService{
 	}
 
 	@Override
-	public List<Building> findBuildingsByLocation(int id) {
+	public List<BuildingDto> findBuildingsByLocation(int id) {
 		return locationRepository.findBuildingsAtLocation(id);
 	}
-
-
-	
-	
 }

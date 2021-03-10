@@ -18,5 +18,5 @@ import org.springframework.stereotype.Repository;
 public interface LocationRepository extends JpaRepository<Location, Integer> {
 
 	@Query("select b from Building b where b.location.id= ?1")
-	public List<Building> findBuildingsAtLocation(Integer locationId);
+	public List<BuildingDto> findBuildingsAtLocation(Integer locationId);
 }

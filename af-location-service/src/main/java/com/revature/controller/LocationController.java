@@ -28,8 +28,7 @@ public class LocationController {
 	}
 	
 	@GetMapping({"buildings/{id}"})	
-	public ResponseEntity<List<Building>> getAllBuildingsAtLocation(@PathVariable int id){
-		return new ResponseEntity(ls.findBuildingsByLocation(id),HttpStatus.OK);
-		
+	public ResponseEntity<List<BuildingDto>> getAllBuildingsAtLocation(@PathVariable int id){
+		return new ResponseEntity(ls.findBuildingsByLocation(id),HttpStatus.OK);		
 	}
 }
