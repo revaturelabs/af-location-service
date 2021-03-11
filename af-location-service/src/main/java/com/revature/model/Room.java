@@ -187,13 +187,9 @@ public class Room {
 
 	@Override
 	public String toString() {
-<<<<<<< HEAD
-		return "Room [roomId=" + roomId + "]";
-=======
 		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
 				+ ", capacity=" + capacity + ", building=" + building.getBuildingId() +  "roomAmenities=" + roomAmenities.toString()
 				+ "floorNumber=" + floorNumber + "]";
->>>>>>> 7b562800c7df0f290362062d5739c4e170880c9f
 	}
 
 }

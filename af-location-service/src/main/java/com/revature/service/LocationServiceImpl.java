@@ -1,17 +1,10 @@
 package com.revature.service;
 
-import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Locale;
-import java.util.stream.Collector;
-=======
->>>>>>> 7b562800c7df0f290362062d5739c4e170880c9f
 import java.util.stream.Collectors;
-
 import com.revature.dto.*;
 
-import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +13,14 @@ import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
 
 @Service
-<<<<<<< HEAD
-public class LocationServiceImpl implements LocationService {
-
-	@Autowired
-	private LocationRepository locationRepository;
-=======
 public class LocationServiceImpl implements LocationService{
 
 	@Autowired
 	private LocationRepository locationRepository;
 	@Autowired 
 	private BuildingService bs;
->>>>>>> 7b562800c7df0f290362062d5739c4e170880c9f
+	@Autowired
+	private BuildingServiceImpl buildingService;
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -47,7 +35,6 @@ public class LocationServiceImpl implements LocationService{
 
 	@Override
 	public List<LocationDto> getAllLocations() {
-<<<<<<< HEAD
 		List<Location> locations = locationRepository.findAll();
 
 		return locations.stream().map(location -> {
@@ -59,11 +46,6 @@ public class LocationServiceImpl implements LocationService{
 			locationDto.setNumBuildings(location.getBuildings().size());
 			return locationDto;
 		}).collect(Collectors.toList());
-=======
-
-		return null;
-
->>>>>>> 7b562800c7df0f290362062d5739c4e170880c9f
 	}
 
 	@Override
@@ -176,7 +158,11 @@ public class LocationServiceImpl implements LocationService{
 		
 	}
 
-<<<<<<< HEAD
+	@Override
+	public List<BuildingDto> findBuildingsByLocation(int id) {
+		return null;
+	}
+
 	// helper methods
 	private String sanitizeState(String state) {
 		if( state.length() > 2 ) {
@@ -208,10 +194,4 @@ public class LocationServiceImpl implements LocationService{
 		return sanitizedCity;
 	}
 	
-=======
-	@Override
-	public List<BuildingDto> findBuildingsByLocation(int id) {
-		return bs.getAllBuildingsAtLocation(id);
-	}
->>>>>>> 7b562800c7df0f290362062d5739c4e170880c9f
 }

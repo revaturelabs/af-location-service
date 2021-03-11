@@ -79,10 +79,6 @@ public class Location {
 
 	@Override
 	public String toString() {
-<<<<<<< HEAD
-		return "Location [locationId=" + locationId + ", state=" + state + ", city=" + city + ", zipCode=" + zipCode
-				+ ", buildings=" + buildings.size() + "]";
-=======
 		return "Location [locationId=" + locationId
 				+ ", state=" + state + ", city=" + city
 				+ ", zipCode=" + zipCode + ", buildings=" + buildings.size() + "]";
@@ -136,7 +132,6 @@ public class Location {
 	public void setBuildings(List<Building> buildings) {
 
 		this.buildings = buildings;
->>>>>>> 7b562800c7df0f290362062d5739c4e170880c9f
 	}
 
 }
