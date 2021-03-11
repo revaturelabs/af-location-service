@@ -2,6 +2,14 @@ package com.revature.dto;
 
 public class RoomDto {
 
+	private int id;
+	private String type;
+	private String occupation;
+
+	public RoomDto() {
+
+	}
+
 	public int getId() {
 
 		return id;
@@ -32,8 +40,11 @@ public class RoomDto {
 		this.occupation = occupation;
 	}
 
-	private int id;
-	private String type;
-	private String occupation;
+	public RoomDto(int id, String type, String occupation) {
+
+		this.id = id;
+		this.type = type;
+		this.occupation = occupation;
+	}
 
 }

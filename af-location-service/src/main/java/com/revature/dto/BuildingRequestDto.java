@@ -14,6 +14,7 @@ public class BuildingRequestDto {
         this.totalFloors = totalFloors;
     }
 
+
     public String getCity() {
 
         return city;

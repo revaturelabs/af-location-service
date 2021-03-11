@@ -4,6 +4,14 @@ import java.util.Set;
 
 public class RoomDetailsDto {
 
+    private int id;
+    private String name;
+    private String type;
+    private String occupation;
+    private int capacity;
+    private int floorNumber;
+    private Set<String> amenities;
+
     public int getId() {
 
         return id;
@@ -74,12 +82,20 @@ public class RoomDetailsDto {
         this.amenities = amenities;
     }
 
-    private int id;
-    private String name;
-    private String type;
-    private String occupation;
-    private int capacity;
-    private int floorNumber;
-    private Set<String> amenities;
+    public RoomDetailsDto(int id, String name, String type, String occupation,
+                          int capacity, int floorNumber, Set<String> amenities) {
+
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.occupation = occupation;
+        this.capacity = capacity;
+        this.floorNumber = floorNumber;
+        this.amenities = amenities;
+    }
+
+    public RoomDetailsDto() {
+
+    }
 
 }

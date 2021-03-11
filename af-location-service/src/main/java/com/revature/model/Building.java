@@ -35,6 +35,20 @@ public class Building {
 	@NotNull
 	private int totalFloors;
 
+
+
+	public Building(int buildingId, String city, String streetAddress,
+					Location location, List<Room> rooms, int totalFloors) {
+
+		this.buildingId = buildingId;
+		this.city = city;
+		this.streetAddress = streetAddress;
+		this.location = location;
+		this.rooms = rooms;
+		this.totalFloors = totalFloors;
+	}
+
+
 	public Building() {
 
 	}
