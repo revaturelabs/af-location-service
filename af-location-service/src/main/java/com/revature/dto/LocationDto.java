@@ -18,7 +18,7 @@ public class LocationDto {
                 ", zipCode='" + zipCode + '\'' +
                 ", numBuildings=" + numBuildings +
                 '}';
-
+    }
 
     public int getId() {
 
