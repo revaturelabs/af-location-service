@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.revature.dto.*;
+
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,10 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
+  
+  @Autowired 
+	private BuildingService bs;
+
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -26,13 +32,13 @@ public class LocationServiceImpl implements LocationService {
 		location.setState(locationRequestDto.getState());
 		location.setZipCode(locationRequestDto.getZipCode());
 		locationRepository.save(location);
-
+    
 	}
 
 	@Override
 	public List<LocationDto> getAllLocations() {
+    
 		List<Location> locations = locationRepository.findAll();
-
 		return locations.stream().map(location -> {
 			LocationDto locationDto = new LocationDto();
 			locationDto.setId(location.getLocationId());
@@ -42,6 +48,7 @@ public class LocationServiceImpl implements LocationService {
 			locationDto.setNumBuildings(location.getBuildings().size());
 			return locationDto;
 		}).collect(Collectors.toList());
+    
 	}
 
 	@Override
@@ -70,10 +77,12 @@ public class LocationServiceImpl implements LocationService {
 		List<LocationDto> locations = this.getAllLocations();
 		return locations.stream()
 				.filter(locationDto -> locationDto.getZipCode().equals(sanitizedZipCode)).collect(Collectors.toList());
+    
 	}
 
 	@Override
 	public LocationDetailsDto getLocation(int index) {
+    
 		Location location = locationRepository.findById(index).get();
 		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
 
@@ -93,6 +102,7 @@ public class LocationServiceImpl implements LocationService {
 		locationDetailsDto.setBuildings(buildingDtos);
 
 		return locationDetailsDto;
+    
 	}
 
 	@Override
@@ -110,7 +120,7 @@ public class LocationServiceImpl implements LocationService {
 		Location location = locationRepository.findById(index).get();
 		location.setCity(city);
 		locationRepository.save(location);
-
+    
 	}
 
 	@Override
@@ -119,7 +129,7 @@ public class LocationServiceImpl implements LocationService {
 		Location location = locationRepository.findById(index).get();
 		location.setZipCode(zipCode);
 		locationRepository.save(location);
-
+    
 	}
 
 	@Override
@@ -197,4 +207,10 @@ public class LocationServiceImpl implements LocationService {
 		return city;
 	}
 
+@Override
+	public List<BuildingDto> findBuildingsByLocation(int id) {
+		return bs.getAllBuildingsAtLocation(id);
+	}
+		
 }
+

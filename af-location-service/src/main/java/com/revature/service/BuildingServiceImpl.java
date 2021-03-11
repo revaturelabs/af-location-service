@@ -1,10 +1,10 @@
 package com.revature.service;
 
-import com.revature.dto.BuildingDto;
 import com.revature.model.Building;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.dto.BuildingDto;
 import com.revature.repository.BuildingRepository;
 
 import java.util.List;
@@ -15,8 +15,6 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Autowired
 	private BuildingRepository buildingRepository;
-
-
 
 	@Override
 	public List<BuildingDto> getBuildingsByLocation(int index) {

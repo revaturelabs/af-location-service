@@ -98,7 +98,7 @@ public class Room {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="room_id")
 	private int roomId;
 
@@ -118,8 +118,8 @@ public class Room {
 	@NotNull
 	private int capacity;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "building_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "building_id", nullable = false)
 	private Building building;
 
 	@ElementCollection
@@ -128,6 +128,7 @@ public class Room {
 	@Column(name = "floor_number")
 	@NotNull
 	private int floorNumber;
+
 
 	public Room(int roomId, String name, RoomType type, RoomOccupation occupation,
 				int capacity, Building building, Set<String> roomAmenities,
@@ -142,6 +143,7 @@ public class Room {
 		this.roomAmenities = roomAmenities;
 		this.floorNumber = floorNumber;
 	}
+
 
 
 	@Override
@@ -196,7 +198,8 @@ public class Room {
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
-				+ ", capacity=" + capacity + ", building=" + building +  "roomAmenities=" + roomAmenities.toString()
+				+ ", capacity=" + capacity + ", building=" + building.getBuildingId() +  "roomAmenities=" + roomAmenities.toString()
 				+ "floorNumber=" + floorNumber + "]";
 	}
+
 }

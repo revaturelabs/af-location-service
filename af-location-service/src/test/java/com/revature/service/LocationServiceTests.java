@@ -202,11 +202,36 @@ public class LocationServiceTests {
 		Assert.assertEquals(locationArgumentCaptor.getValue().getZipCode(), locationRequestDto.getZipCode());
 		Assert.assertEquals(locationArgumentCaptor.getValue().getCity(), locationRequestDto.getCity());
 		Assert.assertEquals(locationArgumentCaptor.getValue().getState(), locationRequestDto.getState());
-
+    
+  }
+  
+	@Test
+	public void checkGetBuildingsAtLocation() {
+    
+		List<Building> buildingList = new ArrayList();
+		Location testLocation = new Location();
+		Building testBuilding = new Building();
+		testBuilding.setCity("Miami");
+		testBuilding.setBuildingId(23);
+		testBuilding.setLocation(testLocation);
+		testBuilding.setStreetAddress("Main Street");
+		Building testBuilding2 = new Building();
+		testBuilding2.setCity("Miami");
+		testBuilding2.setBuildingId(24);
+		testBuilding2.setLocation(testLocation);
+		testBuilding2.setStreetAddress("Main Street");
+		buildingList.add(testBuilding);
+		buildingList.add(testBuilding2);
+		assertNotNull(buildingList);		
+		assertEquals(2,buildingList.size());
+		assertTrue(buildingList.get(0).equals(testBuilding));
+		assertTrue(buildingList.get(1).equals(testBuilding2));
+    
 	}
 
 	@Test
 	public void updateLocationGood(){
+    
 		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
 				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		LocationRequestDto updateLocationRequestDto = new LocationRequestDto();
@@ -226,6 +251,7 @@ public class LocationServiceTests {
 
 	@Test
 	public void updateLocationBad() {
+    
 		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
 				.thenReturn(java.util.Optional.of(goodSampleLocation));
 		LocationRequestDto locationRequestDto = new LocationRequestDto();
@@ -290,6 +316,7 @@ public class LocationServiceTests {
 		Mockito.verify(locationRepository, Mockito.times(1))
 				.save(locationArgumentCaptor.capture());
 		Assert.assertNull(locationArgumentCaptor.getValue().getCity());
+    
 	}
 
 	@Test
