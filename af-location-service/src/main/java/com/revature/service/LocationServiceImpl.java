@@ -17,11 +17,10 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-  	@Autowired
+  @Autowired
 	private BuildingService bs;
-  	@Autowired
+  @Autowired
 	private BuildingServiceImpl buildingService;
-
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -133,15 +132,6 @@ public class LocationServiceImpl implements LocationService {
 	public void deleteLocation(int index) {
 
 		locationRepository.deleteById(index);
-
-	}
-
-	@Override
-	public void addBuilding(int index, BuildingRequestDto buildingRequestDto) {
-
-		Location location = locationRepository.findById(index).get();
-		buildingService.createBuilding(buildingRequestDto, location);
-		locationRepository.save(location);
 
 	}
 

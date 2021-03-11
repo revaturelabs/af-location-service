@@ -11,21 +11,6 @@ public class BuildingDetailsDto {
     private int totalFloors;
     private List<RoomDto> rooms;
 
-    public BuildingDetailsDto() {
-
-    }
-
-    public BuildingDetailsDto(int id, String city, String street_address,
-                              String zipCode, int totalFloors, List<RoomDto> rooms) {
-
-        this.id = id;
-        this.city = city;
-        this.street_address = street_address;
-        this.zipCode = zipCode;
-        this.totalFloors = totalFloors;
-        this.rooms = rooms;
-    }
-
     public int getId() {
 
         return id;
@@ -84,6 +69,21 @@ public class BuildingDetailsDto {
     public void setRooms(List<RoomDto> rooms) {
 
         this.rooms = rooms;
+    }
+
+    public BuildingDetailsDto(int id, String city, String street_address,
+                              String zipCode, int totalFloors, List<RoomDto> rooms) {
+
+        this.id = id;
+        this.city = city;
+        this.street_address = street_address;
+        this.zipCode = zipCode;
+        this.totalFloors = totalFloors;
+        this.rooms = rooms;
+    }
+
+    public BuildingDetailsDto() {
+
     }
 
     @Override

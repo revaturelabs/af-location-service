@@ -11,19 +11,17 @@ public class RoomRequestDto {
     private int floorNumber;
     private Set<String> amenities;
 
-    public RoomRequestDto(String name, String type, String occupation,
-                          int capacity, int floorNumber, Set<String> amenities) {
+    @Override
+    public String toString() {
 
-        this.name = name;
-        this.type = type;
-        this.occupation = occupation;
-        this.capacity = capacity;
-        this.floorNumber = floorNumber;
-        this.amenities = amenities;
-    }
-
-    public RoomRequestDto() {
-
+        return "RoomRequestDto{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", capacity=" + capacity +
+                ", floorNumber=" + floorNumber +
+                ", amenities=" + amenities +
+                '}';
     }
 
     public String getName() {
@@ -86,4 +84,19 @@ public class RoomRequestDto {
         this.amenities = amenities;
     }
 
+    public RoomRequestDto(String name, String type, String occupation,
+                          int capacity, int floorNumber, Set<String> amenities) {
+
+        this.name = name;
+        this.type = type;
+        this.occupation = occupation;
+        this.capacity = capacity;
+        this.floorNumber = floorNumber;
+        this.amenities = amenities;
+    }
+
+    public RoomRequestDto() {
+
+    }
+  
 }

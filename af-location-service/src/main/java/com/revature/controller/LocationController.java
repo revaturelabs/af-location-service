@@ -31,7 +31,6 @@ public class LocationController {
 	@Autowired
 	private LocationServiceImpl locationServiceImpl;
 
-
 	@PostMapping("/locations")
 	public ResponseEntity<String> createLocation(@RequestBody LocationRequestDto locationRequestDto){
 
@@ -138,27 +137,6 @@ public class LocationController {
 
 	}
 
-	@PatchMapping("/locations/{id}/addBuilding")
-	public ResponseEntity<String> addBuilding(@PathVariable int id, @RequestBody BuildingRequestDto buildingRequestDto) {
-
-		try{
-
-			locationService.addBuilding(id, buildingRequestDto);
-
-		}
-		catch(Exception e) {
-
-			return ResponseEntity.badRequest()
-					.contentType(MediaType.APPLICATION_JSON)
-					.body("{\"message\": \""+ e.getMessage()+"\"}");
-
-		}
-		return ResponseEntity.accepted()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body("{\"message\": \"+Building has been added to the Location +\"}");
-
-	}
-
 	@PutMapping("/locations/{id}")
 	public ResponseEntity<String> updateLocation(@PathVariable int id, @RequestBody LocationRequestDto locationRequestDto) {
 
@@ -197,27 +175,6 @@ public class LocationController {
 	public LocationDetailsDto getLocationById(@PathVariable int index) {
 
 		return locationServiceImpl.getLocation(index);
-
-	}
-
-	@PostMapping("/locations/{id}/buildings")
-	public ResponseEntity<String> createBuildingForLocation(@PathVariable int id, BuildingRequestDto buildingRequestDto) {
-
-		try {
-
-			locationService.addBuilding(id, buildingRequestDto);
-
-		}
-		catch(Exception e) {
-
-			return ResponseEntity.badRequest()
-					.contentType(MediaType.APPLICATION_JSON)
-					.body("{\"message\": \""+ e.getMessage()+"\"}");
-
-		}
-		return ResponseEntity.accepted()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body("{\"message\": \"+Building has been created and added for this location+\"}");
 
 	}
 
