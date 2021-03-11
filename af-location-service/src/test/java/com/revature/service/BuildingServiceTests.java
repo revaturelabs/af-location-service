@@ -34,9 +34,7 @@ import junit.framework.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BuildingServiceTests {
-	
-	
-	
+  
 	public static BuildingService buildingService;
 	public static BuildingRepository buildingRepository;
 	public static LocationService locationService;
@@ -707,5 +705,5 @@ public void deleteRoom() {
 		dto.setZipCode( building.getLocation().getZipCode() );
 		return dto;
 	}
-
+  
 }

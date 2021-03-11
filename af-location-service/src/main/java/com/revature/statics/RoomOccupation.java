@@ -1,7 +1,5 @@
 package com.revature.statics;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -12,11 +10,6 @@ public enum RoomOccupation {
     MEETING( 1001 );
 
 
-    public Integer getOccupation() {
-
-        return occupation;
-    }
-
     private Integer occupation;
 
     RoomOccupation ( Integer occupation ) {
@@ -25,6 +18,11 @@ public enum RoomOccupation {
 
     }
 
+    public Integer getOccupation() {
+
+        return occupation;
+    }
+    
     public static RoomOccupation of ( Integer occupation ) {
 
         return Stream.of(RoomOccupation.values())

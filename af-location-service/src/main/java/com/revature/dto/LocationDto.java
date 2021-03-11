@@ -18,7 +18,7 @@ public class LocationDto {
                 ", zipCode='" + zipCode + '\'' +
                 ", numBuildings=" + numBuildings +
                 '}';
-    }
+
 
     public int getId() {
 
@@ -79,10 +79,9 @@ public class LocationDto {
         this.numBuildings = numBuildings;
     }
 
+
     public LocationDto() {
 
     }
-
-
 
 }

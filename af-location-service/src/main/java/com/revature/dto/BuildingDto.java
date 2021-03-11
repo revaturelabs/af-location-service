@@ -57,6 +57,7 @@ public class BuildingDto {
 		this.street_address = street_address;
 		this.totalFloors = totalFloors;
 		this.numRooms = numRooms;
+
 	}
 
 	@Override
@@ -68,6 +69,7 @@ public class BuildingDto {
 				", totalFloors=" + totalFloors +
 				", numRooms=" + numRooms +
 				'}';
+
 	}
 
 }

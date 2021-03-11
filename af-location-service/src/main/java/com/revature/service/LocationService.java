@@ -2,7 +2,10 @@ package com.revature.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
 import com.revature.dto.*;
+import com.revature.model.Building;
 import com.revature.model.Location;
 
 public interface LocationService {

@@ -98,5 +98,5 @@ public class RoomRequestDto {
     public RoomRequestDto() {
 
     }
-
+  
 }

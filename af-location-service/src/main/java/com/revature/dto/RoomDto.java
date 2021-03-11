@@ -6,6 +6,7 @@ public class RoomDto {
 	private String type;
 	private String occupation;
 
+
 	@Override
 	public String toString() {
 
@@ -14,6 +15,7 @@ public class RoomDto {
 				", type='" + type + '\'' +
 				", occupation='" + occupation + '\'' +
 				'}';
+
 	}
 
 	public int getId() {
@@ -52,6 +54,7 @@ public class RoomDto {
 		this.type = type;
 		this.occupation = occupation;
 	}
+
 
 	public RoomDto() {
 

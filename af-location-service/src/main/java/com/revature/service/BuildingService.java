@@ -1,5 +1,6 @@
 package com.revature.service;
 
+
  import com.revature.model.Room;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import com.revature.dto.BuildingDetailsDto;
 import com.revature.dto.BuildingDto;
 import com.revature.dto.BuildingRequestDto;
+import com.revature.model.Location;
 
 
 public interface BuildingService{
@@ -22,5 +24,8 @@ public interface BuildingService{
  	void addRoom(int index, Room room) throws Exception;
  	void deleteRoom(int indexBuilding, int indexRoom) throws Exception;
 	void updateBuilding(int index, BuildingRequestDto dto) throws Exception;
+
+    List<BuildingDto> getBuildingsByLocation(int index);
+    void createBuilding(BuildingRequestDto buildingRequestDto, Location location);
 
 }

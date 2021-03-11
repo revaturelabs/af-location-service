@@ -1,5 +1,8 @@
 package com.revature.controller;
 
+import com.revature.dto.BuildingDto;
+import com.revature.dto.LocationDetailsDto;
+import com.revature.service.BuildingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.revature.dto.BuildingDetailsDto;
 import com.revature.dto.BuildingDto;
@@ -24,12 +28,12 @@ import com.revature.statics.RoomType;
 
 import java.util.List;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("buildings")
 @CrossOrigin
 public class BuildingController {
-
-	private BuildingService bs;
 
 	@Autowired
 	public BuildingController(BuildingService bs) {
@@ -122,6 +126,12 @@ public class BuildingController {
 
 		bs.updateBuilding(buildingId, dto);
 		return new ResponseEntity(HttpStatus.OK);
+    
+  }
+	@GetMapping("/locations/{id}/buildings")
+	public List<BuildingDto> getBuildingsByLocationId(@PathVariable int id) {
+    
+		return buildingService.getBuildingsByLocation(id);
 
 	}
 
