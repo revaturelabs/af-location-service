@@ -30,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public RoomDetailsDto getRoom( int id ) {
+    public RoomDetailsDto getRoom( int id ) throws NotFoundException {
         RoomDetailsDto detailsDto;
 
         if ( roomRepository.existsById ( id ) ) {
@@ -193,7 +193,7 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public void deleteRoom( int id ) {
+    public void deleteRoom( int id ) throws NotFoundException{
         if ( roomRepository.existsById ( id ) ) {
             roomRepository.deleteById ( id );
         } else
@@ -202,7 +202,7 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public void updateRoom( int id, RoomRequestDto roomRequestDto ) {
+    public void updateRoom( int id, RoomRequestDto roomRequestDto ) throws NotFoundException {
         //can't set new building using request DTO
         //could eventually null check fields for patch requests
 

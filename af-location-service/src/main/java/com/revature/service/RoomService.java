@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import com.revature.Exception.NotFoundException;
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.dto.RoomRequestDto;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface RoomService {
 
 
-    RoomDetailsDto getRoom( int id );
+    RoomDetailsDto getRoom( int id ) throws NotFoundException;
 
     List<RoomDto> getPhysicalMeetingRooms();
 
@@ -34,11 +35,11 @@ public interface RoomService {
 
     RoomDetailsDto saveRoom( Room room);
 
-    List<RoomDto> getRoomsByBuildingId(int id);
+    List<RoomDto> getRoomsByBuildingId(int id) throws NotFoundException;
 
-    void deleteRoom(int id);
+    void deleteRoom(int id) throws NotFoundException;
 
-    void updateRoom( int id, RoomRequestDto roomRequestDto );
+    void updateRoom( int id, RoomRequestDto roomRequestDto ) throws NotFoundException;
 
 
 }
