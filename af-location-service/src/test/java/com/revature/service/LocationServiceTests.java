@@ -21,8 +21,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LocationServiceTests {
-
-
+	
 	@InjectMocks
 	private LocationServiceImpl locationService;
 
@@ -34,7 +33,6 @@ public class LocationServiceTests {
 
 	@Captor
 	ArgumentCaptor<Location> locationArgumentCaptor;
-
 
 	public static Location goodSampleLocation;
 	public static Location badSampleLocation;
@@ -196,8 +194,9 @@ public class LocationServiceTests {
 	@Test
 	public void checkWeCanGetAllLocations() {
 		List<LocationDto> locations = locationService.getAllLocations();
+		System.out.println(locations.size());
 		Assert.assertNotNull(locations);
-//		assertTrue(locations.size() == 3);
+//		Assert.assertTrue(locations.size() == 3);
 	}
 
 	@Test
@@ -292,7 +291,6 @@ public class LocationServiceTests {
 		assertTrue(result);
 	}
 
-
 	@Test
 	public void createGoodLocation() {
 		LocationRequestDto locationRequestDto = new LocationRequestDto();
@@ -326,7 +324,6 @@ public class LocationServiceTests {
 		Assert.assertEquals(locationArgumentCaptor.getValue().getZipCode(), updateLocationRequestDto.getZipCode());
 
 	}
-
 
 	@Test
 	public void updateLocationBad() {
