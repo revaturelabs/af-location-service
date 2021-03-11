@@ -3,10 +3,8 @@ package com.revature.service;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-
 import com.revature.dto.*;
 
-import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +17,10 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-
-
+  @Autowired
+	private BuildingService bs;
+  @Autowired
+	private BuildingServiceImpl buildingService;
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -35,7 +35,6 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<LocationDto> getAllLocations() {
-    
 		List<Location> locations = locationRepository.findAll();
 		return locations.stream().map(location -> {
 			LocationDto locationDto = new LocationDto();
@@ -46,7 +45,6 @@ public class LocationServiceImpl implements LocationService {
 			locationDto.setNumBuildings(location.getBuildings().size());
 			return locationDto;
 		}).collect(Collectors.toList());
-    
 	}
 
 	@Override
@@ -148,6 +146,11 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
+//	@Override
+	public List<BuildingDto> findBuildingsByLocation(int id) {
+		return null;
+	}
+
 	// helper methods
 	private String sanitizeState(String state) {
 		if( state.length() > 2 ) {
@@ -188,8 +191,9 @@ public class LocationServiceImpl implements LocationService {
 				break;
 		}
 
-		return city;
+		String sanitizedCity = city;
+		return sanitizedCity;
 	}
-
+	
 }
 

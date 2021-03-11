@@ -196,6 +196,13 @@ public class Room {
 		return true;
 	}
 
+//	@Override
+//	public String toString() {
+//		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
+//				+ ", capacity=" + capacity + ", building=" + building.getBuildingId() +  "roomAmenities=" + roomAmenities.toString()
+//				+ "floorNumber=" + floorNumber + "]";
+//	}
+
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", type=" + type + ", occupation=" + occupation
