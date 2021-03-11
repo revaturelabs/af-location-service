@@ -34,15 +34,7 @@ public interface RoomService {
 
     RoomDetailsDto saveRoom( Room room);
 
-    void updateName(int id, String name);
-
-    void updateRoomType(int id, String type );
-
-    void updateCapacity(int id, int capacity);
-
-    void removeAmenity(int id, String amenity);
-
-    void addAmenity(int id, String amenity);
+    List<RoomDto> getRoomsByBuildingId(int id);
 
     void deleteRoom(int id);
 

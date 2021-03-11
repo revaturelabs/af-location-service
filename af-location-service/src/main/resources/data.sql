@@ -10,14 +10,14 @@ insert into "LOCATION" (location_id,state,city,zip_code)
 VALUES(3,'TX','Reston','20190');
 
 --Building Inserts
-insert into "BUILDING" (building_id,city,street_address, location_location_id, total_floors)
+insert into "BUILDING" (building_id,city,street_address, location_id, total_floors)
 VALUES(1,'Reston','11730 Plaza America Dr',1, 2),
 (2,'Tampa','4202 E Fowler Ave',2, 2),
 (3,'Tampa','USF Apple Dr',2, 2),
 (4,'Arlington','701 S Nedderman Dr',3, 2);
 
 --Room Inserts
-insert into "ROOM" (room_id,name,type,capacity,building_building_id, floor_number)
+insert into "ROOM" (room_id,name,type,capacity,building_id, floor_number)
 VALUES(1,'201',1,30,1,2),
 (2,'202',1,45,1,2),
 (3,'203',1,30,1,2),

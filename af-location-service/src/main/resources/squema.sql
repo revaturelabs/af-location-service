@@ -9,7 +9,7 @@ create table location(
 	state text, 
 	city text,
 	zip_code text,
-	building_id int not null references building(building_id) on delete cascade;
+-- 	building_id int not null references building(building_id) on delete cascade;
 );
 
 create table room(

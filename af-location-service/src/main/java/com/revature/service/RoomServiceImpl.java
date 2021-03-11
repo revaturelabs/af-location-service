@@ -1,9 +1,12 @@
 package com.revature.service;
 
+import com.revature.Exception.NotFoundException;
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.dto.RoomRequestDto;
+import com.revature.model.Building;
 import com.revature.model.Room;
+import com.revature.repository.BuildingRepository;
 import com.revature.repository.RoomRepository;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
@@ -12,39 +15,32 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
+    private final BuildingRepository buildingRepository;
 
 
-    public RoomServiceImpl( RoomRepository roomRepository ) {
+    public RoomServiceImpl( RoomRepository roomRepository, BuildingRepository buildingRepository ) {
         this.roomRepository = roomRepository;
+        this.buildingRepository = buildingRepository;
     }
 
 
     @Override
-    public RoomDetailsDto getRoom( int i ) {
-        Optional<Room> roomOptional = roomRepository.findById ( i );
-        RoomDetailsDto detailsDto = new RoomDetailsDto ();
+    public RoomDetailsDto getRoom( int id ) {
+        RoomDetailsDto detailsDto;
 
-        if ( roomOptional.isPresent () ) {
-            Room room = roomOptional.get ();
-
-            detailsDto.setCapacity ( room.getCapacity () );
-            detailsDto.setFloorNumber ( room.getFloorNumber () );
-            detailsDto.setName ( room.getName () );
-            detailsDto.setType ( room.getType ().toString () );
-
-            Set<String> roomAmenities = room.getRoomAmenities ();
-            detailsDto.setAmenities ( roomAmenities );
-
-
-            return detailsDto;
-
+        if ( roomRepository.existsById(id) ) {
+            Room room = roomRepository.getOne (id);
+            detailsDto =  detailsMapper ( room );
+        }else{
+            throw new NotFoundException("Room with id " + id + " not found.");
         }
+
 
 
         return detailsDto;
@@ -145,7 +141,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> getRemoteTrainingRooms() {
-        List<RoomDto> remoteTrainingRooms = new ArrayList<>();
+        List<RoomDto> remoteTrainingRooms = new ArrayList<> ();
         roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.TRAINING ).forEach ( room -> {
             RoomDto roomDto = mapDto ( room );
             remoteTrainingRooms.add ( roomDto );
@@ -155,63 +151,75 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> getRemoteMeetingRooms() {
-        List<RoomDto> remoteMeetingRooms = new ArrayList<>();
-        roomRepository.findByTypeAndOccupation ( RoomType.REMOTE,  RoomOccupation.MEETING).forEach ( room ->{
-            RoomDto roomDto = mapDto ( room);
-            remoteMeetingRooms.add(roomDto);
-        });
+        List<RoomDto> remoteMeetingRooms = new ArrayList<> ();
+        roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.MEETING ).forEach ( room -> {
+            RoomDto roomDto = mapDto ( room );
+            remoteMeetingRooms.add ( roomDto );
+        } );
 
         return remoteMeetingRooms;
     }
 
-    @Override
-    public void updateName( int id, String name ) {
-
-        //look up id... if exists update.
-
-        // if doesn't exist throw not found exception.
+    private RoomDetailsDto detailsMapper( Room room ) {
+        RoomDetailsDto detailsDto = new RoomDetailsDto ();
+        detailsDto.setCapacity ( room.getCapacity () );
+        detailsDto.setFloorNumber ( room.getFloorNumber () );
+        detailsDto.setName ( room.getName () );
+        detailsDto.setType ( room.getType ().toString () );
+        detailsDto.setAmenities ( room.getRoomAmenities () );
+        return detailsDto;
     }
 
     @Override
-    public void updateRoomType( int id, String type ) {
-        //look up id... if exists update.
-
-        // if doesn't exist throw not found exception.
+    public RoomDetailsDto saveRoom( Room room ) {
+        room = roomRepository.save ( room );
+        return detailsMapper ( room );
     }
 
     @Override
-    public void updateCapacity( int id, int capacity ) {
-        //look up id... if exists update.
+    public List<RoomDto> getRoomsByBuildingId( int id ) throws NotFoundException {
 
-        // if doesn't exist throw not found exception.
+        Optional<Building> buildingOptional = buildingRepository.findById ( id );
+        List<RoomDto> buildingRooms;
+
+        if ( buildingOptional.isPresent () ) {
+            Building building = buildingOptional.get ();
+            buildingRooms = building.getRooms ().stream ().map ( this::mapDto ).collect ( Collectors.toList () );
+        } else {
+            throw new NotFoundException ( "Building with id " + id + " not found. Requested rooms not deliverable." );
+        }
+
+        return buildingRooms;
     }
 
-    @Override
-    public void removeAmenity( int id, String amenity ) {
-        //look up id... if exists update.
+    // if doesn't exist throw not found exception.
 
-        // if doesn't exist throw not found exception.
-    }
-
-    @Override
-    public void addAmenity( int id, String amenity ) {
-        //look up id... if exists update.
-
-        // if doesn't exist throw not found exception.
-    }
 
     @Override
     public void deleteRoom( int id ) {
-        //look up id... if exists update.
-
-        // if doesn't exist throw not found exception.
+        if ( roomRepository.existsById ( id ) ) {
+            roomRepository.deleteById ( id );
+        } else
+            throw new NotFoundException ( "Building with id " + id + " not found. Requested rooms not deliverable." );
     }
+
 
     @Override
     public void updateRoom( int id, RoomRequestDto roomRequestDto ) {
-        //look up id... if exists update.
+        //can't set new building using request DTO
+        //could eventually null check fields for patch requests
 
-        // if doesn't exist throw not found exception.
+        if ( roomRepository.existsById ( id ) ) {
+            Room room = roomRepository.getOne (id);
+            room.setType ( RoomType.valueOf ( roomRequestDto.getType () ) );
+            room.setOccupation ( RoomOccupation.valueOf ( roomRequestDto.getOccupation () ) );
+            room.setCapacity ( roomRequestDto.getCapacity () );
+            room.setFloorNumber ( roomRequestDto.getFloorNumber () );
+            room.setRoomAmenities ( roomRequestDto.getAmenities () );
+            room.setName ( roomRequestDto.getName() );
+        }else{
+            throw new NotFoundException ( "Room with id " + id + " not found. Requested changes not made.");
+        }
     }
 
 

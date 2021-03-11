@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import com.revature.Exception.NotFoundException;
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.model.Building;
@@ -328,6 +329,9 @@ public class RoomServiceTests {
         when ( roomRepository.findById ( 7 ) ).thenReturn ( Optional.of ( remoteTrainingRoom1WithId ) );
         when ( roomRepository.save ( remoteTrainingRoom1 ) ).thenReturn ( remoteTrainingRoom1WithId );
         when ( roomRepository.existsById ( 1 ) ).thenReturn ( true );
+        when ( roomRepository.existsById ( 2 ) ).thenReturn ( true );
+        when ( roomRepository.getOne ( 1 )).thenReturn(physicalMeetingRoom1WithId);
+        when ( roomRepository.getOne ( 2 )).thenReturn(physicalMeetingRoom2WithId);
         when ( roomRepository.existsById ( 500 ) ).thenReturn ( false );
 //        when ( roomRepository.save(physicalMeetingRoom1Updated)).then ( ()->{
 //
@@ -337,7 +341,8 @@ public class RoomServiceTests {
 
     @Test
     public void whenSavingDtoWithoutId_SavedDtoWithIdIsReturned() {
-        //TODO: CONFIRM THE ID IS CREATED AND THE ENTITY IS PROPERLY SAVED. CURRENTLY SIGNATURE IS RETURNING VOID
+
+    assertEquals(roomDetailsMapper ( physicalMeetingRoom1WithId ), roomService.saveRoom(physicalMeetingRoom1));
 
     }
 
@@ -405,10 +410,11 @@ public class RoomServiceTests {
         assertEquals ( roomDetailsMapper ( physicalMeetingRoom2WithId ), roomService.getRoom ( 2 ) );
     }
 
-    @Test
-
+    @Test(expected = NotFoundException.class)
     public void whenRequestingRoomByIdThatDoesntExist_notFoundExceptionIsThrown() {
-//        assertThrows()
+
+        roomService.getRoom(500);
+
     }
 
 
@@ -423,13 +429,8 @@ public class RoomServiceTests {
         assertEquals ( listMapper ( remoteMeetingRoomList ), roomService.getRemoteMeetingRooms () );
     }
 
-    @Test
-    public void whenRequestingToUpdateRoomName_RoomNameIsSuccessfullyUpdated() {
-
-        roomService.updateName ( 1, "Updated" );
-        
 
 
-    }
+ }
 
-}
+
