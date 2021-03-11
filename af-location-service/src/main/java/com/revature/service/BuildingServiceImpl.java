@@ -19,8 +19,7 @@ import com.revature.model.Location;
 
 import com.revature.repository.BuildingRepository;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class BuildingServiceImpl implements BuildingService{
@@ -28,7 +27,8 @@ public class BuildingServiceImpl implements BuildingService{
 	private BuildingRepository buildingRepository;
 	
 	@Autowired
-	public BuildingServiceImpl(BuildingRepository repository, LocationService locationService) {
+	public BuildingServiceImpl(BuildingRepository repository) {
+
 		this.buildingRepository= repository;
 
   }

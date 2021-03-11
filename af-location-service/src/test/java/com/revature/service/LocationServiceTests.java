@@ -28,9 +28,6 @@ public class LocationServiceTests {
 	@Mock
 	private LocationRepository locationRepository;
 
-	@Mock
-	private BuildingServiceImpl buildingService;
-
 	@Captor
 	ArgumentCaptor<Location> locationArgumentCaptor;
 

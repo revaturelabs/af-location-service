@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
- import org.junit.BeforeClass;
+import com.revature.repository.LocationRepository;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -37,7 +38,7 @@ public class BuildingServiceTests {
   
 	public static BuildingService buildingService;
 	public static BuildingRepository buildingRepository;
-	public static LocationService locationService;
+	public static LocationRepository locationRepository;
 	public static Location goodSampleLocation;
 	public static Location badSampleLocation;
 	public static Building goodBuilding;
@@ -49,8 +50,8 @@ public class BuildingServiceTests {
 	public static void setup() {
 		//instantiate service
 		buildingRepository = Mockito.mock(BuildingRepository.class);
-		locationService = Mockito.mock(LocationService.class);
-		buildingService = new BuildingServiceImpl(buildingRepository, locationService);
+		locationRepository = Mockito.mock(LocationRepository.class);
+		buildingService = new BuildingServiceImpl(buildingRepository);
 		
 		
 		//instantiate location
