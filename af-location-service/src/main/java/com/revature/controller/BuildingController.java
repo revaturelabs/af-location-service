@@ -18,10 +18,9 @@ public class BuildingController {
 	@Autowired
 	private BuildingServiceImpl buildingService;
 
-
-
 	@GetMapping("/locations/{id}/buildings")
-	public List<BuildingDto> getBuildingsByLocationId(@PathVariable int index) {
-		return buildingService.getBuildingsByLocation(index);
+	public List<BuildingDto> getBuildingsByLocationId(@PathVariable int id) {
+		return buildingService.getBuildingsByLocation(id);
 	}
+
 }

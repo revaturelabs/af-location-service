@@ -16,7 +16,6 @@ public enum RoomType {
         
     }
 
-    @Getter
     private Integer type;
 
     RoomType ( Integer type ) {

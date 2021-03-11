@@ -20,8 +20,10 @@ public class LocationServiceImpl implements LocationService {
 	@Autowired
 	private LocationRepository locationRepository;
   
-  @Autowired 
+  	@Autowired
 	private BuildingService bs;
+  	@Autowired
+	private BuildingServiceImpl buildingService;
 
 
 	@Override
@@ -143,12 +145,7 @@ public class LocationServiceImpl implements LocationService {
 	public void addBuilding(int index, BuildingRequestDto buildingRequestDto) {
 
 		Location location = locationRepository.findById(index).get();
-		Building building = new Building();
-		building.setLocation(location);
-		building.setTotalFloors(buildingRequestDto.getTotalFloors());
-		building.setStreetAddress(buildingRequestDto.getStreet_address());
-		building.setCity(buildingRequestDto.getCity());
-		location.getBuildings().add(building);
+		buildingService.createBuilding(buildingRequestDto, location);
 		locationRepository.save(location);
 
 	}
@@ -207,10 +204,5 @@ public class LocationServiceImpl implements LocationService {
 		return city;
 	}
 
-@Override
-	public List<BuildingDto> findBuildingsByLocation(int id) {
-		return bs.getAllBuildingsAtLocation(id);
-	}
-		
 }
 

@@ -22,5 +22,4 @@ public interface LocationService {
 	public void deleteLocation(int index);
 	public void addBuilding(int index, BuildingRequestDto buildingRequestDto);
 	public void updateLocation(int index, LocationRequestDto locationRequestDto);
-	public List<BuildingDto> findBuildingsByLocation(int id);
 }

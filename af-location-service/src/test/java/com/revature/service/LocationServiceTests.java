@@ -28,6 +28,9 @@ public class LocationServiceTests {
 	@Mock
 	private LocationRepository locationRepository;
 
+	@Mock
+	private BuildingServiceImpl buildingService;
+
 	@Captor
 	ArgumentCaptor<Location> locationArgumentCaptor;
 
@@ -204,30 +207,6 @@ public class LocationServiceTests {
 		Assert.assertEquals(locationArgumentCaptor.getValue().getState(), locationRequestDto.getState());
     
   }
-  
-	@Test
-	public void checkGetBuildingsAtLocation() {
-    
-		List<Building> buildingList = new ArrayList();
-		Location testLocation = new Location();
-		Building testBuilding = new Building();
-		testBuilding.setCity("Miami");
-		testBuilding.setBuildingId(23);
-		testBuilding.setLocation(testLocation);
-		testBuilding.setStreetAddress("Main Street");
-		Building testBuilding2 = new Building();
-		testBuilding2.setCity("Miami");
-		testBuilding2.setBuildingId(24);
-		testBuilding2.setLocation(testLocation);
-		testBuilding2.setStreetAddress("Main Street");
-		buildingList.add(testBuilding);
-		buildingList.add(testBuilding2);
-		assertNotNull(buildingList);		
-		assertEquals(2,buildingList.size());
-		assertTrue(buildingList.get(0).equals(testBuilding));
-		assertTrue(buildingList.get(1).equals(testBuilding2));
-    
-	}
 
 	@Test
 	public void updateLocationGood(){
@@ -363,4 +342,35 @@ public class LocationServiceTests {
 		Mockito.verify(locationRepository, Mockito.times(1)).deleteById(anyInt());
 
 	}
+
+	@Test
+	public void addGoodBuildingForLocation() {
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
+		BuildingRequestDto buildingRequestDto = new BuildingRequestDto();
+		buildingRequestDto.setTotalFloors(100);
+		buildingRequestDto.setCity("Miami");
+		buildingRequestDto.setZipCode("75932");
+		buildingRequestDto.setStreet_address("Main Street");
+		locationService.addBuilding(goodSampleLocation.getLocationId(), buildingRequestDto);
+		Mockito.verify(buildingService, Mockito.times(1))
+				.createBuilding(buildingRequestDto,goodSampleLocation);
+
+	}
+
+	@Test
+	public void addBadBuildingForLocation(){
+
+		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
+				.thenReturn(java.util.Optional.of(goodSampleLocation));
+		BuildingRequestDto buildingRequestDto = new BuildingRequestDto();
+		buildingRequestDto.setTotalFloors(100);
+		buildingRequestDto.setCity("Miami");
+		buildingRequestDto.setZipCode("75932");
+		locationService.addBuilding(goodSampleLocation.getLocationId(), buildingRequestDto);
+		Mockito.verify(buildingService, Mockito.times(1))
+				.createBuilding(buildingRequestDto,goodSampleLocation);
+
+	}
+
 }

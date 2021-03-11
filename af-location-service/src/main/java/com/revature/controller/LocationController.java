@@ -33,6 +33,9 @@ public class LocationController {
 	private LocationServiceImpl locationServiceImpl;
 
 
+
+
+
 	@PostMapping("/locations")
 	public ResponseEntity<String> createLocation(@RequestBody LocationRequestDto locationRequestDto){
 
@@ -200,10 +203,26 @@ public class LocationController {
 		return locationServiceImpl.getLocation(index);
 
 	}
- 
-  @GetMapping({"{id}/buildings"})
-	public ResponseEntity<List<BuildingDto>> getAllBuildingsAtLocation(@PathVariable int id){
-		return new ResponseEntity(locationServiceImpl.findBuildingsByLocation(id),HttpStatus.OK);		
+
+	@PostMapping("/locations/{id}/buildings")
+	public ResponseEntity<String> createBuildingForLocation(@PathVariable int id, BuildingRequestDto buildingRequestDto) {
+
+		try {
+
+			locationService.addBuilding(id, buildingRequestDto);
+
+		}
+		catch(Exception e) {
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Building has been created and added for this location+\"}");
+
 	}
 
 }

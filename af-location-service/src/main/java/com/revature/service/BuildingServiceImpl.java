@@ -1,6 +1,8 @@
 package com.revature.service;
 
+import com.revature.dto.BuildingRequestDto;
 import com.revature.model.Building;
+import com.revature.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,19 @@ public class BuildingServiceImpl implements BuildingService{
 			buildingDto.setStreet_address(building.getStreetAddress());
 			return buildingDto;
 		}).collect(Collectors.toList());
+
+	}
+
+	@Override
+	public void createBuilding(BuildingRequestDto buildingRequestDto, Location location) {
+
+		Building building = new Building();
+		building.setStreetAddress(buildingRequestDto.getStreet_address());
+		building.setCity(buildingRequestDto.getCity());
+		building.setTotalFloors(buildingRequestDto.getTotalFloors());
+		building.setLocation(location);
+		Building locationBuilding = buildingRepository.save(building);
+		location.getBuildings().add(locationBuilding);
 
 	}
 

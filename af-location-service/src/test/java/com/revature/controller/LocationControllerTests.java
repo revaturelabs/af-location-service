@@ -220,4 +220,22 @@ public class LocationControllerTests {
                 .andExpect(status().isMethodNotAllowed());
     }
 
+    @Test
+    public void shouldReturn200AddBuildingForLocation() throws Exception {
+        this.mockMvc.perform(post("/locations/{id}/buildings", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"city\": \"Plano\",\"street_address\": \"Main Street\", " +
+                        "\"zipCode\": \"75023\", \"totalFloors\": \"100\"}"))
+                .andExpect(status().isAccepted());
+    }
+
+    @Test
+    public void shouldReturn400BadRequestAddBuildingForLocation() throws Exception {
+        this.mockMvc.perform(post("/locations/{id}/buildings", "j")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"city\": \"Plano\",\"street_address\": \"Main Street\", " +
+                        "\"zipCode\": \"75023\", \"totalFloors\": \"100\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
 }

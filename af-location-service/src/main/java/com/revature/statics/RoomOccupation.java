@@ -9,7 +9,7 @@ public enum RoomOccupation {
     TRAINING( 1000 ),
     MEETING( 1001 );
 
-    @Getter
+
     private Integer occupation;
 
     RoomOccupation ( Integer occupation ) {
