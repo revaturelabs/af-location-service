@@ -27,7 +27,7 @@ public class LocationControllerTests {
     @MockBean
     private BuildingServiceImpl buildingService;
     @MockBean
-    private RoomService roomService;
+    private RoomServiceImpl roomService;
 
     @Test
     public void shouldReturn202AcceptedForCreateLocation() throws Exception {

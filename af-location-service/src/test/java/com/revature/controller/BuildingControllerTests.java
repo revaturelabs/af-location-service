@@ -3,6 +3,7 @@ package com.revature.controller;
 import com.revature.service.BuildingServiceImpl;
 import com.revature.service.LocationServiceImpl;
 import com.revature.service.RoomService;
+import com.revature.service.RoomServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class BuildingControllerTests {
     @MockBean
     private BuildingServiceImpl buildingService;
     @MockBean
-    private RoomService roomService;
+    private RoomServiceImpl roomService;
+
 
     @Test
     public void checkGetBuildingsAtLocationControllerValid() throws Exception {

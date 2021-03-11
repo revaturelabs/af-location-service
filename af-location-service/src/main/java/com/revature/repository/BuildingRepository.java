@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface BuildingRepository extends JpaRepository<Building,Integer> {
 
     List<Building> getByLocationId(int locationId);
 
-	@Query("select b from Building b where b.location.id= ?1")
-	List<Building> findAllBuildingsByLocationId(Integer id);
+	@Query("select * from building where location_id = :id")
+	List<Building> findAllBuildingsByLocationId(@Param(value = "id") int id);
 
 }
