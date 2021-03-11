@@ -13,14 +13,23 @@ import com.revature.model.Location;
 import com.revature.repository.LocationRepository;
 
 @Service
-public class LocationServiceImpl implements LocationService{
+public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
+<<<<<<< HEAD
 	@Autowired 
 	private BuildingService bs;
 	@Autowired
 	private BuildingServiceImpl buildingService;
+=======
+  
+  	@Autowired
+	private BuildingService bs;
+  	@Autowired
+	private BuildingServiceImpl buildingService;
+
+>>>>>>> 1bd0c2d306183326d460f1da593e0db26beb32bf
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -30,13 +39,16 @@ public class LocationServiceImpl implements LocationService{
 		location.setState(locationRequestDto.getState());
 		location.setZipCode(locationRequestDto.getZipCode());
 		locationRepository.save(location);
-		
+    
 	}
 
 	@Override
 	public List<LocationDto> getAllLocations() {
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 1bd0c2d306183326d460f1da593e0db26beb32bf
 		List<Location> locations = locationRepository.findAll();
-
 		return locations.stream().map(location -> {
 			LocationDto locationDto = new LocationDto();
 			locationDto.setId(location.getLocationId());
@@ -46,6 +58,10 @@ public class LocationServiceImpl implements LocationService{
 			locationDto.setNumBuildings(location.getBuildings().size());
 			return locationDto;
 		}).collect(Collectors.toList());
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 1bd0c2d306183326d460f1da593e0db26beb32bf
 	}
 
 	@Override
@@ -74,10 +90,12 @@ public class LocationServiceImpl implements LocationService{
 		List<LocationDto> locations = this.getAllLocations();
 		return locations.stream()
 				.filter(locationDto -> locationDto.getZipCode().equals(sanitizedZipCode)).collect(Collectors.toList());
+    
 	}
 
 	@Override
 	public LocationDetailsDto getLocation(int index) {
+    
 		Location location = locationRepository.findById(index).get();
 		LocationDetailsDto locationDetailsDto = new LocationDetailsDto();
 
@@ -97,6 +115,7 @@ public class LocationServiceImpl implements LocationService{
 		locationDetailsDto.setBuildings(buildingDtos);
 
 		return locationDetailsDto;
+    
 	}
 
 	@Override
@@ -105,7 +124,7 @@ public class LocationServiceImpl implements LocationService{
 		Location location = locationRepository.findById(index).get();
 		location.setState(state);
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -114,7 +133,7 @@ public class LocationServiceImpl implements LocationService{
 		Location location = locationRepository.findById(index).get();
 		location.setCity(city);
 		locationRepository.save(location);
-		
+    
 	}
 
 	@Override
@@ -123,7 +142,7 @@ public class LocationServiceImpl implements LocationService{
 		Location location = locationRepository.findById(index).get();
 		location.setZipCode(zipCode);
 		locationRepository.save(location);
-		
+    
 	}
 
 	@Override
@@ -137,14 +156,9 @@ public class LocationServiceImpl implements LocationService{
 	public void addBuilding(int index, BuildingRequestDto buildingRequestDto) {
 
 		Location location = locationRepository.findById(index).get();
-		Building building = new Building();
-		building.setLocation(location);
-		building.setTotalFloors(buildingRequestDto.getTotalFloors());
-		building.setStreetAddress(buildingRequestDto.getStreet_address());
-		building.setCity(buildingRequestDto.getCity());
-		location.getBuildings().add(building);
+		buildingService.createBuilding(buildingRequestDto, location);
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -155,7 +169,7 @@ public class LocationServiceImpl implements LocationService{
 		location.setCity(locationRequestDto.getCity());
 		location.setZipCode(locationRequestDto.getZipCode());
 		locationRepository.save(location);
-		
+
 	}
 
 	@Override
@@ -166,28 +180,41 @@ public class LocationServiceImpl implements LocationService{
 	// helper methods
 	private String sanitizeState(String state) {
 		if( state.length() > 2 ) {
-			if( state.equals("Virginia") || state.equals("virginia") || state.equals("VIRGINIA") ) {
-				state = "VA";
-			} else if( state.equals("Texas") || state.equals("texas") || state.equals("TEXAS") ) {
-				state = "TX";
-			} else if( state.equals("Florida") || state.equals("florida") || state.equals("FLORIDA") ) {
-				state = "FL";
+			switch (state) {
+				case "Virginia":
+				case "virginia":
+				case "VIRGINIA":
+					state = "VA";
+					break;
+				case "Texas":
+				case "texas":
+				case "TEXAS":
+					state = "TX";
+					break;
+				case "Florida":
+				case "florida":
+				case "FLORIDA":
+					state = "FL";
+					break;
 			}
 		}
-		String sanitizedState = state.toUpperCase(Locale.ROOT);
 
-		return sanitizedState;
+		return state.toUpperCase(Locale.ROOT);
 	}
 
 	private String sanitizeCity(String city) {
 		city = city.toLowerCase(Locale.ROOT);
 
-		if( city.equals("reston") ) {
-			city = "Reston";
-		} else if( city.equals("arlington") ) {
-			city = "Arlington";
-		} else if( city.equals("tampa") ) {
-			city = "Tampa";
+		switch (city) {
+			case "reston":
+				city = "Reston";
+				break;
+			case "arlington":
+				city = "Arlington";
+				break;
+			case "tampa":
+				city = "Tampa";
+				break;
 		}
 
 		String sanitizedCity = city;
@@ -195,3 +222,4 @@ public class LocationServiceImpl implements LocationService{
 	}
 	
 }
+

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
 import com.sun.istack.NotNull;
+
 import java.util.Set;
 
 @Entity
@@ -127,6 +128,54 @@ public class Room {
 	public Room() {
 
 	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="room_id")
+	private int roomId;
+
+
+	@NotNull
+	private String name;
+
+
+	@NotNull
+	private RoomType type;
+
+
+	@NotNull
+	private RoomOccupation occupation;
+
+
+	@NotNull
+	private int capacity;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "building_id", nullable = false)
+	private Building building;
+
+	@ElementCollection
+	private Set<String> roomAmenities;
+
+	@Column(name = "floor_number")
+	@NotNull
+	private int floorNumber;
+
+
+	public Room(int roomId, String name, RoomType type, RoomOccupation occupation,
+				int capacity, Building building, Set<String> roomAmenities,
+				int floorNumber) {
+
+		this.roomId = roomId;
+		this.name = name;
+		this.type = type;
+		this.occupation = occupation;
+		this.capacity = capacity;
+		this.building = building;
+		this.roomAmenities = roomAmenities;
+		this.floorNumber = floorNumber;
+	}
+
 
 
 	@Override

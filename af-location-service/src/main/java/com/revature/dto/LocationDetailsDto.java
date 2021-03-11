@@ -2,7 +2,28 @@ package com.revature.dto;
 
 import java.util.List;
 
+
 public class LocationDetailsDto {
+
+    private int id;
+    private String state;
+    private String city;
+    private String zipCode;
+    private List<BuildingDto> buildings;
+
+    public LocationDetailsDto() {
+
+    }
+
+    public LocationDetailsDto(int id, String state, String city, String zipCode, List<BuildingDto> buildings) {
+
+        this.id = id;
+        this.state = state;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.buildings = buildings;
+
+    }
 
     public int getId() {
 
@@ -53,11 +74,5 @@ public class LocationDetailsDto {
 
         this.buildings = buildings;
     }
-
-    private int id;
-    private String state;
-    private String city;
-    private String zipCode;
-    private List<BuildingDto> buildings;
 
 }

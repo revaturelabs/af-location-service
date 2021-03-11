@@ -4,8 +4,26 @@ import java.util.List;
 
 public class BuildingDetailsDto {
 
+    private int id;
+    private String city;
+    private String street_address;
+    private String zipCode;
+    private int totalFloors;
+    private List<RoomDto> rooms;
+
     public BuildingDetailsDto() {
 
+    }
+
+    public BuildingDetailsDto(int id, String city, String street_address,
+                              String zipCode, int totalFloors, List<RoomDto> rooms) {
+
+        this.id = id;
+        this.city = city;
+        this.street_address = street_address;
+        this.zipCode = zipCode;
+        this.totalFloors = totalFloors;
+        this.rooms = rooms;
     }
 
     public int getId() {
@@ -68,11 +86,17 @@ public class BuildingDetailsDto {
         this.rooms = rooms;
     }
 
-    private int id;
-    private String city;
-    private String street_address;
-    private String zipCode;
-    private int totalFloors;
-    private List<RoomDto> rooms;
+    @Override
+    public String toString() {
+
+        return "BuildingDetailsDto{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", street_address='" + street_address + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", totalFloors=" + totalFloors +
+                ", rooms=" + rooms +
+                '}';
+    }
 
 }

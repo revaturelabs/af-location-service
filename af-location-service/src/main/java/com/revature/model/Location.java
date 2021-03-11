@@ -27,6 +27,16 @@ public class Location {
 	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Building> buildings;
 
+	public Location(int locationId, String state, String city,
+					String zipCode, List<Building> buildings) {
+
+		this.locationId = locationId;
+		this.state = state;
+		this.city = city;
+		this.zipCode = zipCode;
+		this.buildings = buildings;
+	}
+
 	public Location() {
 
 	}

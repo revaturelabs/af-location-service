@@ -1,9 +1,27 @@
 package com.revature.dto;
 
+
 public class BuildingDto {
+
+	private int id;
+	private String street_address;
+	private int totalFloors;
+	private int numRooms;
 
 	public BuildingDto() {
 
+	}
+
+	@Override
+	public String toString() {
+
+		return "BuildingDto{" +
+				"id=" + id +
+				", street_address='" + street_address + '\'' +
+				", totalFloors=" + totalFloors +
+				", numRooms=" + numRooms +
+				'}';
+	
 	}
 
 	public int getId() {
@@ -46,9 +64,13 @@ public class BuildingDto {
 		this.numRooms = numRooms;
 	}
 
-	private int id;
-	private String street_address;
-	private int totalFloors;
-	private int numRooms;
+	public BuildingDto(int id, String street_address, int totalFloors, int numRooms) {
+
+		this.id = id;
+		this.street_address = street_address;
+		this.totalFloors = totalFloors;
+		this.numRooms = numRooms;
+		
+	}
 
 }

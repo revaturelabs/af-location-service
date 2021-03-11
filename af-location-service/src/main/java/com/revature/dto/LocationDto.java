@@ -2,6 +2,16 @@ package com.revature.dto;
 
 public class LocationDto {
 
+    private int id;
+    private String state;
+    private String city;
+    private String zipCode;
+    private int numBuildings;
+
+    public LocationDto() {
+
+    }
+
     public int getId() {
 
         return id;
@@ -52,10 +62,13 @@ public class LocationDto {
         this.numBuildings = numBuildings;
     }
 
-    private int id;
-    private String state;
-    private String city;
-    private String zipCode;
-    private int numBuildings;
+    public LocationDto(int id, String state, String city, String zipCode, int numBuildings) {
+
+        this.id = id;
+        this.state = state;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.numBuildings = numBuildings;
+    }
 
 }

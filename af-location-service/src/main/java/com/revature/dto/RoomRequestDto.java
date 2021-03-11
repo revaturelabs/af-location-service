@@ -4,16 +4,15 @@ import java.util.Set;
 
 public class RoomRequestDto {
 
-    public RoomRequestDto() {
+    private String name;
+    private String type;
+    private String occupation;
+    private int capacity;
+    private int floorNumber;
+    private Set<String> amenities;
 
-    }
-
-    public String getName() {
-
-        return name;
-    }
-
-    public RoomRequestDto(String name, String type, String occupation, int capacity, int floorNumber, Set<String> amenities) {
+    public RoomRequestDto(String name, String type, String occupation,
+                          int capacity, int floorNumber, Set<String> amenities) {
 
         this.name = name;
         this.type = type;
@@ -21,6 +20,15 @@ public class RoomRequestDto {
         this.capacity = capacity;
         this.floorNumber = floorNumber;
         this.amenities = amenities;
+    }
+
+    public RoomRequestDto() {
+
+    }
+
+    public String getName() {
+
+        return name;
     }
 
     public void setName(String name) {
@@ -77,12 +85,5 @@ public class RoomRequestDto {
 
         this.amenities = amenities;
     }
-
-    private String name;
-    private String type;
-    private String occupation;
-    private int capacity;
-    private int floorNumber;
-    private Set<String> amenities;
 
 }
