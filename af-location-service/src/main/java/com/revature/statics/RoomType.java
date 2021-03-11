@@ -1,6 +1,6 @@
 package com.revature.statics;
 
-import lombok.Getter;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,12 @@ public enum RoomType {
     PHYSICAL( 1001 ),
     REMOTE( 1002 );
 
-    @Getter
+
+    public Integer getType() {
+
+        return type;
+    }
+
     private Integer type;
 
     RoomType ( Integer type ) {

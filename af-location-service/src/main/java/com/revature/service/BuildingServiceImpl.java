@@ -19,9 +19,7 @@ import com.revature.repository.BuildingRepository;
 @Service
 public class BuildingServiceImpl implements BuildingService{
 
-	
 
-	
 	private BuildingRepository buildingRepository;
 	private LocationService locationService;
 	
@@ -35,23 +33,20 @@ public class BuildingServiceImpl implements BuildingService{
 	@Override
 	public List<BuildingDto> getBuildings(){
 		List<Building> buildings = buildingRepository.findAll();
-		List<BuildingDto> dtos= buildings.stream().map( BuildingServiceImpl::getBuildingDtoFromEntity)
+		return buildings.stream().map( BuildingServiceImpl::getBuildingDtoFromEntity)
 				.collect(Collectors.toList());
-		return dtos;
 	}
 	@Override
 	public List<BuildingDto> getBuildingsByCity(String city) {
 		List<Building> buildings = buildingRepository.findByCity(city);
-		List<BuildingDto> dtos = buildings.stream().map( BuildingServiceImpl::getBuildingDtoFromEntity)
+		return buildings.stream().map( BuildingServiceImpl::getBuildingDtoFromEntity)
 				.collect(Collectors.toList());
-		return dtos;
 	}
 	@Override
 	public List<BuildingDto> getBuildingsByStreetAddress(String address){
 		List<Building> buildings = buildingRepository.findByStreetAddress(address);
-		List<BuildingDto> dtos = buildings.stream().map( BuildingServiceImpl::getBuildingDtoFromEntity)
+		return buildings.stream().map( BuildingServiceImpl::getBuildingDtoFromEntity)
 				.collect(Collectors.toList());
-		return dtos;
 	}
 	@Override
 	public BuildingDetailsDto getBuilding(int index) throws Exception{

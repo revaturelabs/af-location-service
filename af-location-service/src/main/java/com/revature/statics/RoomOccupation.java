@@ -1,6 +1,6 @@
 package com.revature.statics;
 
-import lombok.Getter;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,12 @@ public enum RoomOccupation {
     TRAINING( 1000 ),
     MEETING( 1001 );
 
-    @Getter
+
+    public Integer getOccupation() {
+
+        return occupation;
+    }
+
     private Integer occupation;
 
     RoomOccupation ( Integer occupation ) {

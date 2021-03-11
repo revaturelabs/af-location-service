@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +25,7 @@ import com.revature.statics.RoomType;
 import java.util.List;
 
 @RestController
-@RequestMapping("building")
+@RequestMapping("buildings")
 @CrossOrigin
 public class BuildingController {
 
@@ -34,51 +33,75 @@ public class BuildingController {
 
 	@Autowired
 	public BuildingController(BuildingService bs) {
+
 		this.bs=bs;
+
 	}
 	
 	@GetMapping(path="/{buildingId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BuildingDetailsDto> getBuilding(@PathVariable int buildingId) throws Exception{
+	public ResponseEntity<BuildingDetailsDto> getBuilding(@PathVariable int buildingId) throws Exception {
+
 		BuildingDetailsDto dto = bs.getBuilding(buildingId);
 		return new ResponseEntity<BuildingDetailsDto>(dto, HttpStatus.OK);
+
 	}
+
 	@GetMapping(path="", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BuildingDto>> getBuildings() {
+
 		List<BuildingDto> list = bs.getBuildings();
 		return new ResponseEntity<List<BuildingDto>>(list, HttpStatus.OK);
+
 	}
+
 	@GetMapping(path="/city/{cityName}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<BuildingDto>> getBuildingByCity(@PathVariable String cityName){
+	public ResponseEntity<List<BuildingDto>> getBuildingByCity(@PathVariable String cityName) {
+
 		List<BuildingDto> list= bs.getBuildingsByCity(cityName);
 		return new ResponseEntity<List<BuildingDto>>(list, HttpStatus.OK);
+
 	}
+
 	@GetMapping(path="/street/{streetAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<BuildingDto>> getBuildingByStreetAddress(@PathVariable String streetAddress){
+	public ResponseEntity<List<BuildingDto>> getBuildingByStreetAddress(@PathVariable String streetAddress) {
+
 		List<BuildingDto> list= bs.getBuildingsByStreetAddress(streetAddress);
 		return new ResponseEntity<List<BuildingDto>>(list, HttpStatus.OK);
+
 	}
-	@PatchMapping(path="/city/{buildingId}/{cityName}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateBuildingCity(@PathVariable int buildingId, @PathVariable String cityName) throws Exception{
+
+	@PatchMapping(path="{buildingId}/city/{cityName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity updateBuildingCity(@PathVariable int buildingId, @PathVariable String cityName) throws Exception {
+
 		bs.updateCity(buildingId, cityName);
 		return new ResponseEntity(HttpStatus.OK);
+
 	}
-	@PatchMapping(path="/zipCode/{buildingId}/{zipCode}", produces= MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateBuildingZipCode(@PathVariable int buildingId, @PathVariable String zipCode) throws Exception{
+
+	@PatchMapping(path="/{buildingId}/zipCode/{zipCode}", produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity updateBuildingZipCode(@PathVariable int buildingId, @PathVariable String zipCode) throws Exception {
+
 		bs.updateZipCode(buildingId, zipCode);
 		return new ResponseEntity(HttpStatus.OK);
+
 	}
-	@PatchMapping(path="/floors/{buildingId}/{floorCount}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateNumberOfFloors(@PathVariable int buildingId, @PathVariable int floorCount) throws Exception{
+
+	@PatchMapping(path="/{buildingId}/floors/{floorCount}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity updateNumberOfFloors(@PathVariable int buildingId, @PathVariable int floorCount) throws Exception {
+
 		bs.updateNumberOfFloors(buildingId, floorCount);
 		return new ResponseEntity(HttpStatus.OK);
+
 	}
-	@PostMapping(path="/room/{buildingId}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity addRoom(@PathVariable int buildingId, @RequestBody RoomRequestDto dto) throws Exception{
+
+	@PatchMapping(path="/{buildingId}/room", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity addRoom(@PathVariable int buildingId, @RequestBody RoomRequestDto dto) throws Exception {
+
 		Room room = new Room();
 		// room.setBuilding must be done in BuildingService
-		room.setCapacity( dto.getCapacity());
-		room.setFloorNumber( dto.getFloorNumber());
-		room.setName( dto.getName());
+		room.setCapacity( dto.getCapacity() );
+		room.setFloorNumber( dto.getFloorNumber() );
+		room.setName( dto.getName() );
 		room.setOccupation(dto.getOccupation().equals("Meeting") ? RoomOccupation.MEETING : RoomOccupation.TRAINING);
 		room.setRoomAmenities(dto.getAmenities());
 		room.setRoomId( 0 );
@@ -86,17 +109,20 @@ public class BuildingController {
 		return new ResponseEntity(HttpStatus.OK);
 		
 	}
-	@DeleteMapping(path="/room/{buildingId}/{roomId}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity deleteRoom(@PathVariable int buildingId, @PathVariable int roomId) throws Exception{
+
+	@DeleteMapping(path="/{buildingId}/room/{roomId}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity deleteRoom(@PathVariable int buildingId, @PathVariable int roomId) throws Exception {
+
 		bs.deleteRoom(buildingId, roomId);
 		return new ResponseEntity(HttpStatus.OK);
 	}
+
 	@PatchMapping(path="/{buildingId}")
-	public ResponseEntity updateBuilding(@PathVariable int buildingId, @RequestBody BuildingRequestDto dto) throws Exception{
+	public ResponseEntity updateBuilding(@PathVariable int buildingId, @RequestBody BuildingRequestDto dto) throws Exception {
+
 		bs.updateBuilding(buildingId, dto);
 		return new ResponseEntity(HttpStatus.OK);
+
 	}
-	
-	
 
 }
