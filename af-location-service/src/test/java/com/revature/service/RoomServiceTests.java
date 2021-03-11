@@ -59,6 +59,7 @@ public class RoomServiceTests {
     private Room remoteTrainingRoom1;
     private Room remoteTrainingRoom1WithId;
     private Room virtualRoomWithId;
+    private Room physicalMeetingRoom1Updated;
 
 
     private static RoomDetailsDto roomDetailsMapper( Room room ) {
@@ -131,6 +132,17 @@ public class RoomServiceTests {
         physicalMeetingRoom1WithId.setRoomAmenities ( amenities );
         physicalMeetingRoom1WithId.setFloorNumber ( 1 );
         physicalMeetingRoom1WithId.setType ( RoomType.PHYSICAL );
+
+
+        physicalMeetingRoom1Updated = new Room ();
+        physicalMeetingRoom1Updated.setRoomId ( 1 );
+        physicalMeetingRoom1Updated.setBuilding ( testBuilding1 );
+        physicalMeetingRoom1Updated.setCapacity ( 20 );
+        physicalMeetingRoom1Updated.setName ( "PHYSICAL MEETING 1" );
+        physicalMeetingRoom1Updated.setOccupation ( RoomOccupation.MEETING );
+        physicalMeetingRoom1Updated.setRoomAmenities ( amenities );
+        physicalMeetingRoom1Updated.setFloorNumber ( 1 );
+        physicalMeetingRoom1Updated.setType ( RoomType.PHYSICAL );
 
         physicalMeetingRoom2 = new Room ();
         physicalMeetingRoom2.setBuilding ( testBuilding1 );
@@ -299,8 +311,8 @@ public class RoomServiceTests {
         when ( roomRepository.findByType ( RoomType.REMOTE ) ).thenReturn ( remoteRoomList );
         when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.TRAINING ) ).thenReturn ( physicalTrainingRoomList );
         when ( roomRepository.findByTypeAndOccupation ( RoomType.PHYSICAL, RoomOccupation.MEETING ) ).thenReturn ( physicalMeetingRoomList );
-        when ( roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.TRAINING )).thenReturn ( remoteTrainingRoomList );
-        when ( roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.MEETING )).thenReturn ( remoteMeetingRoomList);
+        when ( roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.TRAINING ) ).thenReturn ( remoteTrainingRoomList );
+        when ( roomRepository.findByTypeAndOccupation ( RoomType.REMOTE, RoomOccupation.MEETING ) ).thenReturn ( remoteMeetingRoomList );
         when ( roomRepository.findById ( 1 ) ).thenReturn ( Optional.of ( physicalMeetingRoom1WithId ) );
         when ( roomRepository.save ( physicalMeetingRoom1 ) ).thenReturn ( physicalMeetingRoom1WithId );
         when ( roomRepository.findById ( 2 ) ).thenReturn ( Optional.of ( physicalMeetingRoom2WithId ) );
@@ -315,7 +327,11 @@ public class RoomServiceTests {
         when ( roomRepository.save ( remoteMeetingRoom2 ) ).thenReturn ( remoteMeetingRoom2WithId );
         when ( roomRepository.findById ( 7 ) ).thenReturn ( Optional.of ( remoteTrainingRoom1WithId ) );
         when ( roomRepository.save ( remoteTrainingRoom1 ) ).thenReturn ( remoteTrainingRoom1WithId );
-
+        when ( roomRepository.existsById ( 1 ) ).thenReturn ( true );
+        when ( roomRepository.existsById ( 500 ) ).thenReturn ( false );
+//        when ( roomRepository.save(physicalMeetingRoom1Updated)).then ( ()->{
+//
+//        } )
 
     }
 
@@ -378,7 +394,7 @@ public class RoomServiceTests {
 //    @Test
 //    public void whenRequestingVirtualTrainingRooms_AllVirtualTrainingRoomsAreReturned() {
 //
-//        assertEquals ( listMapper ( virualTrainingRoomList ), roomService.getVirtualTrainingRooms () );
+//        assertEquals ( listMapper ( virtualTrainingRoomList ), roomService.getVirtualTrainingRooms () );
 //    }
 
     @Test
@@ -408,7 +424,11 @@ public class RoomServiceTests {
     }
 
     @Test
-    public void whenRequestingToUpdateRoomName_RoomNameIsSuccessfullyUpdated(){
+    public void whenRequestingToUpdateRoomName_RoomNameIsSuccessfullyUpdated() {
+
+        roomService.updateName ( 1, "Updated" );
+        
+
 
     }
 

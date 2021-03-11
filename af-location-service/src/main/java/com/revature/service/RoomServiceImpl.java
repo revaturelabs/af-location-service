@@ -167,36 +167,51 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void updateName( int id, String name ) {
 
+        //look up id... if exists update.
+
+        // if doesn't exist throw not found exception.
     }
 
     @Override
     public void updateRoomType( int id, String type ) {
+        //look up id... if exists update.
 
+        // if doesn't exist throw not found exception.
     }
 
     @Override
     public void updateCapacity( int id, int capacity ) {
+        //look up id... if exists update.
 
+        // if doesn't exist throw not found exception.
     }
 
     @Override
     public void removeAmenity( int id, String amenity ) {
+        //look up id... if exists update.
 
+        // if doesn't exist throw not found exception.
     }
 
     @Override
     public void addAmenity( int id, String amenity ) {
+        //look up id... if exists update.
 
+        // if doesn't exist throw not found exception.
     }
 
     @Override
     public void deleteRoom( int id ) {
+        //look up id... if exists update.
 
+        // if doesn't exist throw not found exception.
     }
 
     @Override
     public void updateRoom( int id, RoomRequestDto roomRequestDto ) {
+        //look up id... if exists update.
 
+        // if doesn't exist throw not found exception.
     }
 
 

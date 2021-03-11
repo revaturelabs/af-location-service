@@ -3,6 +3,7 @@ package com.revature.service;
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
 import com.revature.dto.RoomRequestDto;
+import com.revature.model.Room;
 
 import java.util.List;
 public interface RoomService {
@@ -30,6 +31,8 @@ public interface RoomService {
     List<RoomDto> getRemoteTrainingRooms();
 
     List<RoomDto> getRemoteMeetingRooms();
+
+    RoomDetailsDto saveRoom( Room room);
 
     void updateName(int id, String name);
 
