@@ -214,9 +214,12 @@ public class RoomServiceImpl implements RoomService {
             room.setFloorNumber ( roomRequestDto.getFloorNumber () );
             room.setRoomAmenities ( roomRequestDto.getAmenities () );
             room.setName ( roomRequestDto.getName () );
+            roomRepository.save( room );
         } else {
             throw new NotFoundException ( "Room with id " + id + " not found. Requested changes not made." );
         }
+
+
     }
 
 

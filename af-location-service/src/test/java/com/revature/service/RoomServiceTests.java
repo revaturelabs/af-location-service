@@ -426,6 +426,13 @@ public class RoomServiceTests {
     }
 
     @Test(expected = NotFoundException.class)
+    public void whenRequestingToDeleteRoomThatDoesntExist_notFoundExceptionIsThrown() {
+
+        roomService.deleteRoom ( 500 );
+
+    }
+
+    @Test(expected = NotFoundException.class)
     public void whenRequestingToUpdateRoomThatDoesntExist_NotFoundExceptionIsThrown() {
         RoomRequestDto request = new RoomRequestDto ();
 
@@ -455,7 +462,7 @@ public class RoomServiceTests {
     }
 
     @Test
-    public void whenRequestingToUpdateRoom_RequestedRoom_isUpdated() {
+    public void whenRequestingToUpdateRoom_RequestedRoomIsUpdated() {
         RoomRequestDto request = new RoomRequestDto ();
         request.setName ( physicalMeetingRoom1WithId.getName() );
         request.setAmenities ( physicalMeetingRoom1WithId.getRoomAmenities () );
@@ -469,6 +476,14 @@ public class RoomServiceTests {
         roomService.updateRoom ( 1, request );
         verify ( roomRepository, times ( 1 ) ).existsById ( 1 );
         verify ( roomRepository, times ( 1 ) ).save ( physicalMeetingRoom1WithId );
+
+    }
+
+    @Test
+    public void whenRequestingToDeleteValidRoom_RequestedRoomIsDeleted(){
+        roomService.deleteRoom ( 1 );
+        verify ( roomRepository, times ( 1 ) ).existsById ( 1 );
+        verify ( roomRepository, times ( 1 ) ).deleteById ( 1 );
 
     }
 
