@@ -2,6 +2,9 @@ package com.revature.controller;
 
 import com.revature.dto.BuildingDto;
 import com.revature.dto.LocationDetailsDto;
+import com.revature.model.Location;
+import com.revature.repository.LocationRepository;
+import com.revature.repository.RoomRepository;
 import com.revature.service.BuildingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +31,6 @@ import com.revature.statics.RoomType;
 
 import java.util.List;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("buildings")
@@ -36,10 +38,13 @@ import java.util.List;
 public class BuildingController {
 
 	private BuildingService bs;
+	private LocationRepository locationRepository;
+
 
 	@Autowired
-	public BuildingController(BuildingService bs) {
+	public BuildingController(BuildingService bs, LocationRepository locationRepository, RoomRepository roomRepository) {
 
+		this.locationRepository = locationRepository;
 		this.bs=bs;
 
 	}
@@ -92,28 +97,28 @@ public class BuildingController {
 
 	}
 
-	@PatchMapping(path="/{buildingId}/room", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity addRoom(@PathVariable int buildingId, @RequestBody RoomRequestDto dto) throws Exception {
+//	@PatchMapping(path="/{buildingId}/room", produces=MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity addRoom(@PathVariable int buildingId, @RequestBody RoomRequestDto dto) throws Exception {
+//
+//		Room room = new Room();
+//		// room.setBuilding must be done in BuildingService
+//		room.setCapacity( dto.getCapacity() );
+//		room.setFloorNumber( dto.getFloorNumber() );
+//		room.setName( dto.getName() );
+//		room.setOccupation(dto.getOccupation().equals("Meeting") ? RoomOccupation.MEETING : RoomOccupation.TRAINING);
+//		room.setRoomAmenities(dto.getAmenities());
+//		room.setRoomId( 0 );
+//		room.setType( dto.getType().equals("Physical") ? RoomType.PHYSICAL : (dto.getType().equals("Virtual") ? RoomType.VIRTUAL : RoomType.REMOTE) );
+//		return new ResponseEntity(HttpStatus.OK);
+//
+//	}
 
-		Room room = new Room();
-		// room.setBuilding must be done in BuildingService
-		room.setCapacity( dto.getCapacity() );
-		room.setFloorNumber( dto.getFloorNumber() );
-		room.setName( dto.getName() );
-		room.setOccupation(dto.getOccupation().equals("Meeting") ? RoomOccupation.MEETING : RoomOccupation.TRAINING);
-		room.setRoomAmenities(dto.getAmenities());
-		room.setRoomId( 0 );
-		room.setType( dto.getType().equals("Physical") ? RoomType.PHYSICAL : (dto.getType().equals("Virtual") ? RoomType.VIRTUAL : RoomType.REMOTE) );
-		return new ResponseEntity(HttpStatus.OK);
-		
-	}
-
-	@DeleteMapping(path="/{buildingId}/room/{roomId}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity deleteRoom(@PathVariable int buildingId, @PathVariable int roomId) throws Exception {
-
-		bs.deleteRoom(buildingId, roomId);
-		return new ResponseEntity(HttpStatus.OK);
-	}
+//	@DeleteMapping(path="/{buildingId}/room/{roomId}", produces=MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity deleteRoom(@PathVariable int buildingId, @PathVariable int roomId) throws Exception {
+//
+//		bs.deleteRoom(buildingId, roomId);
+//		return new ResponseEntity(HttpStatus.OK);
+//	}
 
 	@PatchMapping(path="/{buildingId}")
 	public ResponseEntity updateBuilding(@PathVariable int buildingId, @RequestBody BuildingRequestDto dto) throws Exception {
@@ -126,6 +131,28 @@ public class BuildingController {
 	public List<BuildingDto> getBuildingsByLocationId(@PathVariable int id) {
     
 		return bs.getBuildingsByLocation(id);
+
+	}
+
+	@PostMapping("/locations/{id}/buildings")
+	public ResponseEntity<String> createBuildingForLocation(@PathVariable int id, BuildingRequestDto buildingRequestDto) {
+
+		try {
+
+			Location location = locationRepository.findById(id).get();
+			bs.createBuilding(buildingRequestDto, location);
+
+		}
+		catch(Exception e) {
+
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.APPLICATION_JSON)
+					.body("{\"message\": \""+ e.getMessage()+"\"}");
+
+		}
+		return ResponseEntity.accepted()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body("{\"message\": \"+Building has been created and added for this location+\"}");
 
 	}
 

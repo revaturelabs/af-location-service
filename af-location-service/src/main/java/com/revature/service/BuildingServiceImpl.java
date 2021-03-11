@@ -116,34 +116,34 @@ public class BuildingServiceImpl implements BuildingService{
 		buildingRepository.save(entity);
 	}
 	
-	@Override
-	public void addRoom(int index, Room room) throws Exception{
-		Optional<Building> building= buildingRepository.findById(index);
-		if(!building.isPresent()) {
-			throw new Exception("building not found");
-		}
-		Building entity = building.get();
-		entity.getRooms().add(room);
-		room.setBuilding(entity);
-		buildingRepository.save(entity);
-	}
-	@Override 
-	public void deleteRoom(int indexBuilding, int indexRoom) throws Exception{
-		Optional<Building> building = buildingRepository.findById(indexBuilding);
-		if(!building.isPresent()) {
-			throw new Exception("Building not found");
-		}
-		boolean flag = false;
-		Building entity = building.get();
-		List<Room> rooms = entity.getRooms();
-		Optional<Room> roomOptional = rooms.stream().filter( zeRoom -> zeRoom.getRoomId() == indexRoom).findFirst();
-		if(roomOptional.isPresent()) {
-			rooms.remove(roomOptional.get());
-			buildingRepository.save(entity);
-		}else {
-			throw new Exception("room not found");
-		}
-	}
+//	@Override
+//	public void addRoom(int index, Room room) throws Exception{
+//		Optional<Building> building= buildingRepository.findById(index);
+//		if(!building.isPresent()) {
+//			throw new Exception("building not found");
+//		}
+//		Building entity = building.get();
+//		entity.getRooms().add(room);
+//		room.setBuilding(entity);
+//		buildingRepository.save(entity);
+//	}
+//	@Override
+//	public void deleteRoom(int indexBuilding, int indexRoom) throws Exception{
+//		Optional<Building> building = buildingRepository.findById(indexBuilding);
+//		if(!building.isPresent()) {
+//			throw new Exception("Building not found");
+//		}
+//		boolean flag = false;
+//		Building entity = building.get();
+//		List<Room> rooms = entity.getRooms();
+//		Optional<Room> roomOptional = rooms.stream().filter( zeRoom -> zeRoom.getRoomId() == indexRoom).findFirst();
+//		if(roomOptional.isPresent()) {
+//			rooms.remove(roomOptional.get());
+//			buildingRepository.save(entity);
+//		}else {
+//			throw new Exception("room not found");
+//		}
+//	}
 	@Override
 	public void updateBuilding(int index, BuildingRequestDto requestDto) throws Exception{
 		Optional<Building> building = buildingRepository.findById(index);

@@ -157,43 +157,43 @@ public class BuildingControllerTests {
 
 	}
 
-	@Test
-	public void addRoom() throws Exception{
-
-		mockMvc.perform(patch("/buildings/{id}/room/","1").contentType(MediaType.APPLICATION_JSON).
-				content("{\"name\":\"Costanzza\",\"type\":\"Virtual\", \"occupation\": " +
-						"\"full\", \"capacity\": 3}, \"floorNumber\": 4, \"amenities\": []}"))
-				.andExpect(status().isOk());
-
-	}
-
-	@Test
-	public void addRoomBad() throws Exception{
-
-		mockMvc.perform(patch("/buildings/{id}/room/", "u").contentType(MediaType.APPLICATION_JSON).
-				content("{\"name\":\"Costanzza\",\"type\":\"Virtual\", \"occupation\":" +
-						" \"full\", \"capacity\": 3}, \"floorNumber\": 4, \"amenities\": []}"))
-				.andExpect(status().isBadRequest());
-
-	}
-
-	@Test
-	public void deleteRoom() throws Exception{
-
-		mockMvc.perform(delete("/buildings/{buildingId}/room/{roomId}","1","0")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-	}
-
-	@Test
-	public void deleteRoomBad() throws Exception{
-
-		mockMvc.perform(delete("/buildings/{buildingId}/room/{roomId}", "0","j")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest());
-
-	}
+//	@Test
+//	public void addRoom() throws Exception{
+//
+//		mockMvc.perform(patch("/buildings/{id}/room/","1").contentType(MediaType.APPLICATION_JSON).
+//				content("{\"name\":\"Costanzza\",\"type\":\"Virtual\", \"occupation\": " +
+//						"\"full\", \"capacity\": 3}, \"floorNumber\": 4, \"amenities\": []}"))
+//				.andExpect(status().isOk());
+//
+//	}
+//
+//	@Test
+//	public void addRoomBad() throws Exception{
+//
+//		mockMvc.perform(patch("/buildings/{id}/room/", "u").contentType(MediaType.APPLICATION_JSON).
+//				content("{\"name\":\"Costanzza\",\"type\":\"Virtual\", \"occupation\":" +
+//						" \"full\", \"capacity\": 3}, \"floorNumber\": 4, \"amenities\": []}"))
+//				.andExpect(status().isBadRequest());
+//
+//	}
+//
+//	@Test
+//	public void deleteRoom() throws Exception{
+//
+//		mockMvc.perform(delete("/buildings/{buildingId}/room/{roomId}","1","0")
+//				.contentType(MediaType.APPLICATION_JSON))
+//				.andExpect(status().isOk());
+//
+//	}
+//
+//	@Test
+//	public void deleteRoomBad() throws Exception{
+//
+//		mockMvc.perform(delete("/buildings/{buildingId}/room/{roomId}", "0","j")
+//				.contentType(MediaType.APPLICATION_JSON))
+//				.andExpect(status().isBadRequest());
+//
+//	}
 
 	@Test
 	public void updateBuilding() throws Exception{
@@ -213,6 +213,24 @@ public class BuildingControllerTests {
 						" \"zipCode\": \"1234\", \"totalFloors\": 3}"))
 				.andExpect(status().isBadRequest());
 
+	}
+
+	@Test
+	public void shouldReturn200AddBuildingForLocation() throws Exception {
+		this.mockMvc.perform(post("/locations/{id}/buildings", "1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"city\": \"Plano\",\"street_address\": \"Main Street\", " +
+						"\"zipCode\": \"75023\", \"totalFloors\": \"100\"}"))
+				.andExpect(status().isAccepted());
+	}
+
+	@Test
+	public void shouldReturn400BadRequestAddBuildingForLocation() throws Exception {
+		this.mockMvc.perform(post("/locations/{id}/buildings", "j")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"city\": \"Plano\",\"street_address\": \"Main Street\", " +
+						"\"zipCode\": \"75023\", \"totalFloors\": \"100\"}"))
+				.andExpect(status().isBadRequest());
 	}
 
 }

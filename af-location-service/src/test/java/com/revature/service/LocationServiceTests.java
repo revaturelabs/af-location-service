@@ -343,34 +343,4 @@ public class LocationServiceTests {
 
 	}
 
-	@Test
-	public void addGoodBuildingForLocation() {
-		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
-				.thenReturn(java.util.Optional.of(goodSampleLocation));
-		BuildingRequestDto buildingRequestDto = new BuildingRequestDto();
-		buildingRequestDto.setTotalFloors(100);
-		buildingRequestDto.setCity("Miami");
-		buildingRequestDto.setZipCode("75932");
-		buildingRequestDto.setStreet_address("Main Street");
-		locationService.addBuilding(goodSampleLocation.getLocationId(), buildingRequestDto);
-		Mockito.verify(buildingService, Mockito.times(1))
-				.createBuilding(buildingRequestDto,goodSampleLocation);
-
-	}
-
-	@Test
-	public void addBadBuildingForLocation(){
-
-		Mockito.when(locationRepository.findById(goodSampleLocation.getLocationId()))
-				.thenReturn(java.util.Optional.of(goodSampleLocation));
-		BuildingRequestDto buildingRequestDto = new BuildingRequestDto();
-		buildingRequestDto.setTotalFloors(100);
-		buildingRequestDto.setCity("Miami");
-		buildingRequestDto.setZipCode("75932");
-		locationService.addBuilding(goodSampleLocation.getLocationId(), buildingRequestDto);
-		Mockito.verify(buildingService, Mockito.times(1))
-				.createBuilding(buildingRequestDto,goodSampleLocation);
-
-	}
-
 }

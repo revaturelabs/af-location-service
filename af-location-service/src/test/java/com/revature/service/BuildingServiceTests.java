@@ -394,62 +394,62 @@ public class BuildingServiceTests {
 		};
 	}
 	
-	@Test
-	public void addRoom() {
-		final Building sampleBuilding = cloneBuilding(goodBuilding);
-		final Room newRoom = cloneRoom(goodRoom, sampleBuilding);
-		newRoom.setRoomId(newRoom.getRoomId()+1000);
-		final boolean[] flag = {false};
-		newRoom.setBuilding(sampleBuilding);
-		Mockito.doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer( InvocationOnMock invocation ) {
-				Building building = invocation.getArgument(0,Building.class);
-				Optional<Room> foundRoom =building.getRooms().stream().filter(room -> room == newRoom).findFirst();
-				if(foundRoom.isPresent()) {
-					flag[0]= true;
-				}
-				return null;
-			}
-		}).when(buildingRepository).save(Mockito.any(Building.class));
-		try {
-			buildingService.addRoom(goodBuilding.getBuildingId(), newRoom);
-		}catch(Exception e) {
-			e.printStackTrace();
-			Assert.fail("exception thrown");
-		}
-		assertTrue("room save not tripped", flag[0]);
-	}
-@Test
-public void deleteRoom() {
-	final Building sampleBuilding = cloneBuilding(goodBuilding);
-	final Room deleteRoom = sampleBuilding.getRooms().get(0);
-	final boolean[] flag = {true};
-	Mockito.doAnswer(new Answer<Void>() {
-		@Override
-		public Void answer( InvocationOnMock invocation ) {
-			Building building = invocation.getArgument(0,Building.class);
-			if(building.getBuildingId() == sampleBuilding.getBuildingId()) {
-				Iterator<Room> iterator = building.getRooms().iterator();
-				while(iterator.hasNext()) {
-					Room room = iterator.next();
-					if( room.getRoomId() == deleteRoom.getRoomId() ) {
-						flag[0] = false;
-						break;
-					}
-				}
-				
-			}
-			return null;
-		}
-	}).when(buildingRepository).save(Mockito.any(Building.class));
-	try {
-		buildingService.deleteRoom(goodBuilding.getBuildingId(),deleteRoom.getRoomId());
-	}catch(Exception e) {
-		Assert.fail("exception thrown");
-	}
-	assertTrue("deleted room found", flag[0]);
-}
+//	@Test
+//	public void addRoom() {
+//		final Building sampleBuilding = cloneBuilding(goodBuilding);
+//		final Room newRoom = cloneRoom(goodRoom, sampleBuilding);
+//		newRoom.setRoomId(newRoom.getRoomId()+1000);
+//		final boolean[] flag = {false};
+//		newRoom.setBuilding(sampleBuilding);
+//		Mockito.doAnswer(new Answer<Void>() {
+//			@Override
+//			public Void answer( InvocationOnMock invocation ) {
+//				Building building = invocation.getArgument(0,Building.class);
+//				Optional<Room> foundRoom =building.getRooms().stream().filter(room -> room == newRoom).findFirst();
+//				if(foundRoom.isPresent()) {
+//					flag[0]= true;
+//				}
+//				return null;
+//			}
+//		}).when(buildingRepository).save(Mockito.any(Building.class));
+//		try {
+//			buildingService.addRoom(goodBuilding.getBuildingId(), newRoom);
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			Assert.fail("exception thrown");
+//		}
+//		assertTrue("room save not tripped", flag[0]);
+//	}
+//@Test
+//public void deleteRoom() {
+//	final Building sampleBuilding = cloneBuilding(goodBuilding);
+//	final Room deleteRoom = sampleBuilding.getRooms().get(0);
+//	final boolean[] flag = {true};
+//	Mockito.doAnswer(new Answer<Void>() {
+//		@Override
+//		public Void answer( InvocationOnMock invocation ) {
+//			Building building = invocation.getArgument(0,Building.class);
+//			if(building.getBuildingId() == sampleBuilding.getBuildingId()) {
+//				Iterator<Room> iterator = building.getRooms().iterator();
+//				while(iterator.hasNext()) {
+//					Room room = iterator.next();
+//					if( room.getRoomId() == deleteRoom.getRoomId() ) {
+//						flag[0] = false;
+//						break;
+//					}
+//				}
+//
+//			}
+//			return null;
+//		}
+//	}).when(buildingRepository).save(Mockito.any(Building.class));
+//	try {
+//		buildingService.deleteRoom(goodBuilding.getBuildingId(),deleteRoom.getRoomId());
+//	}catch(Exception e) {
+//		Assert.fail("exception thrown");
+//	}
+//	assertTrue("deleted room found", flag[0]);
+//}
 	
 	//utility functions
 	
