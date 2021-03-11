@@ -84,14 +84,6 @@ public class BuildingController {
 
 	}
 
-	@PatchMapping(path="/{buildingId}/zipCode/{zipCode}", produces= MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateBuildingZipCode(@PathVariable int buildingId, @PathVariable String zipCode) throws Exception {
-
-		bs.updateZipCode(buildingId, zipCode);
-		return new ResponseEntity(HttpStatus.OK);
-
-	}
-
 	@PatchMapping(path="/{buildingId}/floors/{floorCount}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity updateNumberOfFloors(@PathVariable int buildingId, @PathVariable int floorCount) throws Exception {
 

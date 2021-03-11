@@ -26,12 +26,11 @@ import java.util.stream.Collectors;
 public class BuildingServiceImpl implements BuildingService{
 
 	private BuildingRepository buildingRepository;
-	private LocationService locationService;
 	
 	@Autowired
 	public BuildingServiceImpl(BuildingRepository repository, LocationService locationService) {
 		this.buildingRepository= repository;
-		this.locationService = locationService;
+
   }
 
 
@@ -103,18 +102,7 @@ public class BuildingServiceImpl implements BuildingService{
 		buildingRepository.save(entity);
 		
 	}
-	@Override
-	public void updateZipCode(int index, String zipCode) throws Exception{
-		zipCodeValidation(zipCode);
-		Optional<Building> building = buildingRepository.findById(index);
-		if(!building.isPresent()) {
-			throw new Exception("Building not found");
-		}
-		Building entity = building.get();
-		locationService.updateZipCode(entity.getLocation().getLocationId(), zipCode);
-		
-		
-	}
+
 	
 	@Override
 	public void updateNumberOfFloors(int index, int floorCount) throws Exception{

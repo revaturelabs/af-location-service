@@ -140,24 +140,6 @@ public class BuildingControllerTests {
 	}
 
 	@Test
-	public void updateBuildingZipCode() throws Exception {
-
-		mockMvc.perform(patch("/buildings/{id}/zipCode/{zip}/", "1", "33177")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-
-	}
-
-	@Test
-	public void updateBuildingZipCodeBadRequest() throws Exception {
-
-		mockMvc.perform(patch("/buildings/{id}/zipCode/{zip}/", "j","33177")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest());
-
-	}
-
-	@Test
 	public void updateNumberOfFloors() throws Exception {
 
 		mockMvc.perform(patch("/buildings/{id}/floors/{count}", "1","2")
