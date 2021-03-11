@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface BuildingRepository extends JpaRepository<Building,Integer> {
 
-	@Query("select * from building where location_id = :id")
+	@Query("select b from Building b where location_id = ?1")
 	List<Building> findAllByLocationId(@Param(value = "id") int id);
 
 }
