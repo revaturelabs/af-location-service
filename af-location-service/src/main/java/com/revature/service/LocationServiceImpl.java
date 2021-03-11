@@ -17,19 +17,11 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-<<<<<<< HEAD
-	@Autowired 
-	private BuildingService bs;
-	@Autowired
-	private BuildingServiceImpl buildingService;
-=======
-  
   	@Autowired
 	private BuildingService bs;
   	@Autowired
 	private BuildingServiceImpl buildingService;
 
->>>>>>> 1bd0c2d306183326d460f1da593e0db26beb32bf
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {
@@ -44,10 +36,6 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<LocationDto> getAllLocations() {
-<<<<<<< HEAD
-=======
-    
->>>>>>> 1bd0c2d306183326d460f1da593e0db26beb32bf
 		List<Location> locations = locationRepository.findAll();
 		return locations.stream().map(location -> {
 			LocationDto locationDto = new LocationDto();
@@ -58,10 +46,6 @@ public class LocationServiceImpl implements LocationService {
 			locationDto.setNumBuildings(location.getBuildings().size());
 			return locationDto;
 		}).collect(Collectors.toList());
-<<<<<<< HEAD
-=======
-    
->>>>>>> 1bd0c2d306183326d460f1da593e0db26beb32bf
 	}
 
 	@Override
@@ -172,7 +156,7 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
-	@Override
+//	@Override
 	public List<BuildingDto> findBuildingsByLocation(int id) {
 		return null;
 	}
