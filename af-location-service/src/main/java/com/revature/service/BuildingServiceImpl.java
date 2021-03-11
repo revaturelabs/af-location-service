@@ -21,7 +21,7 @@ public class BuildingServiceImpl implements BuildingService{
 	@Override
 	public List<BuildingDto> getBuildingsByLocation(int index) {
 
-		List<Building> buildings = buildingRepository.getByLocationId(index);
+		List<Building> buildings = buildingRepository.findByLocationId(index);
 		return buildings.stream().map(building -> {
 			BuildingDto buildingDto = new BuildingDto();
 			buildingDto.setId(building.getBuildingId());
