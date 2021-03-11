@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: af-location
+  labels:
+    app: assignforce
+    service: location
+spec:
+  selector:
+    matchLabels:
+      service: location
+  template:
+    metadata:
+      labels:
+        service: location
+    spec:
+      containers:
+        - name: af-location
+          image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/af-location-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: loc-http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "1G"
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health
+            successThreshold: 3
+            failureThreshold: 2
+            periodSeconds: 20
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health
+            failureThreshold: 2
+            periodSeconds: 30
+            timeoutSeconds: 2
