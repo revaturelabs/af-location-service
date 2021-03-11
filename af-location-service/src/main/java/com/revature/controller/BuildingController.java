@@ -35,6 +35,8 @@ import java.util.List;
 @CrossOrigin
 public class BuildingController {
 
+	private BuildingService bs;
+
 	@Autowired
 	public BuildingController(BuildingService bs) {
 
@@ -131,7 +133,7 @@ public class BuildingController {
 	@GetMapping("/locations/{id}/buildings")
 	public List<BuildingDto> getBuildingsByLocationId(@PathVariable int id) {
     
-		return buildingService.getBuildingsByLocation(id);
+		return bs.getBuildingsByLocation(id);
 
 	}
 
