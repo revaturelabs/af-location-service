@@ -4,21 +4,25 @@ import com.revature.dto.BuildingRequestDto;
 import com.revature.dto.LocationDetailsDto;
 import com.revature.dto.LocationDto;
 import com.revature.dto.LocationRequestDto;
-import com.revature.model.Location;
-import com.revature.repository.LocationRepository;
 import com.revature.service.LocationServiceImpl;
+import com.revature.dto.BuildingDto;
+import com.revature.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNullApi;
 import org.springframework.web.bind.annotation.*;
-
-import com.revature.service.LocationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/")
 @CrossOrigin
 public class LocationController {
@@ -194,6 +198,11 @@ public class LocationController {
 	@GetMapping("/locations/id/{index}")
 	public LocationDetailsDto getLocationById(@PathVariable int index) {
 		return locationServiceImpl.getLocation(index);
+	}
+	
+	@GetMapping({"{id}/buildings"})
+	public ResponseEntity<List<BuildingDto>> getAllBuildingsAtLocation(@PathVariable int id){
+		return new ResponseEntity(locationService.findBuildingsByLocation(id),HttpStatus.OK);		
 	}
 
 }

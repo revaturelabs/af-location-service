@@ -1,15 +1,36 @@
 package com.revature.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class RoomDto {
+
+	public int getId() {
+
+		return id;
+	}
+
+	public void setId(int id) {
+
+		this.id = id;
+	}
+
+	public String getType() {
+
+		return type;
+	}
+
+	public void setType(String type) {
+
+		this.type = type;
+	}
+
+	public String getOccupation() {
+
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+
+		this.occupation = occupation;
+	}
 
 	private int id;
 	private String type;

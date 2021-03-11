@@ -2,7 +2,10 @@ package com.revature.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
 import com.revature.dto.*;
+import com.revature.model.Building;
 import com.revature.model.Location;
 
 public interface LocationService {
@@ -19,4 +22,5 @@ public interface LocationService {
 	public void deleteLocation(int index);
 	public void addBuilding(int index, BuildingRequestDto buildingRequestDto);
 	public void updateLocation(int index, LocationRequestDto locationRequestDto);
+	public List<BuildingDto> findBuildingsByLocation(int id);
 }
