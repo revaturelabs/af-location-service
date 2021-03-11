@@ -3,9 +3,11 @@ package com.revature.service;
 import com.revature.Exception.NotFoundException;
 import com.revature.dto.RoomDetailsDto;
 import com.revature.dto.RoomDto;
+import com.revature.dto.RoomRequestDto;
 import com.revature.model.Building;
 import com.revature.model.Location;
 import com.revature.model.Room;
+import com.revature.repository.BuildingRepository;
 import com.revature.repository.RoomRepository;
 import com.revature.statics.RoomOccupation;
 import com.revature.statics.RoomType;
@@ -21,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -29,6 +31,9 @@ public class RoomServiceTests {
 
     @MockBean
     private RoomRepository roomRepository;
+
+    @MockBean
+    private BuildingRepository buildingRepository;
 
 
     @Autowired
@@ -99,6 +104,7 @@ public class RoomServiceTests {
         testBuilding1.setCity ( "Test City" );
         testBuilding1.setLocation ( testLocation1 );
         testBuilding1.setBuildingId ( 1 );
+        testBuilding1.setRooms ( allRooms );
 
         //LOCATIONS
 
@@ -300,6 +306,7 @@ public class RoomServiceTests {
         remoteTrainingRoomList = Collections.singletonList ( remoteTrainingRoom1WithId );
         remoteMeetingRoomList = Arrays.asList ( remoteMeetingRoom1WithId, remoteMeetingRoom2WithId );
 
+        testBuilding1.setRooms ( allRooms );
         //TODO: Figure out virtual vs remote rooms
         //virtualTrainingRoomList = Arrays.asList ( v)
 //        roomRepository = mock(RoomRepository.class);
@@ -330,24 +337,25 @@ public class RoomServiceTests {
         when ( roomRepository.save ( remoteTrainingRoom1 ) ).thenReturn ( remoteTrainingRoom1WithId );
         when ( roomRepository.existsById ( 1 ) ).thenReturn ( true );
         when ( roomRepository.existsById ( 2 ) ).thenReturn ( true );
-        when ( roomRepository.getOne ( 1 )).thenReturn(physicalMeetingRoom1WithId);
-        when ( roomRepository.getOne ( 2 )).thenReturn(physicalMeetingRoom2WithId);
+        when ( roomRepository.getOne ( 1 ) ).thenReturn ( physicalMeetingRoom1WithId );
+        when ( roomRepository.getOne ( 2 ) ).thenReturn ( physicalMeetingRoom2WithId );
         when ( roomRepository.existsById ( 500 ) ).thenReturn ( false );
-//        when ( roomRepository.save(physicalMeetingRoom1Updated)).then ( ()->{
-//
-//        } )
+        when ( buildingRepository.getOne ( 1 ) ).thenReturn ( testBuilding1 );
+        when ( buildingRepository.existsById ( 1 ) ).thenReturn ( true );
+        when ( buildingRepository.existsById ( 500 ) ).thenReturn ( false );
+
 
     }
 
     @Test
     public void whenSavingDtoWithoutId_SavedDtoWithIdIsReturned() {
 
-    assertEquals(roomDetailsMapper ( physicalMeetingRoom1WithId ), roomService.saveRoom(physicalMeetingRoom1));
+        assertEquals ( roomDetailsMapper ( physicalMeetingRoom1WithId ), roomService.saveRoom ( physicalMeetingRoom1 ) );
 
     }
 
     @Test
-    public void whenRequestingAllRooms_ALlRoomsReturned() {
+    public void whenRequestingAllRooms_AllRoomsReturned() {
 
         assertEquals ( listMapper ( allRooms ), roomService.getAllRooms () );
     }
@@ -361,7 +369,7 @@ public class RoomServiceTests {
     }
 
     @Test
-    public void whenRequestingALlMeetingRooms_AllMeetingRoomsAreReturned() {
+    public void whenRequestingAllMeetingRooms_AllMeetingRoomsAreReturned() {
 
         assertEquals ( listMapper ( meetingRoomList ), roomService.getMeetingRooms () );
 
@@ -413,8 +421,25 @@ public class RoomServiceTests {
     @Test(expected = NotFoundException.class)
     public void whenRequestingRoomByIdThatDoesntExist_notFoundExceptionIsThrown() {
 
-        roomService.getRoom(500);
+        roomService.getRoom ( 500 );
 
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void whenRequestingToUpdateRoomThatDoesntExist_NotFoundExceptionIsThrown() {
+        RoomRequestDto request = new RoomRequestDto ();
+
+        roomService.updateRoom ( 500, request );
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void whenRequestingRoomsFromBuildingThatDoesntExist_NotFoundExceptionIsThrown() {
+        roomService.getRoomsByBuildingId ( 500 );
+    }
+
+    @Test
+    public void whenRequestingRoomsByBuildingId_CorrespondingBuildingsAreReturned() {
+        assertEquals ( listMapper ( allRooms ), roomService.getRoomsByBuildingId ( 1 ) );
     }
 
 
@@ -429,8 +454,25 @@ public class RoomServiceTests {
         assertEquals ( listMapper ( remoteMeetingRoomList ), roomService.getRemoteMeetingRooms () );
     }
 
+    @Test
+    public void whenRequestingToUpdateRoom_RequestedRoom_isUpdated() {
+        RoomRequestDto request = new RoomRequestDto ();
+        request.setName ( physicalMeetingRoom1WithId.getName() );
+        request.setAmenities ( physicalMeetingRoom1WithId.getRoomAmenities () );
+        request.setCapacity ( physicalMeetingRoom1WithId.getCapacity() );
+        request.setOccupation ( physicalMeetingRoom1WithId.getOccupation().name() );
+        request.setFloorNumber ( physicalMeetingRoom1WithId.getFloorNumber() );
+        request.setType (physicalMeetingRoom1.getType().name());
 
 
- }
+
+        roomService.updateRoom ( 1, request );
+        verify ( roomRepository, times ( 1 ) ).existsById ( 1 );
+        verify ( roomRepository, times ( 1 ) ).save ( physicalMeetingRoom1WithId );
+
+    }
+
+
+}
 
 

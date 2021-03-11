@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,13 +33,12 @@ public class RoomServiceImpl implements RoomService {
     public RoomDetailsDto getRoom( int id ) {
         RoomDetailsDto detailsDto;
 
-        if ( roomRepository.existsById(id) ) {
-            Room room = roomRepository.getOne (id);
-            detailsDto =  detailsMapper ( room );
-        }else{
-            throw new NotFoundException("Room with id " + id + " not found.");
+        if ( roomRepository.existsById ( id ) ) {
+            Room room = roomRepository.getOne ( id );
+            detailsDto = detailsMapper ( room );
+        } else {
+            throw new NotFoundException ( "Room with id " + id + " not found." );
         }
-
 
 
         return detailsDto;
@@ -179,11 +177,10 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDto> getRoomsByBuildingId( int id ) throws NotFoundException {
 
-        Optional<Building> buildingOptional = buildingRepository.findById ( id );
         List<RoomDto> buildingRooms;
 
-        if ( buildingOptional.isPresent () ) {
-            Building building = buildingOptional.get ();
+        if ( buildingRepository.existsById ( id ) ) {
+            Building building = buildingRepository.getOne ( id );
             buildingRooms = building.getRooms ().stream ().map ( this::mapDto ).collect ( Collectors.toList () );
         } else {
             throw new NotFoundException ( "Building with id " + id + " not found. Requested rooms not deliverable." );
@@ -210,15 +207,15 @@ public class RoomServiceImpl implements RoomService {
         //could eventually null check fields for patch requests
 
         if ( roomRepository.existsById ( id ) ) {
-            Room room = roomRepository.getOne (id);
+            Room room = roomRepository.getOne ( id );
             room.setType ( RoomType.valueOf ( roomRequestDto.getType () ) );
             room.setOccupation ( RoomOccupation.valueOf ( roomRequestDto.getOccupation () ) );
             room.setCapacity ( roomRequestDto.getCapacity () );
             room.setFloorNumber ( roomRequestDto.getFloorNumber () );
             room.setRoomAmenities ( roomRequestDto.getAmenities () );
-            room.setName ( roomRequestDto.getName() );
-        }else{
-            throw new NotFoundException ( "Room with id " + id + " not found. Requested changes not made.");
+            room.setName ( roomRequestDto.getName () );
+        } else {
+            throw new NotFoundException ( "Room with id " + id + " not found. Requested changes not made." );
         }
     }
 
