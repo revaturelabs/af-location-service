@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -120,7 +121,9 @@ public class LocationServiceImpl implements LocationService {
 			buildingDto.setNumRooms(building.getRooms().size());
 			return buildingDto;
 		}).collect(Collectors.toList());
+
 		locationDetailsDto.setBuildings(buildingDtos);
+
 
 		return locationDetailsDto;
     
