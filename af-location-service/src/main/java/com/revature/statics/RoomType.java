@@ -10,10 +10,11 @@ public enum RoomType {
     PHYSICAL( 1001 ),
     REMOTE( 1002 );
     
+
+
     public Integer getType() {
 
         return type;
-        
     }
 
     private Integer type;

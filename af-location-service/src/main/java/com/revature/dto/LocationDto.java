@@ -10,8 +10,16 @@ public class LocationDto {
     private String zipCode;
     private int numBuildings;
 
-    public LocationDto() {
+    @Override
+    public String toString() {
 
+        return "LocationDto{" +
+                "id=" + id +
+                ", state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", numBuildings=" + numBuildings +
+                '}';
     }
 
     public int getId() {
@@ -85,4 +93,9 @@ public class LocationDto {
     public int hashCode() {
         return Objects.hash ( getId (), getState (), getCity (), getZipCode (), getNumBuildings () );
     }
+
+    public LocationDto() {
+
+    }
+
 }

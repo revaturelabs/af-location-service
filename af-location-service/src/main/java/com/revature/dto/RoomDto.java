@@ -8,7 +8,15 @@ public class RoomDto {
 	private String type;
 	private String occupation;
 
-	public RoomDto() {
+
+	@Override
+	public String toString() {
+
+		return "RoomDto{" +
+				"id=" + id +
+				", type='" + type + '\'' +
+				", occupation='" + occupation + '\'' +
+				'}';
 
 	}
 
@@ -61,4 +69,9 @@ public class RoomDto {
 	public int hashCode() {
 		return Objects.hash ( getId (), getType (), getOccupation () );
 	}
+
+	public RoomDto() {
+
+	}
+
 }

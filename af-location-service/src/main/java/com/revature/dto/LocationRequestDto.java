@@ -8,15 +8,14 @@ public class LocationRequestDto {
     private String city;
     private String zipCode;
 
-    public LocationRequestDto(String state, String city, String zipCode) {
+    @Override
+    public String toString() {
 
-        this.state = state;
-        this.city = city;
-        this.zipCode = zipCode;
-    }
-
-    public LocationRequestDto() {
-
+        return "LocationRequestDto{" +
+                "state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
     }
 
     public String getState() {
@@ -61,4 +60,17 @@ public class LocationRequestDto {
     public int hashCode() {
         return Objects.hash ( getState (), getCity (), getZipCode () );
     }
+
+    public LocationRequestDto(String state, String city, String zipCode) {
+
+        this.state = state;
+        this.city = city;
+        this.zipCode = zipCode;
+    }
+
+    public LocationRequestDto() {
+
+    }
+
+
 }

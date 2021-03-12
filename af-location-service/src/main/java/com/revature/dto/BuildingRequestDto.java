@@ -4,17 +4,6 @@ import java.util.Objects;
 
 public class BuildingRequestDto {
 
-    public BuildingRequestDto() {
-
-    }
-
-    public BuildingRequestDto(String city, String street_address, String zipCode, int totalFloors) {
-
-        this.city = city;
-        this.street_address = street_address;
-        this.zipCode = zipCode;
-        this.totalFloors = totalFloors;
-    }
 
 
     public String getCity() {
@@ -74,4 +63,27 @@ public class BuildingRequestDto {
     public int hashCode() {
         return Objects.hash ( getCity (), getStreet_address (), getZipCode (), getTotalFloors () );
     }
+    public String toString() {
+
+        return "BuildingRequestDto{" +
+                "city='" + city + '\'' +
+                ", street_address='" + street_address + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", totalFloors=" + totalFloors +
+                '}';
+    }
+    
+    public BuildingRequestDto(String city, String street_address,
+                              String zipCode, int totalFloors) {
+
+        this.city = city;
+        this.street_address = street_address;
+        this.zipCode = zipCode;
+        this.totalFloors = totalFloors;
+    }
+
+    public BuildingRequestDto() {
+
+    }
+
 }

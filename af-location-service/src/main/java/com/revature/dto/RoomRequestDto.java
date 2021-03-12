@@ -26,8 +26,18 @@ public class RoomRequestDto {
         this.amenities = amenities;
     }
 
-    public RoomRequestDto() {
 
+    @Override
+    public String toString() {
+
+        return "RoomRequestDto{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", capacity=" + capacity +
+                ", floorNumber=" + floorNumber +
+                ", amenities=" + amenities +
+                '}';
     }
 
     public String getName() {
@@ -102,4 +112,10 @@ public class RoomRequestDto {
     public int hashCode() {
         return Objects.hash ( getName (), getType (), getOccupation (), getCapacity (), getFloorNumber (), getAmenities () );
     }
+
+
+    public RoomRequestDto() {
+
+    }
+  
 }

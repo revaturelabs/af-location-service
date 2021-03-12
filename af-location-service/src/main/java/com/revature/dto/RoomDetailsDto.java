@@ -10,6 +10,21 @@ public class RoomDetailsDto {
     private String type;
     private String occupation;
     private int capacity;
+
+    @Override
+    public String toString() {
+
+        return "RoomDetailsDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", capacity=" + capacity +
+                ", floorNumber=" + floorNumber +
+                ", amenities=" + amenities +
+                '}';
+    }
+
     private int floorNumber;
     private Set<String> amenities;
 
@@ -93,6 +108,7 @@ public class RoomDetailsDto {
         this.capacity = capacity;
         this.floorNumber = floorNumber;
         this.amenities = amenities;
+
     }
 
     public RoomDetailsDto() {
