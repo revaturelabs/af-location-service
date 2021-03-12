@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,9 @@ public class RoomControllerTests {
     private List<RoomDto> remoteMeetingRoomDtos;
     private List<RoomDto> physicalMeetingRoomDtos;
     private List<RoomDto> physicalTrainingRoomDtos;
+    private List<RoomDto> meetingRoomDtos;
     private List<RoomDto> remoteRoomDtos;
+    private List<RoomDto> physicalRoomDtos;
     private List<Room> allRooms;
     private List<Room> trainingRoomList;
     private List<Room> meetingRoomList;
@@ -352,9 +355,10 @@ public class RoomControllerTests {
         physicalMeetingRoomDtos = physicalMeetingRoomList.stream().map( RoomControllerTests::roomMapper).collect(Collectors.toList());
         physicalTrainingRoomDtos = physicalTrainingRoomList.stream().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
         remoteRoomDtos = remoteRoomList.stream ().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
+        physicalRoomDtos = physicalRoomList.stream ().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
+        meetingRoomDtos = meetingRoomList.stream().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
 
         when ( roomService.getRoom ( 1 ) ).thenReturn ( roomDetailsMapper ( physicalMeetingRoom1WithId ) );
-        when ( roomService.getRoom ( 500 ) ).thenThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) );
         when ( buildingRepository.existsById ( 1 ) ).thenReturn ( true );
         when ( buildingRepository.existsById ( 500 ) ).thenReturn ( false );
         when ( buildingRepository.getOne ( 1 ) ).thenReturn ( testBuilding1 );
@@ -366,16 +370,20 @@ public class RoomControllerTests {
         when (roomService.getPhysicalTrainingRooms()).thenReturn(physicalTrainingRoomDtos);
         when (roomService.getRemoteRooms ()).thenReturn(remoteRoomDtos);
         when( roomService.getRoomsByBuildingId ( 1 )).thenReturn(allRoomsDTOs);
-    }
-
-
-    @Test
-    public void whenProvidingBadRoomModel_BadRequestIsReturnedWithCode400() throws Exception {
-
-
-        //Will get buildling id from path variable.
+        when ( roomService.getRoom ( 500 ) ).thenThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) );
+        doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when(roomService).deleteRoom(500);
+        when ( roomService.getMeetingRooms ()).thenReturn(meetingRoomDtos);
 
     }
+
+
+//    @Test
+//    public void whenProvidingBadRoomModel_BadRequestIsReturnedWithCode400() throws Exception {
+//
+//
+//        //Will get buildling id from path variable.
+//
+//    }
 
     @Test
     public void whenGettingRoomWithValidId_RequestedRoomDetailsDtoIsReturnedWithCode200() throws Exception {
@@ -463,13 +471,43 @@ public class RoomControllerTests {
     }
 
     @Test
-    public void whenGettingPhysicalRooms_AllPhysicalRoomsAreReturnedWithCode200() {
+    public void whenGettingPhysicalRooms_AllPhysicalRoomsAreReturnedWithCode200() throws Exception {
 
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical");
+
+
+
+        MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
+
+        String mappedResult = result.getResponse ().getContentAsString ();
+
+        RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
+
+        assertTrue ( resultArray.length > 0 );
+        assertEquals(resultArray.length, physicalRoomDtos.size());
+        verify(roomService , times(1)).getPhysicalRooms ();
+        for ( RoomDto dto : resultArray ) {
+            assertTrue ( physicalRoomDtos.contains ( dto ) );
+        }
     }
 
     @Test
-    public void whenGettingMeetingRooms_AllMeetingRoomsAreReturnedWithCode200() {
+    public void whenGettingMeetingRooms_AllMeetingRoomsAreReturnedWithCode200() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical");
 
+
+        MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
+
+        String mappedResult = result.getResponse ().getContentAsString ();
+
+        RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
+
+        assertTrue ( resultArray.length > 0 );
+        assertEquals(resultArray.length, physicalRoomDtos.size());
+        verify(roomService , times(1)).getPhysicalRooms ();
+        for ( RoomDto dto : resultArray ) {
+            assertTrue ( physicalRoomDtos.contains ( dto ) );
+        }
     }
 
 
@@ -557,10 +595,10 @@ public class RoomControllerTests {
 
     }
 
-    @Test
-    public void whenSavingABadRoom_ExceptionIsThrownAndResponseIsReturnedWithCode400() {
-        //save for next iteration
-    }
+//    @Test
+//    public void whenSavingABadRoom_ExceptionIsThrownAndResponseIsReturnedWithCode400() {
+//        //save for next iteration
+//    }
 
     @Test
     public void whenGettingRoomsByBuildingId_RoomsForThatBuildingAreReturnedWithCode200() throws Exception {
@@ -581,21 +619,40 @@ public class RoomControllerTests {
 
     }
 
+    @Test
+    public void whenGettingRoomsByInvalidBuildingId_ExceptionIsThrowAndResponseIsReturnedWithCode404() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/500" );
+
+        mockMvc.perform ( request ).andExpect ( status ().isNotFound () ).andReturn ();
+        verify(buildingRepository , times(1)).existsById (500);
+
+    }
+
 
     @Test
-    public void whenDeletingRoomWithValidId_RoomIsDeletedCode204IsReturned() {
+    public void whenDeletingRoomWithValidId_RoomIsDeletedCode204IsReturned() throws Exception {
+
+        RequestBuilder request = MockMvcRequestBuilders.delete ( "/api/location/room/1" );
+
+        mockMvc.perform ( request ).andExpect ( status ().isNoContent () ).andReturn ();
+        verify(roomService , times(1)).deleteRoom (1);
 
     }
 
     @Test
-    public void whenDeletingRoomWithInvalidId_NotFoundErrorIsThrownAndCode404IsReturned() {
+    public void whenDeletingRoomWithInvalidId_NotFoundErrorIsThrownAndCode404IsReturned() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.delete ( "/api/location/room/500" );
+
+        mockMvc.perform ( request ).andExpect ( status ().isNotFound()).andReturn ();
+        verify(roomService , times(1)).deleteRoom (500);
+
 
     }
-
-    @Test
-    public void whenUpdatingRoomWithValidId_RoomIsUpdatedAndCode204IsReturned() {
-
-    }
+//
+//    @Test
+//    public void whenUpdatingRoomWithValidId_RoomIsUpdatedAndCode204IsReturned() {
+//
+//    }
 
 
 }

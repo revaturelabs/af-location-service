@@ -26,7 +26,7 @@ public class RoomController {
 		this.buildingRepository = buildingRepository;
 	}
 
-	@GetMapping(value = "room/{id}", produces = "application/json")
+	@GetMapping(value = "/room/{id}", produces = "application/json")
 	public ResponseEntity<Object> getRoom( @PathVariable int id ) {
 		try {
 			return new ResponseEntity<> ( roomService.getRoom ( id ), HttpStatus.OK );
@@ -92,14 +92,37 @@ public class RoomController {
 		return new ResponseEntity<>(roomService.getRemoteRooms(), HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/rooms/physical", produces = "application/json")
+	public ResponseEntity<Object> getPhysicalRooms(){
+		return new ResponseEntity<>(roomService.getPhysicalRooms(), HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/rooms/{buildingId}", produces = "application/json")
 	public ResponseEntity<Object> getRoomsByBuildingId(@PathVariable int buildingId){
-		try {
+		if(buildingRepository.existsById ( buildingId )){
 			return new ResponseEntity<> ( roomService.getRoomsByBuildingId ( buildingId ), HttpStatus.OK );
-		}catch(NotFoundException e){
-			return new ResponseEntity<>( e.getMessage(), HttpStatus.NOT_FOUND);
+		}else{
+			return new ResponseEntity<>( "Building with id " + buildingId + " not found" , HttpStatus.NOT_FOUND);
 		}
 	}
+
+	@GetMapping(value = "/rooms/meeting", produces = "application/json")
+	public ResponseEntity<Object> getMeetingRooms(){
+		return new ResponseEntity<>(roomService.getMeetingRooms(), HttpStatus.OK);
+	}
+
+	@DeleteMapping(value = "/room/{id}", produces = "application/json")
+	public ResponseEntity<Object> deleteRoom (@PathVariable int id){
+
+		try {
+			roomService.deleteRoom(id);
+			return new ResponseEntity<> (  HttpStatus.NO_CONTENT );
+		} catch ( NotFoundException e ) {
+			return new ResponseEntity<> ( e.getMessage (), HttpStatus.NOT_FOUND );
+
+		}
+	}
+
 
 
 }

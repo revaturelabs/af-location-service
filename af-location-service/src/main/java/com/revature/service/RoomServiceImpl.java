@@ -181,16 +181,14 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDto> getRoomsByBuildingId( int id ) throws NotFoundException {
 
-        List<RoomDto> buildingRooms;
 
         if ( buildingRepository.existsById ( id ) ) {
             Building building = buildingRepository.getOne ( id );
-            buildingRooms = building.getRooms ().stream ().map ( this::mapDto ).collect ( Collectors.toList () );
+            return building.getRooms ().stream ().map ( this::mapDto ).collect ( Collectors.toList () );
         } else {
             throw new NotFoundException ( "Building with id " + id + " not found. Requested rooms not deliverable." );
         }
 
-        return buildingRooms;
     }
 
     // if doesn't exist throw not found exception.
