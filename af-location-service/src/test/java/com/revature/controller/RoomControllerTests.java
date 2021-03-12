@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -352,11 +351,11 @@ public class RoomControllerTests {
         allRoomsDTOs = allRooms.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
         remoteTrainingRoomDtos = remoteTrainingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
         remoteMeetingRoomDtos = remoteMeetingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
-        physicalMeetingRoomDtos = physicalMeetingRoomList.stream().map( RoomControllerTests::roomMapper).collect(Collectors.toList());
-        physicalTrainingRoomDtos = physicalTrainingRoomList.stream().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
-        remoteRoomDtos = remoteRoomList.stream ().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
-        physicalRoomDtos = physicalRoomList.stream ().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
-        meetingRoomDtos = meetingRoomList.stream().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
+        physicalMeetingRoomDtos = physicalMeetingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        physicalTrainingRoomDtos = physicalTrainingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        remoteRoomDtos = remoteRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        physicalRoomDtos = physicalRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        meetingRoomDtos = meetingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
 
         when ( roomService.getRoom ( 1 ) ).thenReturn ( roomDetailsMapper ( physicalMeetingRoom1WithId ) );
         when ( buildingRepository.existsById ( 1 ) ).thenReturn ( true );
@@ -366,16 +365,16 @@ public class RoomControllerTests {
         when ( roomService.getAllRooms () ).thenReturn ( allRoomsDTOs );
         when ( roomService.getRemoteTrainingRooms () ).thenReturn ( remoteTrainingRoomDtos );
         when ( roomService.getRemoteMeetingRooms () ).thenReturn ( remoteMeetingRoomDtos );
-        when (roomService.getPhysicalMeetingRooms ()).thenReturn ( physicalMeetingRoomDtos);
-        when (roomService.getPhysicalTrainingRooms()).thenReturn(physicalTrainingRoomDtos);
-        when (roomService.getPhysicalRooms ()).thenReturn(physicalRoomDtos);
-        when (roomService.getRemoteRooms ()).thenReturn(remoteRoomDtos);
-        when( roomService.getRoomsByBuildingId ( 1 )).thenReturn(allRoomsDTOs);
+        when ( roomService.getPhysicalMeetingRooms () ).thenReturn ( physicalMeetingRoomDtos );
+        when ( roomService.getPhysicalTrainingRooms () ).thenReturn ( physicalTrainingRoomDtos );
+        when ( roomService.getPhysicalRooms () ).thenReturn ( physicalRoomDtos );
+        when ( roomService.getRemoteRooms () ).thenReturn ( remoteRoomDtos );
+        when ( roomService.getRoomsByBuildingId ( 1 ) ).thenReturn ( allRoomsDTOs );
         when ( roomService.getRoom ( 500 ) ).thenThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) );
-        doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when(roomService).deleteRoom(500);
-        when ( roomService.getMeetingRooms ()).thenReturn(meetingRoomDtos);
-        doNothing().when(roomService).updateRoom(1, roomRequestMapper ( physicalMeetingRoom1WithId ));
-        doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when(roomService).updateRoom(500, roomRequestMapper(physicalMeetingRoom1WithId));
+        doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when ( roomService ).deleteRoom ( 500 );
+        when ( roomService.getMeetingRooms () ).thenReturn ( meetingRoomDtos );
+        doNothing ().when ( roomService ).updateRoom ( 1, roomRequestMapper ( physicalMeetingRoom1WithId ) );
+        doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when ( roomService ).updateRoom ( 500, roomRequestMapper ( physicalMeetingRoom1WithId ) );
 
     }
 
@@ -407,7 +406,7 @@ public class RoomControllerTests {
     public void whenGettingRoomWithInvalidId_404IsReturned() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/room/500" );
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isNotFound () ).andReturn ();
-        verify(roomService , times(1)).getRoom(500) ;
+        verify ( roomService, times ( 1 ) ).getRoom ( 500 );
         assertEquals ( 404, result.getResponse ().getStatus () );
     }
 
@@ -415,8 +414,7 @@ public class RoomControllerTests {
     @Test
     public void whenGettingPhysicalMeetingRooms_AllPhysicalMeetingRoomsAreReturnedWithCode200() throws Exception {
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical/meeting");
-
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/physical/meeting" );
 
 
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
@@ -426,17 +424,16 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        assertEquals(resultArray.length, physicalMeetingRoomDtos.size());
-        verify(roomService , times(1)).getPhysicalMeetingRooms ();
+        assertEquals ( resultArray.length, physicalMeetingRoomDtos.size () );
+        verify ( roomService, times ( 1 ) ).getPhysicalMeetingRooms ();
         for ( RoomDto dto : resultArray ) {
             assertTrue ( physicalMeetingRoomDtos.contains ( dto ) );
         }
     }
 
     @Test
-    public void whenGettingPhysicalTrainingRooms_AllPhysicalTrainingRoomsAreReturnedWithCode200() throws Exception{
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical/training");
-
+    public void whenGettingPhysicalTrainingRooms_AllPhysicalTrainingRoomsAreReturnedWithCode200() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/physical/training" );
 
 
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
@@ -446,17 +443,16 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        assertEquals(resultArray.length, physicalTrainingRoomDtos.size());
-        verify(roomService , times(1)).getPhysicalTrainingRooms ();
+        assertEquals ( resultArray.length, physicalTrainingRoomDtos.size () );
+        verify ( roomService, times ( 1 ) ).getPhysicalTrainingRooms ();
         for ( RoomDto dto : resultArray ) {
             assertTrue ( physicalTrainingRoomDtos.contains ( dto ) );
         }
     }
 
     @Test
-    public void whenGettingRemoteRooms_AllRemoteRoomsAreReturnedWithCode200() throws Exception{
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/remote");
-
+    public void whenGettingRemoteRooms_AllRemoteRoomsAreReturnedWithCode200() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/remote" );
 
 
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
@@ -466,8 +462,8 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        assertEquals(resultArray.length, remoteRoomDtos.size());
-        verify(roomService , times(1)).getRemoteRooms ();
+        assertEquals ( resultArray.length, remoteRoomDtos.size () );
+        verify ( roomService, times ( 1 ) ).getRemoteRooms ();
         for ( RoomDto dto : resultArray ) {
             assertTrue ( remoteRoomDtos.contains ( dto ) );
         }
@@ -476,8 +472,7 @@ public class RoomControllerTests {
     @Test
     public void whenGettingPhysicalRooms_AllPhysicalRoomsAreReturnedWithCode200() throws Exception {
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical");
-
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/physical" );
 
 
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
@@ -487,8 +482,8 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        assertEquals(resultArray.length, physicalRoomDtos.size());
-        verify(roomService , times(1)).getPhysicalRooms ();
+        assertEquals ( resultArray.length, physicalRoomDtos.size () );
+        verify ( roomService, times ( 1 ) ).getPhysicalRooms ();
         for ( RoomDto dto : resultArray ) {
             assertTrue ( physicalRoomDtos.contains ( dto ) );
         }
@@ -496,7 +491,7 @@ public class RoomControllerTests {
 
     @Test
     public void whenGettingMeetingRooms_AllMeetingRoomsAreReturnedWithCode200() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/meeting");
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/meeting" );
 
 
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
@@ -506,8 +501,8 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        assertEquals(resultArray.length, meetingRoomDtos.size());
-        verify(roomService , times(1)).getMeetingRooms ();
+        assertEquals ( resultArray.length, meetingRoomDtos.size () );
+        verify ( roomService, times ( 1 ) ).getMeetingRooms ();
         for ( RoomDto dto : resultArray ) {
             assertTrue ( meetingRoomDtos.contains ( dto ) );
         }
@@ -525,10 +520,10 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
 
-        assertEquals ( allRoomsDTOs.size(), resultArray.length );
+        assertEquals ( allRoomsDTOs.size (), resultArray.length );
 
         assertTrue ( resultArray.length > 0 );
-        verify(roomService , times(1)).getAllRooms ();
+        verify ( roomService, times ( 1 ) ).getAllRooms ();
 
         for ( RoomDto dto : resultArray ) {
             assertTrue ( allRoomsDTOs.contains ( dto ) );
@@ -547,8 +542,8 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        assertEquals(resultArray.length, remoteTrainingRoomDtos.size());
-        verify(roomService , times(1)).getRemoteTrainingRooms ();
+        assertEquals ( resultArray.length, remoteTrainingRoomDtos.size () );
+        verify ( roomService, times ( 1 ) ).getRemoteTrainingRooms ();
 
         for ( RoomDto dto : resultArray ) {
             assertTrue ( remoteTrainingRoomDtos.contains ( dto ) );
@@ -568,7 +563,7 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        verify(roomService , times(1)).getRemoteMeetingRooms ();
+        verify ( roomService, times ( 1 ) ).getRemoteMeetingRooms ();
         for ( RoomDto dto : resultArray ) {
             assertTrue ( remoteMeetingRoomDtos.contains ( dto ) );
         }
@@ -592,7 +587,7 @@ public class RoomControllerTests {
         String mappedResult = result.getResponse ().getContentAsString ();
 
         RoomDetailsDto resultObject = mapper.readValue ( mappedResult, RoomDetailsDto.class );
-        verify(roomService , times(1)).saveRoom ( physicalMeetingRoom1 );
+        verify ( roomService, times ( 1 ) ).saveRoom ( physicalMeetingRoom1 );
         assertEquals ( roomDetailsMapper ( physicalMeetingRoom1WithId ), resultObject );
 
 
@@ -615,7 +610,7 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
         assertTrue ( resultArray.length > 0 );
-        verify(roomService , times(1)).getRoomsByBuildingId (1);
+        verify ( roomService, times ( 1 ) ).getRoomsByBuildingId ( 1 );
         for ( RoomDto dto : resultArray ) {
             assertTrue ( allRoomsDTOs.contains ( dto ) );
         }
@@ -627,7 +622,7 @@ public class RoomControllerTests {
         RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/500" );
 
         mockMvc.perform ( request ).andExpect ( status ().isNotFound () ).andReturn ();
-        verify(buildingRepository , times(1)).existsById (500);
+        verify ( buildingRepository, times ( 1 ) ).existsById ( 500 );
 
     }
 
@@ -638,7 +633,7 @@ public class RoomControllerTests {
         RequestBuilder request = MockMvcRequestBuilders.delete ( "/api/location/room/1" );
 
         mockMvc.perform ( request ).andExpect ( status ().isNoContent () ).andReturn ();
-        verify(roomService , times(1)).deleteRoom (1);
+        verify ( roomService, times ( 1 ) ).deleteRoom ( 1 );
 
     }
 
@@ -646,8 +641,8 @@ public class RoomControllerTests {
     public void whenDeletingRoomWithInvalidId_NotFoundErrorIsThrownAndCode404IsReturned() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.delete ( "/api/location/room/500" );
 
-        mockMvc.perform ( request ).andExpect ( status ().isNotFound()).andReturn ();
-        verify(roomService , times(1)).deleteRoom (500);
+        mockMvc.perform ( request ).andExpect ( status ().isNotFound () ).andReturn ();
+        verify ( roomService, times ( 1 ) ).deleteRoom ( 500 );
 
 
     }
@@ -657,29 +652,28 @@ public class RoomControllerTests {
         String mappedRequestObject = writer.writeValueAsString ( roomRequestMapper ( physicalMeetingRoom1WithId ) );
 
         RequestBuilder request = MockMvcRequestBuilders.put ( "/api/location/room/1" )
-                .contentType ( APPLICATION_JSON)
-                .content(mappedRequestObject)
+                .contentType ( APPLICATION_JSON )
+                .content ( mappedRequestObject )
                 .characterEncoding ( "utf-8" );
 
-        mockMvc.perform ( request ).andExpect ( status ().isNoContent()).andReturn ();
-        verify(roomService , times(1)).updateRoom (1, roomRequestMapper ( physicalMeetingRoom1WithId ));
-
+        mockMvc.perform ( request ).andExpect ( status ().isNoContent () ).andReturn ();
+        verify ( roomService, times ( 1 ) ).updateRoom ( 1, roomRequestMapper ( physicalMeetingRoom1WithId ) );
 
 
     }
 
     @Test
-    public void whenUpdatingRoomWithInvalidId_NotFoundErrorIsThrownAndCode404IsReturned()throws Exception {
+    public void whenUpdatingRoomWithInvalidId_NotFoundErrorIsThrownAndCode404IsReturned() throws Exception {
 
         String mappedRequestObject = writer.writeValueAsString ( roomRequestMapper ( physicalMeetingRoom1WithId ) );
 
         RequestBuilder request = MockMvcRequestBuilders.put ( "/api/location/room/500" )
-                .contentType ( APPLICATION_JSON)
-                .content(mappedRequestObject)
+                .contentType ( APPLICATION_JSON )
+                .content ( mappedRequestObject )
                 .characterEncoding ( "utf-8" );
 
-        mockMvc.perform ( request ).andExpect ( status ().isNotFound()).andReturn ();
-        verify(roomService , times(1)).updateRoom (500, roomRequestMapper ( physicalMeetingRoom1WithId ));
+        mockMvc.perform ( request ).andExpect ( status ().isNotFound () ).andReturn ();
+        verify ( roomService, times ( 1 ) ).updateRoom ( 500, roomRequestMapper ( physicalMeetingRoom1WithId ) );
 
 
     }

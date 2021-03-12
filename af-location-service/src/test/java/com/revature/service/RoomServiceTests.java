@@ -70,8 +70,8 @@ public class RoomServiceTests {
 
     private static RoomDetailsDto roomDetailsMapper( Room room ) {
         RoomDetailsDto detailsDto = new RoomDetailsDto ();
-        detailsDto.setId(room.getRoomId ());
-        detailsDto.setOccupation ( room.getOccupation().name () );
+        detailsDto.setId ( room.getRoomId () );
+        detailsDto.setOccupation ( room.getOccupation ().name () );
         detailsDto.setCapacity ( room.getCapacity () );
         detailsDto.setFloorNumber ( room.getFloorNumber () );
         detailsDto.setName ( room.getName () );
@@ -465,13 +465,12 @@ public class RoomServiceTests {
     @Test
     public void whenRequestingToUpdateRoom_RequestedRoomIsUpdated() {
         RoomRequestDto request = new RoomRequestDto ();
-        request.setName ( physicalMeetingRoom1WithId.getName() );
+        request.setName ( physicalMeetingRoom1WithId.getName () );
         request.setAmenities ( physicalMeetingRoom1WithId.getRoomAmenities () );
-        request.setCapacity ( physicalMeetingRoom1WithId.getCapacity() );
-        request.setOccupation ( physicalMeetingRoom1WithId.getOccupation().name() );
-        request.setFloorNumber ( physicalMeetingRoom1WithId.getFloorNumber() );
-        request.setType (physicalMeetingRoom1.getType().name());
-
+        request.setCapacity ( physicalMeetingRoom1WithId.getCapacity () );
+        request.setOccupation ( physicalMeetingRoom1WithId.getOccupation ().name () );
+        request.setFloorNumber ( physicalMeetingRoom1WithId.getFloorNumber () );
+        request.setType ( physicalMeetingRoom1.getType ().name () );
 
 
         roomService.updateRoom ( 1, request );
@@ -481,7 +480,7 @@ public class RoomServiceTests {
     }
 
     @Test
-    public void whenRequestingToDeleteValidRoom_RequestedRoomIsDeleted(){
+    public void whenRequestingToDeleteValidRoom_RequestedRoomIsDeleted() {
         roomService.deleteRoom ( 1 );
         verify ( roomRepository, times ( 1 ) ).existsById ( 1 );
         verify ( roomRepository, times ( 1 ) ).deleteById ( 1 );

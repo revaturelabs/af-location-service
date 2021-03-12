@@ -29,6 +29,18 @@ public class RoomServiceImpl implements RoomService {
         this.buildingRepository = buildingRepository;
     }
 
+    private static RoomDetailsDto detailsMapper( Room room ) {
+        RoomDetailsDto detailsDto = new RoomDetailsDto ();
+        detailsDto.setId ( room.getRoomId () );
+        detailsDto.setOccupation ( room.getOccupation ().name () );
+        detailsDto.setCapacity ( room.getCapacity () );
+        detailsDto.setFloorNumber ( room.getFloorNumber () );
+        detailsDto.setName ( room.getName () );
+        detailsDto.setType ( room.getType ().toString () );
+        Set<String> roomAmenities = room.getRoomAmenities ();
+        detailsDto.setAmenities ( roomAmenities );
+        return detailsDto;
+    }
 
     @Override
     public RoomDetailsDto getRoom( int id ) throws NotFoundException {
@@ -159,19 +171,6 @@ public class RoomServiceImpl implements RoomService {
         return remoteMeetingRooms;
     }
 
-    private static RoomDetailsDto detailsMapper( Room room ) {
-        RoomDetailsDto detailsDto = new RoomDetailsDto ();
-        detailsDto.setId(room.getRoomId ());
-        detailsDto.setOccupation ( room.getOccupation().name () );
-        detailsDto.setCapacity ( room.getCapacity () );
-        detailsDto.setFloorNumber ( room.getFloorNumber () );
-        detailsDto.setName ( room.getName () );
-        detailsDto.setType ( room.getType ().toString () );
-        Set<String> roomAmenities = room.getRoomAmenities ();
-        detailsDto.setAmenities ( roomAmenities );
-        return detailsDto;
-    }
-
     @Override
     public RoomDetailsDto saveRoom( Room room ) {
         room = roomRepository.save ( room );
@@ -195,7 +194,7 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public void deleteRoom( int id ) throws NotFoundException{
+    public void deleteRoom( int id ) throws NotFoundException {
         if ( roomRepository.existsById ( id ) ) {
             roomRepository.deleteById ( id );
         } else
@@ -216,7 +215,7 @@ public class RoomServiceImpl implements RoomService {
             room.setFloorNumber ( roomRequestDto.getFloorNumber () );
             room.setRoomAmenities ( roomRequestDto.getAmenities () );
             room.setName ( roomRequestDto.getName () );
-            roomRepository.save( room );
+            roomRepository.save ( room );
         } else {
             throw new NotFoundException ( "Room with id " + id + " not found. Requested changes not made." );
         }
