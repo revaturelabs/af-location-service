@@ -61,4 +61,15 @@ public class RoomController {
 
 
 	}
+
+	@GetMapping(value = "/rooms", produces = "application/json")
+	public ResponseEntity<Object> getAllRooms(){
+		return new ResponseEntity<> (roomService.getAllRooms(), HttpStatus.OK);
+	}
+
+	@GetMapping(value="/rooms/remote/training")
+	public ResponseEntity<Object> getRemoteTrainingRooms(){
+		return new ResponseEntity<>(roomService.getRemoteTrainingRooms (), HttpStatus.OK);
+	}
+
 }
