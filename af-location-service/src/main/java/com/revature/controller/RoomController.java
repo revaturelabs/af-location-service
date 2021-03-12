@@ -87,5 +87,19 @@ public class RoomController {
 		return new ResponseEntity<>( roomService.getPhysicalTrainingRooms (), HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/rooms/remote", produces = "application/json")
+	public ResponseEntity<Object> getRemoteRooms(){
+		return new ResponseEntity<>(roomService.getRemoteRooms(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/rooms/{buildingId}", produces = "application/json")
+	public ResponseEntity<Object> getRoomsByBuildingId(@PathVariable int buildingId){
+		try {
+			return new ResponseEntity<> ( roomService.getRoomsByBuildingId ( buildingId ), HttpStatus.OK );
+		}catch(NotFoundException e){
+			return new ResponseEntity<>( e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
+
 
 }
