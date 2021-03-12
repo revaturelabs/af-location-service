@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.service.RoomService;
 
 @RestController
-@RequestMapping("room")
+@RequestMapping("/api/")
 @CrossOrigin
 public class RoomController {
 

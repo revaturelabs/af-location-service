@@ -16,6 +16,10 @@ import java.util.List;
 @Repository
 public interface BuildingRepository extends JpaRepository<Building,Integer> {
 
+	List<Building> findByCity(String city);
+  
+	List<Building> findByStreetAddress(String address);
+
 	@Query("select b from Building b where location_id = ?1")
 	List<Building> findAllByLocationId(@Param(value = "id") int id);
 

@@ -2,17 +2,6 @@ package com.revature.dto;
 
 public class BuildingRequestDto {
 
-    public BuildingRequestDto() {
-
-    }
-
-    public BuildingRequestDto(String city, String street_address, String zipCode, int totalFloors) {
-
-        this.city = city;
-        this.street_address = street_address;
-        this.zipCode = zipCode;
-        this.totalFloors = totalFloors;
-    }
 
 
     public String getCity() {
@@ -59,5 +48,29 @@ public class BuildingRequestDto {
     private String street_address;
     private String zipCode;
     private int totalFloors;
+
+    @Override
+    public String toString() {
+
+        return "BuildingRequestDto{" +
+                "city='" + city + '\'' +
+                ", street_address='" + street_address + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", totalFloors=" + totalFloors +
+                '}';
+    }
+    
+    public BuildingRequestDto(String city, String street_address,
+                              String zipCode, int totalFloors) {
+
+        this.city = city;
+        this.street_address = street_address;
+        this.zipCode = zipCode;
+        this.totalFloors = totalFloors;
+    }
+
+    public BuildingRequestDto() {
+
+    }
 
 }

@@ -13,6 +13,39 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Room {
 
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="room_id")
+	private int roomId;
+
+
+	@NotNull
+	private String name;
+
+
+	@NotNull
+	private RoomType type;
+
+
+	@NotNull
+	private RoomOccupation occupation;
+
+
+	@NotNull
+	private int capacity;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "building_id", nullable = false)
+	private Building building;
+
+	@ElementCollection
+	private Set<String> roomAmenities;
+
+	@Column(name = "floor_number")
+	@NotNull
+	private int floorNumber;
+
 	public int getRoomId() {
 
 		return roomId;
@@ -97,38 +130,6 @@ public class Room {
 
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="room_id")
-	private int roomId;
-
-
-	@NotNull
-	private String name;
-
-
-	@NotNull
-	private RoomType type;
-
-
-	@NotNull
-	private RoomOccupation occupation;
-
-
-	@NotNull
-	private int capacity;
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "building_id", nullable = false)
-	private Building building;
-
-	@ElementCollection
-	private Set<String> roomAmenities;
-
-	@Column(name = "floor_number")
-	@NotNull
-	private int floorNumber;
-
 
 	public Room(int roomId, String name, RoomType type, RoomOccupation occupation,
 				int capacity, Building building, Set<String> roomAmenities,
@@ -210,3 +211,4 @@ public class Room {
 	}
 
 }
+
