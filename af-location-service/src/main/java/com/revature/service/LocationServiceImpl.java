@@ -46,17 +46,37 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public List<LocationDto> getLocationsByState(String state) {
 		String sanitizedState = this.sanitizeState(state);
-		List<LocationDto> locations = this.getAllLocations();
-		return locations.stream()
-				.filter(locationDto -> locationDto.getState().equals(sanitizedState)).collect(Collectors.toList());
+		List<Location> locations = locationRepository.findAllByState(sanitizedState);
+		return locations.stream().map(location -> {
+			LocationDto locationDto = new LocationDto();
+			locationDto.setId(location.getLocationId());
+			locationDto.setCity(location.getCity());
+			locationDto.setState(location.getState());
+			locationDto.setZipCode(location.getZipCode());
+			locationDto.setNumBuildings(location.getBuildings().size());
+			return locationDto;
+		}).collect(Collectors.toList());
+//		List<LocationDto> locations = this.getAllLocations();
+//		return locations.stream()
+//				.filter(locationDto -> locationDto.getState().equals(sanitizedState)).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<LocationDto> getLocationsByCity(String city) {
 		String sanitizedCity = this.sanitizeCity(city);
-		List<LocationDto> locations = this.getAllLocations();
-		return locations.stream()
-				.filter(locationDto -> locationDto.getCity().equals(sanitizedCity)).collect(Collectors.toList());
+		List<Location> locations = locationRepository.findAllByCity(sanitizedCity);
+		return locations.stream().map(location -> {
+			LocationDto locationDto = new LocationDto();
+			locationDto.setId(location.getLocationId());
+			locationDto.setCity(location.getCity());
+			locationDto.setState(location.getState());
+			locationDto.setZipCode(location.getZipCode());
+			locationDto.setNumBuildings(location.getBuildings().size());
+			return locationDto;
+		}).collect(Collectors.toList());
+//		List<LocationDto> locations = this.getAllLocations();
+//		return locations.stream()
+//				.filter(locationDto -> locationDto.getCity().equals(sanitizedCity)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -64,11 +84,20 @@ public class LocationServiceImpl implements LocationService {
 		if( zipCode.length() > 5 ) {
 			zipCode = zipCode.substring(0,4);
 		}
-
-		String sanitizedZipCode = zipCode;
-		List<LocationDto> locations = this.getAllLocations();
-		return locations.stream()
-				.filter(locationDto -> locationDto.getZipCode().equals(sanitizedZipCode)).collect(Collectors.toList());
+		List<Location> locations = locationRepository.findAllByZipCode(zipCode);
+		return locations.stream().map(location -> {
+			LocationDto locationDto = new LocationDto();
+			locationDto.setId(location.getLocationId());
+			locationDto.setCity(location.getCity());
+			locationDto.setState(location.getState());
+			locationDto.setZipCode(location.getZipCode());
+			locationDto.setNumBuildings(location.getBuildings().size());
+			return locationDto;
+		}).collect(Collectors.toList());
+//		String sanitizedZipCode = zipCode;
+//		List<LocationDto> locations = this.getAllLocations();
+//		return locations.stream()
+//				.filter(locationDto -> locationDto.getZipCode().equals(sanitizedZipCode)).collect(Collectors.toList());
     
 	}
 
