@@ -123,6 +123,18 @@ public class RoomController {
 		}
 	}
 
+	@PutMapping(value = "/room/{id}", produces = "application/json")
+	public ResponseEntity<Object> updateRoom (@PathVariable int id, @RequestBody RoomRequestDto roomRequestDto){
+
+		try {
+			roomService.updateRoom (id, roomRequestDto);
+			return new ResponseEntity<> (  HttpStatus.NO_CONTENT );
+		} catch ( NotFoundException e ) {
+			return new ResponseEntity<> ( e.getMessage (), HttpStatus.NOT_FOUND );
+
+		}
+	}
+
 
 
 }

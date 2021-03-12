@@ -373,6 +373,8 @@ public class RoomControllerTests {
         when ( roomService.getRoom ( 500 ) ).thenThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) );
         doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when(roomService).deleteRoom(500);
         when ( roomService.getMeetingRooms ()).thenReturn(meetingRoomDtos);
+        doNothing().when(roomService).updateRoom(1, roomRequestMapper ( physicalMeetingRoom1WithId ));
+        doThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) ).when(roomService).updateRoom(500, roomRequestMapper(physicalMeetingRoom1WithId));
 
     }
 
@@ -648,11 +650,38 @@ public class RoomControllerTests {
 
 
     }
-//
-//    @Test
-//    public void whenUpdatingRoomWithValidId_RoomIsUpdatedAndCode204IsReturned() {
-//
-//    }
+
+    @Test
+    public void whenUpdatingRoomWithValidId_RoomIsUpdatedAndCode204IsReturned() throws Exception {
+        String mappedRequestObject = writer.writeValueAsString ( roomRequestMapper ( physicalMeetingRoom1WithId ) );
+
+        RequestBuilder request = MockMvcRequestBuilders.put ( "/api/location/room/1" )
+                .contentType ( APPLICATION_JSON)
+                .content(mappedRequestObject)
+                .characterEncoding ( "utf-8" );
+
+        mockMvc.perform ( request ).andExpect ( status ().isNoContent()).andReturn ();
+        verify(roomService , times(1)).updateRoom (1, roomRequestMapper ( physicalMeetingRoom1WithId ));
+
+
+
+    }
+
+    @Test
+    public void whenUpdatingRoomWithInvalidId_NotFoundErrorIsThrownAndCode404IsReturned()throws Exception {
+
+        String mappedRequestObject = writer.writeValueAsString ( roomRequestMapper ( physicalMeetingRoom1WithId ) );
+
+        RequestBuilder request = MockMvcRequestBuilders.put ( "/api/location/room/500" )
+                .contentType ( APPLICATION_JSON)
+                .content(mappedRequestObject)
+                .characterEncoding ( "utf-8" );
+
+        mockMvc.perform ( request ).andExpect ( status ().isNotFound()).andReturn ();
+        verify(roomService , times(1)).updateRoom (500, roomRequestMapper ( physicalMeetingRoom1WithId ));
+
+
+    }
 
 
 }
