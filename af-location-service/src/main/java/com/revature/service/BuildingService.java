@@ -25,6 +25,6 @@ public interface BuildingService{
 	void updateBuilding(int index, BuildingRequestDto dto) throws Exception;
 
     List<BuildingDto> getBuildingsByLocation(int index);
-    void createBuilding(BuildingRequestDto buildingRequestDto, Location location);
+    void createBuilding(BuildingRequestDto buildingRequestDto, int index);
 
 }

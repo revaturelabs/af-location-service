@@ -17,10 +17,6 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-  @Autowired
-	private BuildingService bs;
-  @Autowired
-	private BuildingServiceImpl buildingService;
 
 	@Override
 	public void createLocation( LocationRequestDto locationRequestDto ) {

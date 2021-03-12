@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+import com.revature.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ import com.revature.repository.BuildingRepository;
 public class BuildingServiceImpl implements BuildingService{
 
 	private BuildingRepository buildingRepository;
+
+	@Autowired
+	private LocationRepository locationRepository;
 	
 	@Autowired
 	public BuildingServiceImpl(BuildingRepository repository) {
@@ -51,8 +55,9 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public void createBuilding(BuildingRequestDto buildingRequestDto, Location location) {
+	public void createBuilding(BuildingRequestDto buildingRequestDto, int index) {
 
+		Location location = locationRepository.findById(index).get();
 		Building building = new Building();
 		building.setStreetAddress(buildingRequestDto.getStreet_address());
 		building.setCity(buildingRequestDto.getCity());
