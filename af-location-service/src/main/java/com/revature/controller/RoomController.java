@@ -67,9 +67,25 @@ public class RoomController {
 		return new ResponseEntity<> (roomService.getAllRooms(), HttpStatus.OK);
 	}
 
-	@GetMapping(value="/rooms/remote/training")
+	@GetMapping(value="/rooms/remote/training", produces = "application/json")
 	public ResponseEntity<Object> getRemoteTrainingRooms(){
 		return new ResponseEntity<>(roomService.getRemoteTrainingRooms (), HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/rooms/remote/meeting", produces = "application/json")
+	public ResponseEntity<Object> getRemoteMeetingRooms(){
+		return new ResponseEntity<>(roomService.getRemoteMeetingRooms (), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/rooms/physical/meeting", produces = "application/json")
+	public ResponseEntity<Object> getPhysicalMeetingRooms(){
+		return new ResponseEntity<>(roomService.getPhysicalMeetingRooms (), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/rooms/physical/training", produces = "application/json")
+	public ResponseEntity<Object> getPhysicalTrainingRooms(){
+		return new ResponseEntity<>( roomService.getPhysicalTrainingRooms (), HttpStatus.OK);
+	}
+
 
 }

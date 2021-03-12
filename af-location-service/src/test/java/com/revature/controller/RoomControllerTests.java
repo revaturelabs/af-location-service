@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +52,10 @@ public class RoomControllerTests {
     private Location testLocation1;
     private Building testBuilding1;
     private List<RoomDto> allRoomsDTOs;
+    private List<RoomDto> remoteTrainingRoomDtos;
+    private List<RoomDto> remoteMeetingRoomDtos;
+    private List<RoomDto> physicalMeetingRoomDtos;
+    private List<RoomDto> physicalTrainingRoomDtos;
     private List<Room> allRooms;
     private List<Room> trainingRoomList;
     private List<Room> meetingRoomList;
@@ -342,6 +346,12 @@ public class RoomControllerTests {
 
         testBuilding1.setRooms ( allRooms );
         allRoomsDTOs = allRooms.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        remoteTrainingRoomDtos = remoteTrainingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        remoteMeetingRoomDtos = remoteMeetingRoomList.stream ().map ( RoomControllerTests::roomMapper ).collect ( Collectors.toList () );
+        physicalMeetingRoomDtos = physicalMeetingRoomList.stream().map( RoomControllerTests::roomMapper).collect(Collectors.toList());
+        physicalTrainingRoomDtos = physicalTrainingRoomList.stream().map(RoomControllerTests::roomMapper).collect(Collectors.toList());
+
+
         when ( roomService.getRoom ( 1 ) ).thenReturn ( roomDetailsMapper ( physicalMeetingRoom1WithId ) );
         when ( roomService.getRoom ( 500 ) ).thenThrow ( new NotFoundException ( "Room with id " + 500 + " not found." ) );
         when ( buildingRepository.existsById ( 1 ) ).thenReturn ( true );
@@ -349,6 +359,10 @@ public class RoomControllerTests {
         when ( buildingRepository.getOne ( 1 ) ).thenReturn ( testBuilding1 );
         when ( roomService.saveRoom ( physicalMeetingRoom1 ) ).thenReturn ( roomDetailsMapper ( physicalMeetingRoom1WithId ) );
         when ( roomService.getAllRooms () ).thenReturn ( allRoomsDTOs );
+        when ( roomService.getRemoteTrainingRooms () ).thenReturn ( remoteTrainingRoomDtos );
+        when ( roomService.getRemoteMeetingRooms () ).thenReturn ( remoteMeetingRoomDtos );
+        when (roomService.getPhysicalMeetingRooms ()).thenReturn ( physicalMeetingRoomDtos);
+        when (roomService.getPhysicalTrainingRooms()).thenReturn(physicalTrainingRoomDtos);
     }
 
 
@@ -377,21 +391,52 @@ public class RoomControllerTests {
 
     @Test
     public void whenGettingRoomWithInvalidId_404IsReturned() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/room/500" );
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/room/500" );
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isNotFound () ).andReturn ();
+        verify(roomService , times(1)).getRoom(500) ;
         assertEquals ( 404, result.getResponse ().getStatus () );
-
     }
 
 
     @Test
-    public void whenGettingPhysicalMeetingRooms_AllPhysicalMeetingRoomsAreReturnedWithCode200() {
+    public void whenGettingPhysicalMeetingRooms_AllPhysicalMeetingRoomsAreReturnedWithCode200() throws Exception {
 
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical/meeting");
+
+
+
+        MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
+
+        String mappedResult = result.getResponse ().getContentAsString ();
+
+        RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
+
+        assertTrue ( resultArray.length > 0 );
+        assertEquals(resultArray.length, physicalMeetingRoomDtos.size());
+
+        for ( RoomDto dto : resultArray ) {
+            assertTrue ( physicalMeetingRoomDtos.contains ( dto ) );
+        }
     }
 
     @Test
-    public void whenGettingPhysicalTrainingRooms_AllPhysicalTrainingRoomsAreReturnedWithCode200() {
+    public void whenGettingPhysicalTrainingRooms_AllPhysicalTrainingRoomsAreReturnedWithCode200() throws Exception{
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/location/rooms/physical/training");
 
+
+
+        MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
+
+        String mappedResult = result.getResponse ().getContentAsString ();
+
+        RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
+
+        assertTrue ( resultArray.length > 0 );
+        assertEquals(resultArray.length, physicalTrainingRoomDtos.size());
+
+        for ( RoomDto dto : resultArray ) {
+            assertTrue ( physicalTrainingRoomDtos.contains ( dto ) );
+        }
     }
 
     @Test
@@ -405,7 +450,7 @@ public class RoomControllerTests {
     }
 
     @Test
-    public void whenGettingMeetingRooms_AllPhysicalRoomsAreReturnedWithCode200() {
+    public void whenGettingMeetingRooms_AllMeetingRoomsAreReturnedWithCode200() {
 
     }
 
@@ -421,9 +466,9 @@ public class RoomControllerTests {
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
 
-        assertEquals ( allRoomsDTOs.toArray ().length, resultArray.length );
+        assertEquals ( allRoomsDTOs.size(), resultArray.length );
 
-        assertTrue(resultArray.length > 0);
+        assertTrue ( resultArray.length > 0 );
 
         for ( RoomDto dto : resultArray ) {
             assertTrue ( allRoomsDTOs.contains ( dto ) );
@@ -434,28 +479,40 @@ public class RoomControllerTests {
     @Test
     public void whenGettingRemoteTrainingRooms_AllRemoteTrainingRoomsAreReturnedWithCode200() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/remote/training" );
+
         MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
 
         String mappedResult = result.getResponse ().getContentAsString ();
 
         RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
 
+        assertTrue ( resultArray.length > 0 );
+        assertEquals(resultArray.length, remoteTrainingRoomDtos.size());
 
-        List<RoomDto> expected = remoteTrainingRoomList.stream ().map ( RoomControllerTests::roomMapper )
-                .collect ( Collectors.toList () );
-
-        assertTrue(resultArray.length > 0);
 
         for ( RoomDto dto : resultArray ) {
-            assertTrue ( expected.contains ( dto ) );
+            assertTrue ( remoteTrainingRoomDtos.contains ( dto ) );
         }
-
 
 
     }
 
     @Test
-    public void whenGettingRemoteMeetingRooms_AllRemoteMeetingRoomsAreReturnedWithCode200() {
+    public void whenGettingRemoteMeetingRooms_AllRemoteMeetingRoomsAreReturnedWithCode200() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get ( "/api/location/rooms/remote/meeting" );
+
+        MvcResult result = mockMvc.perform ( request ).andExpect ( status ().isOk () ).andReturn ();
+
+        String mappedResult = result.getResponse ().getContentAsString ();
+
+        RoomDto[] resultArray = mapper.readValue ( mappedResult, RoomDto[].class );
+
+        assertTrue ( resultArray.length > 0 );
+
+        for ( RoomDto dto : resultArray ) {
+            assertTrue ( remoteMeetingRoomDtos.contains ( dto ) );
+        }
+
 
     }
 
