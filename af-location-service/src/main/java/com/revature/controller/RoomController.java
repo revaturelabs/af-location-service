@@ -1,22 +1,64 @@
 package com.revature.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.revature.Exception.NotFoundException;
+import com.revature.dto.RoomRequestDto;
+import com.revature.model.Room;
+import com.revature.repository.BuildingRepository;
 import com.revature.service.RoomService;
+import com.revature.statics.RoomOccupation;
+import com.revature.statics.RoomType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("room")
+@RequestMapping("/api/location")
 @CrossOrigin
 public class RoomController {
 
-	private RoomService rs;
+	private RoomService roomService;
+	private BuildingRepository buildingRepository;
 
 	@Autowired
-	public RoomController(RoomService rs) {
-		this.rs=rs;
+	public RoomController( RoomService roomService, BuildingRepository buildingRepository ) {
+		this.roomService = roomService;
+		this.buildingRepository = buildingRepository;
 	}
 
+	@GetMapping(value = "room/{id}", produces = "application/json")
+	public ResponseEntity<Object> getRoom( @PathVariable int id ) {
+		try {
+			return new ResponseEntity<> ( roomService.getRoom ( id ), HttpStatus.OK );
+		} catch ( NotFoundException e ) {
+			return new ResponseEntity<> ( e.getMessage (), HttpStatus.NOT_FOUND );
+
+		}
+
+	}
+
+
+	@PostMapping(value = "/building/{buildingId}/room", produces = "application/json")
+	public ResponseEntity<Object> createRoom( @RequestBody RoomRequestDto requestDto, @PathVariable int buildingId ) {
+		Room room = new Room ();
+
+		if ( buildingRepository.existsById ( buildingId ) ) {
+
+			room.setName ( requestDto.getName () );
+			room.setCapacity ( requestDto.getCapacity () );
+			room.setFloorNumber ( requestDto.getFloorNumber () );
+			room.setType ( RoomType.valueOf ( requestDto.getType () ) );
+			room.setOccupation ( RoomOccupation.valueOf ( requestDto.getOccupation () ) );
+			room.setBuilding ( buildingRepository.getOne ( buildingId ) );
+			room.setRoomAmenities ( requestDto.getAmenities () );
+
+			return new ResponseEntity<> ( roomService.saveRoom ( room ), HttpStatus.CREATED );
+
+		} else {
+			return new ResponseEntity<> ( "Building with id " + buildingId + " not found", HttpStatus.NOT_FOUND );
+		}
+
+
+
+	}
 }

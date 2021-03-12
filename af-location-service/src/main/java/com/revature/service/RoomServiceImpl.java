@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -158,13 +159,16 @@ public class RoomServiceImpl implements RoomService {
         return remoteMeetingRooms;
     }
 
-    private RoomDetailsDto detailsMapper( Room room ) {
+    private static RoomDetailsDto detailsMapper( Room room ) {
         RoomDetailsDto detailsDto = new RoomDetailsDto ();
+        detailsDto.setId(room.getRoomId ());
+        detailsDto.setOccupation ( room.getOccupation().name () );
         detailsDto.setCapacity ( room.getCapacity () );
         detailsDto.setFloorNumber ( room.getFloorNumber () );
         detailsDto.setName ( room.getName () );
         detailsDto.setType ( room.getType ().toString () );
-        detailsDto.setAmenities ( room.getRoomAmenities () );
+        Set<String> roomAmenities = room.getRoomAmenities ();
+        detailsDto.setAmenities ( roomAmenities );
         return detailsDto;
     }
 

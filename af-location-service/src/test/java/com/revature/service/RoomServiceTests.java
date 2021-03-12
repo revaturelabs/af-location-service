@@ -70,11 +70,12 @@ public class RoomServiceTests {
 
     private static RoomDetailsDto roomDetailsMapper( Room room ) {
         RoomDetailsDto detailsDto = new RoomDetailsDto ();
+        detailsDto.setId(room.getRoomId ());
+        detailsDto.setOccupation ( room.getOccupation().name () );
         detailsDto.setCapacity ( room.getCapacity () );
         detailsDto.setFloorNumber ( room.getFloorNumber () );
         detailsDto.setName ( room.getName () );
         detailsDto.setType ( room.getType ().toString () );
-
         Set<String> roomAmenities = room.getRoomAmenities ();
         detailsDto.setAmenities ( roomAmenities );
         return detailsDto;
