@@ -12,7 +12,7 @@ INSERT INTO building(loc_id, address) values (1,'123 Main St.'),
 (3,'456 Maple St.'),
 (3,'678 Oak St.');
 
-INSERT INTO room(bld_id, capacity, room_name, type) values (1, 20, '', ''),
+INSERT INTO room(bld_id, capacity, room_name, type) values
 (1, 20, 'Classroom', 'CLASSROOM'),
 (1, 20, 'Zoom', 'ONLINE'),
 (2, 20, 'Classroom', 'CLASSROOM'),
