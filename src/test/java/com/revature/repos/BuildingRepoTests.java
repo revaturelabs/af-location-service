@@ -55,4 +55,14 @@ public class BuildingRepoTests {
         Building result = this.buildingRepo.findById(id).orElse(null);
         Assertions.assertNull(result);
     }
+
+    @Test
+    void get_buildings_by_location_id(){
+        int id = 1;
+        List<Building> buildings = this.buildingRepo.findBuildingsByLocationId(id);
+        System.out.println(buildings);
+        for(Building b:buildings){
+            Assertions.assertEquals(id,b.getLocationId());
+        }
+    }
 }

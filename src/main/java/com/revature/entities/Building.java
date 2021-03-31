@@ -18,7 +18,7 @@ public class Building {
     @Column(name = "loc_id")
     private int locationId;
 
-    @OneToMany(mappedBy = "buildingId")
+    @OneToMany(mappedBy = "buildingId", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     List<Room> rooms;
 
     public Building() {
