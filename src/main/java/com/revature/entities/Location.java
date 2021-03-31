@@ -1,11 +1,10 @@
 package com.revature.entities;
 
-import org.hibernate.annotations.Cache;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-//@Table(name="location")
+@Table(name="location")
 public class Location {
 
     @Id
@@ -20,6 +19,9 @@ public class Location {
 
     @Column(name = "zipcode",nullable = false)
     private String zipcode;
+
+    @OneToMany(mappedBy = "locationId")
+    private List<Building> buildings;
 
     public Location(int locationId, String city, String state, String zipcode) {
         this.locationId = locationId;
@@ -63,6 +65,14 @@ public class Location {
         this.zipcode = zipcode;
     }
 
+    public List<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
+    }
+
     @Override
     public String toString() {
         return "Location{" +
@@ -70,6 +80,7 @@ public class Location {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +
+                ", buildings=" + buildings +
                 '}';
     }
 }
