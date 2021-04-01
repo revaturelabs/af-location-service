@@ -2,6 +2,8 @@ package com.revature.services;
 
 import com.revature.entities.Building;
 import com.revature.entities.Location;
+import com.revature.exceptions.BuildingNotFoundException;
+import com.revature.exceptions.LocationNotFoundException;
 import com.revature.repos.BuildingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,13 +43,13 @@ public class BuildingServiceImpl implements BuildingService{
     }
 
     @Override
-    public Building getBuildingById(int id) {
+    public Building getBuildingById(int id) throws BuildingNotFoundException {
 //        return this.buildingRepo.findById(id).orElse(null);
         return null;
     }
 
     @Override
-    public List<Building> getBuildingByLocation(Location location) {
+    public List<Building> getBuildingByLocation(Location location){
         return null;
 //        int id = location.getLocationId();
 //        List<Building> buildings = this.buildingRepo.findBuildingsByLocationId(id);
@@ -56,7 +58,7 @@ public class BuildingServiceImpl implements BuildingService{
     }
 
     @Override
-    public Building updateBuilding(Building building) {
+    public Building updateBuilding(Building building) throws BuildingNotFoundException {
 //        return this.buildingRepo.save(building);
         return null;
     }
