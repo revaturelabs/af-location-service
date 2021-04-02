@@ -43,10 +43,10 @@ public class RoomServiceTests {
 
     Room testRoom;
     Room illegalRoom;
-    List<Room> testRoomList;
     Building testBuilding;
     Building illegalBuilding;
     Location testLocation;
+    List<Room> testRoomList;
 
     @BeforeAll
     void setup(){

@@ -55,7 +55,6 @@ public class LocationServiceTests {
         }
     }
 
-    @Order(1)
     @Test
     void testMocking() {
         Mockito.when(locationRepo.findById(1)).thenReturn(Optional.of(testLocation));
