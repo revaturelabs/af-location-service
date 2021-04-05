@@ -36,13 +36,13 @@ Buildings are objects that contain the address of the building where a room is l
   "locationId" : INT (References a Location object) 
 }
 ```
-Routes | Details
------- | -------
+Routes | Details | Response
+------ | ------- | --------
 `POST /locations/{locationId}/buildings`|Creates a new building with a given locationId. Body requires Building JSON object.|Building JSON (201); Forbidden (403); Unauthorized (401)
 `GET /locations/{locationId}/buildings`| Retrieves all persisted buildings at a given locationId.|Building List (201); Forbidden (403); Unauthorized (401)
 `GET /locations/{locationId}/buildings/{buildingId}`| Retrieves a building by buildingId at a certain location. |Building JSON (200); Not Found (404); Unauthorized (401)
 `PUT /locations/{locationId}/buildings/{buildingId}`| Updates a building by buildingId at a certain location with a Building JSON object in the body.|Building JSON (200); Not Found (404); Unauthorized (401)
-`DELETE /locations/{locationId}/buildings/{buildingId}`| Removes a building from the database by buildingId at a certain location.|Building JSON (200); Not Found (404); Unauthorized (401)
+`DELETE /locations/{locationId}/buildings/{buildingId}`| Removes a building from the database by buildingId at a certain location.|"OK" (200); Not Found (404); Unauthorized (401)
 
 
 ### Room
@@ -58,13 +58,13 @@ Rooms are objects that contain the room name, capacity, and room type. Room type
   "buildingId" : INT (References a Building object)
 }
 ```
-Routes | Details
------- | -------
+Routes | Details | Response
+------ | ------- | --------
 `POST /locations/{locationId}/buildings/{buildingId}/rooms`|Creates a new room with given buildingId and locationId. Body requires Room JSON object.|Room JSON (201); Forbidden (403); Unauthorized (401)
 `GET /locations/{locationId}/buildings/{buildingId}/rooms`|Retrieves all persisted rooms at a given location and building.|Room List (201); Forbidden (403); Unauthorized (401)
 `GET /locations/{locationId}/buildings/{buildingId}/rooms/{roomId}`|Retrieves a room by roomId at a certain building and location.|Room JSON (200); Not Found (404); Unauthorized (401)
 `PUT /locations/{locationId}/buildings/{buildingId}/rooms/{roomId}`|Updates a room by roomId at a certain location and building with a Room JSON object in the body.|Room JSON (200); Not Found (404); Unauthorized (401)
-`DELETE /locations/{locationId}/buildings/{buildingId}/rooms/{roomId}`|Removes a room from the database by roomId at a certain location and building.|Room JSON (200); Not Found (404); Unauthorized (401)
+`DELETE /locations/{locationId}/buildings/{buildingId}/rooms/{roomId}`|Removes a room from the database by roomId at a certain location and building.|"OK" (200); Not Found (404); Unauthorized (401)
 
 ## Authorization
 Requests are required to have an Authorization header with a valid JWT. 
