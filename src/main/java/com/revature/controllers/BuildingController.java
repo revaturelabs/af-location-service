@@ -18,7 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * <p>
+ * Controller for endpoints concerned with buildings in the database
+ * </p>
+ * @author Stephan Maurer, Hogan Brown, Michael Bennett, Nathan J, Samuel Araga
+ * @version 1.0
+ */
 @Component
 @RestController
 public class BuildingController {
@@ -28,6 +34,24 @@ public class BuildingController {
 
     UserDto userDto;
 
+    /**
+     *<p>
+     *     Handler method for a post to the buildings endpoint. Used to create
+     *     building entries in the database.
+     *</p>
+     * @param userDto       User data transfer object populated by the SecurityAspect.
+     *                      Used to determine a users roll and CRUD permissions.
+     * @param locationId    Location Id provided in the URI path. Assigned to the new
+     *                      Building object returned by the getBuilding method.
+     * @param buildingDTO   Building data transfer object provided by the request body.
+     *                      Used by the getBuilding method to construct a Building object.
+     * @param auth          Authentication JWT provided by the request header.
+     * @return A ResponseEntity<Building> that has a body of the Building object that was created
+     * @see com.revature.aspects.SecurityAspect
+     * @see com.revature.entities.Building
+     * @see com.revature.dtos.BuildingDto
+     * @see #getBuilding
+     */
     @Verify
     @PostMapping("/locations/{locationId}/buildings")
     public ResponseEntity<Building> createBuilding(UserDto userDto, @PathVariable int locationId,
@@ -102,7 +126,18 @@ public class BuildingController {
             }
         }
 
-        private Building getBuilding (BuildingDto dto,int locationId){
+    /**
+     * <p>
+     *     Helper method used to get a Building object from a BuildingDTO object
+     * </p>
+     * @param dto           BuildingDTO provided by the request
+     * @param locationId    Location Id in the URI path
+     * @return  A Building object representation of the BuildingDTO
+     * @author Michael Bennett
+     * @see com.revature.dtos.BuildingDto
+     * @see com.revature.entities.Building
+     */
+        private Building getBuilding (BuildingDto dto, int locationId){
             Building building = new Building();
             building.setBuildingId(dto.getBuildingId());
             building.setAddress(dto.getAddress());
