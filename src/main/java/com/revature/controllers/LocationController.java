@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 
+import com.revature.aspects.Verify;
 import com.revature.dtos.LocationDto;
 import com.revature.entities.Location;
 import com.revature.exceptions.LocationNotFoundException;
@@ -21,7 +22,7 @@ public class LocationController {
     @Autowired
     LocationService locationService;
 
-
+    @Verify
     @PostMapping("/locations")
     public ResponseEntity<Location> createLocation(@RequestBody LocationDto locationDTO,@RequestHeader(name = "Authorization",required = false) String auth) {
 
@@ -38,14 +39,14 @@ public class LocationController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
+    @Verify
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAllLocations(){
 
         List<Location> locations = locationService.getAllLocations();
         return ResponseEntity.status(200).body(locations);
     }
-
+    @Verify
     @GetMapping("/locations/{locationId}")
     public ResponseEntity<Location> getLocationById(@PathVariable int locationId) throws LocationNotFoundException {
         try {
@@ -55,7 +56,7 @@ public class LocationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
+    @Verify
     @PutMapping("/locations/{locationId}")
     public ResponseEntity<Location> updateLocation(@RequestBody LocationDto locationDTO,
                                                    @PathVariable int locationId,
@@ -78,7 +79,7 @@ public class LocationController {
 
         }
     }
-
+    @Verify
     @DeleteMapping("/locations/{locationId}")
     public ResponseEntity<String> deleteLocation(@PathVariable int locationId,@RequestHeader(name="Authorization",required = false) String auth) throws LocationNotFoundException {
 

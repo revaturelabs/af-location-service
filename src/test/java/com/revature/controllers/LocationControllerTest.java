@@ -78,6 +78,7 @@ class LocationControllerTest {
             }
         }
     }
+
     @BeforeAll
     static void setUp() throws Exception {
         Map<String, String> authserver = new HashMap<>();

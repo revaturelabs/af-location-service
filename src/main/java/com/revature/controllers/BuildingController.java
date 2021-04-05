@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 
+import com.revature.aspects.Verify;
 import com.revature.dtos.BuildingDto;
 import com.revature.entities.Building;
 import com.revature.exceptions.BuildingNotFoundException;
@@ -37,7 +38,7 @@ public class BuildingController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
-
+    @Verify
     @GetMapping("/locations/{locationId}/buildings")
     public ResponseEntity<List<Building>> getAllBuildings(@PathVariable int locationId, @RequestHeader(name = "Authorization", required = false) String auth){
         if (auth == null){
@@ -51,7 +52,7 @@ public class BuildingController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
-
+    @Verify
     @GetMapping("/locations/{locationId}/buildings/{buildingId}")
     public ResponseEntity<Building> getBuildingById(@PathVariable int locationId, @PathVariable int buildingId, @RequestHeader(name = "Authorization", required = false) String auth){
         if (auth == null){
@@ -73,7 +74,7 @@ public class BuildingController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
-
+    @Verify
     @PutMapping("/locations/{locationId}/buildings/{buildingId}")
     public ResponseEntity<Building> updateBuilding(@PathVariable int locationId, @PathVariable int buildingId, @RequestBody BuildingDto buildingDTO, @RequestHeader(name = "Authorization", required = false) String auth){
         if (auth == null){
@@ -94,7 +95,7 @@ public class BuildingController {
         }
 
     }
-
+    @Verify
     @DeleteMapping("/locations/{locationId}/buildings/{buildingId}")
     public ResponseEntity<Building> deleteBuilding(@PathVariable int locationId, @PathVariable int buildingId, @RequestHeader(name = "Authorization", required = false) String auth){
         if (auth == null){
@@ -108,7 +109,7 @@ public class BuildingController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
-
+    @Verify
     private Building getBuilding(BuildingDto dto, int locationId){
         Building building = new Building();
         building.setBuildingId(dto.getBuildingId());

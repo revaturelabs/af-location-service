@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.aspects.Verify;
 import com.revature.dtos.RoomDto;
 import com.revature.entities.Room;
 import com.revature.exceptions.RoomNotFoundException;
@@ -19,7 +20,7 @@ public class RoomController {
 
     @Autowired
     RoomService roomService;
-
+    @Verify
     @PostMapping("/locations/{locationId}/buildings/{buildingId}/rooms")
     public ResponseEntity<RoomDto> createRoom(@RequestBody RoomDto roomDto, @RequestHeader(name = "Authorization", required = false) String auth){
 
@@ -33,7 +34,7 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
+    @Verify
     @GetMapping("/locations/{locationId}/buildings/{buildingId}/rooms/{roomId}")
     public ResponseEntity<RoomDto> getRoomById(@PathVariable int locationId, @PathVariable int buildingId, @PathVariable int roomId, @RequestHeader(name = "Authorization", required = false) String auth){
 
@@ -48,7 +49,7 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
+    @Verify
     @GetMapping("/locations/{locationId}/buildings/{buildingId}/rooms")
     public ResponseEntity<List<RoomDto>> getAllRooms(@PathVariable int locationId, @PathVariable int buildingId,@RequestHeader(name = "Authorization", required = false) String auth){
         if (auth.equals("Authorized")) {
@@ -62,7 +63,7 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
+    @Verify
     @PutMapping("/locations/{locationId}/buildings/{buildingId}/rooms/{roomId}")
     public ResponseEntity<RoomDto> updateRoom(@PathVariable int locationId, @PathVariable int buildingId,@PathVariable int roomId, @RequestBody RoomDto roomDto, @RequestHeader(name = "Authorization", required = false) String auth){
         try {
@@ -79,7 +80,7 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
+    @Verify
     @DeleteMapping("/locations/{locationId}/buildings/{buildingId}/rooms/{roomId}")
     public ResponseEntity<Boolean> deleteRoom(@PathVariable int locationId, @PathVariable int buildingId, @PathVariable int roomId, @RequestHeader(name = "Authorization", required = false) String auth){
         if(auth == null) {
