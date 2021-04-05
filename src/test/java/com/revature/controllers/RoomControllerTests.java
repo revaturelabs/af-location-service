@@ -164,7 +164,7 @@ public class RoomControllerTests {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Unauthorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isForbidden());
     }
     @Test
@@ -176,7 +176,7 @@ public class RoomControllerTests {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Unauthorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isForbidden());
     }
     @Test
@@ -185,7 +185,7 @@ public class RoomControllerTests {
                 .delete("/locations/1/buildings/1/rooms/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Unauthorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isForbidden());
     }
     @Test
