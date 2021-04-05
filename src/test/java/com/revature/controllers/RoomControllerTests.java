@@ -98,7 +98,7 @@ public class RoomControllerTests {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",trainerJwt))
+                .header("Authorization",adminJwt))
                 .andExpect(status().isCreated());
     }
     @Test
@@ -110,7 +110,7 @@ public class RoomControllerTests {
                 .get("/locations/1/buildings/1/rooms/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Authorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isOk());
     }
     @Test
@@ -126,7 +126,7 @@ public class RoomControllerTests {
                 .get("/locations/1/buildings/1/rooms")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Authorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isOk());
     }
     @Test
@@ -140,7 +140,7 @@ public class RoomControllerTests {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Authorized"))
+                .header("Authorization",adminJwt))
                 .andExpect(status().isOk());
     }
     @Test
@@ -151,7 +151,7 @@ public class RoomControllerTests {
                 .delete("/locations/1/buildings/1/rooms/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Authorized"))
+                .header("Authorization",adminJwt))
                 .andExpect(status().isOk());
     }
 
@@ -227,7 +227,7 @@ public class RoomControllerTests {
                 .get("/locations/1/buildings/1/rooms/1000")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Authorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isNotFound());
     }
 //    @Test
@@ -249,7 +249,7 @@ public class RoomControllerTests {
                 .get("/locations/1/buildings/1000/rooms")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Authorized"))
+                .header("Authorization",trainerJwt))
                 .andExpect(status().isOk());
     }
 
