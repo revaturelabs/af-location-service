@@ -4,6 +4,7 @@ import com.revature.aspects.Verify;
 import com.revature.dtos.RoomDto;
 import com.revature.dtos.UserDto;
 import com.revature.entities.Room;
+import com.revature.entities.RoomType;
 import com.revature.exceptions.RoomNotFoundException;
 import com.revature.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +55,20 @@ public class RoomController {
     }
     @Verify
     @GetMapping("/locations/{locationId}/buildings/{buildingId}/rooms")
-    public ResponseEntity<List<RoomDto>> getAllRooms(UserDto userDto, @PathVariable int locationId, @PathVariable int buildingId,@RequestHeader(name = "Authorization", required = false) String auth){
+    public ResponseEntity<List<RoomDto>> getAllRooms(UserDto userDto,
+                                                     @PathVariable int locationId,
+                                                     @PathVariable int buildingId,
+                                                     @RequestHeader(name = "Authorization", required = false) String auth,
+                                                     @RequestParam(value="type", required = false)RoomType type){
+        List<Room> rooms;
+
         if (userDto.getRole().equals(adminRoll) || userDto.getRole().equals(trainerRoll)) {
-            List<Room> rooms = this.roomService.getAllRooms();
+            if(type == null) {
+                rooms = this.roomService.getAllRooms();
+            }
+            else {
+                rooms = this.roomService.getRoomsByType(buildingId, type);
+            }
             List<RoomDto> roomDtos = new ArrayList<>();
             for (Room r : rooms) {
                 roomDtos.add(new RoomDto(r));

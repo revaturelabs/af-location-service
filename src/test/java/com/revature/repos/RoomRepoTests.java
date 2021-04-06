@@ -20,7 +20,7 @@ public class RoomRepoTests {
     @Test
     @Order(1)
     void create_room_test(){
-        Room room = new Room(0, "Room Name", RoomType.CLASSROOM, 50, 1);
+        Room room = new Room(0, "Room Name", RoomType.MEETING, 50, 1);
         room = this.roomRepo.save(room);
         Assertions.assertNotEquals(0,room.getRoomId());
     }
@@ -41,10 +41,41 @@ public class RoomRepoTests {
     }
 
     @Test
+    void get_remote_rooms() {
+        int buildingId = 2;
+        List<Room> rooms = this.roomRepo.findRoomByTypeAndBuildingId(RoomType.REMOTE, buildingId);
+
+        for(Room room: rooms){
+            Assertions.assertEquals(RoomType.REMOTE, room.getType());
+            Assertions.assertEquals(buildingId, room.getBuildingId());
+        }
+    }
+
+    @Test
+    void get_meeting_rooms() {
+        int buildingId = 3;
+        List<Room> rooms = this.roomRepo.findRoomByTypeAndBuildingId(RoomType.MEETING, buildingId);
+
+        for(Room room: rooms){
+            Assertions.assertEquals(RoomType.MEETING, room.getType());
+            Assertions.assertEquals(buildingId, room.getBuildingId());
+        }
+    }
+
+    @Test
+    void get_virtual_rooms() {
+        List<Room> rooms = this.roomRepo.findVirtualRooms();
+        for(Room room: rooms){
+            Assertions.assertEquals(RoomType.VIRTUAL, room.getType());
+        }
+        Assertions.assertTrue(rooms.size() > 7);
+    }
+
+    @Test
     @Order(4)
     void update_room_by_id(){
         String updatedRoomName = "Updated Room Name";
-        Room newRoom = new Room(1, updatedRoomName, RoomType.CLASSROOM, 50, 1);
+        Room newRoom = new Room(1, updatedRoomName, RoomType.MEETING, 50, 1);
         Room newRm = this.roomRepo.save(newRoom);
 
         Assertions.assertEquals(updatedRoomName, newRm.getName());
