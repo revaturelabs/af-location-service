@@ -129,6 +129,41 @@ public class RoomControllerTests {
                 .header("Authorization",trainerJwt))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getAllRoomsByTypeTest()throws Exception{
+        List<Room> rooms = new ArrayList<Room>();
+        for(int i = 0; i < 5; i++){
+            Room room = new Room(1, "testName", RoomType.MEETING, 10, 1);
+            rooms.add(room);
+        }
+        Mockito.when(roomService.getAllRooms()).thenReturn(rooms);
+
+        mvc.perform(MockMvcRequestBuilders
+                .get("/locations/1/buildings/1/rooms?type=MEETING")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",trainerJwt))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllRoomsByTypeExceptionTest()throws Exception{
+//        List<Room> rooms = new ArrayList<Room>();
+//        for(int i = 0; i < 5; i++){
+//            Room room = new Room(1, "testName", RoomType.VIRTUAL, 10, 1);
+//            rooms.add(room);
+//        }
+//        Mockito.when(roomService.getAllRooms()).thenReturn(rooms);
+
+        mvc.perform(MockMvcRequestBuilders
+                .get("/locations/1/buildings/1/rooms?type=STUFF")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",trainerJwt))
+                .andExpect(status().isBadRequest());
+    }
+
     @Test
     void updateRoomTest()throws Exception{
         String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"10\"}";
