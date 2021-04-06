@@ -55,7 +55,7 @@ public class RoomServiceTests {
 
         testRoomList = new ArrayList<Room>();
         for(int i = 1; i < 5; i++){
-            Room room = new Room(i,"Room "+i,RoomType.CLASSROOM,50,1);
+            Room room = new Room(i,"Room "+i,RoomType.REMOTE,50,1);
             if(i==1){
                 testRoom=room;
             }
@@ -85,7 +85,7 @@ public class RoomServiceTests {
     void create_room_test(){
         Mockito.when(roomRepo.save(testRoom)).thenReturn(testRoom);
 
-        Room room = new Room(5,"New Room", RoomType.CLASSROOM,30,1);
+        Room room = new Room(5,"New Room", RoomType.REMOTE,30,1);
         room = this.roomService.createRoom(room);
         Assertions.assertNotNull(room);
         Assertions.assertEquals(0,room.getRoomId());
@@ -165,7 +165,7 @@ public class RoomServiceTests {
     void update_room_exception_test(){
         Mockito.when(roomRepo.findById(100)).thenReturn(Optional.empty());
         Mockito.when(roomRepo.save(illegalRoom)).thenReturn(illegalRoom);
-        illegalRoom = new Room(100,"Illegal Name",RoomType.CLASSROOM,10000,100);
+        illegalRoom = new Room(100,"Illegal Name",RoomType.REMOTE,10000,100);
 
         try{
             this.roomService.updateRoom(illegalRoom);
