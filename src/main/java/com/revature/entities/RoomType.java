@@ -1,4 +1,4 @@
 package com.revature.entities;
 
-public enum RoomType { ONLINE, CLASSROOM
+public enum RoomType { VIRTUAL, REMOTE, MEETING
 }

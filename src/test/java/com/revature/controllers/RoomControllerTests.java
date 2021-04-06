@@ -88,9 +88,9 @@ public class RoomControllerTests {
 
     @Test
     void createRoomTest() throws Exception{
-        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"ONLINE\", \"buildingId\":1, \"capacity\":\"5\"}";
+        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"5\"}";
 
-        Room newRoom = new Room(1, "testName", RoomType.ONLINE, 10, 1);
+        Room newRoom = new Room(1, "testName", RoomType.VIRTUAL, 10, 1);
         Mockito.when(roomService.createRoom(any())).thenReturn(newRoom);
 
         mvc.perform(MockMvcRequestBuilders
@@ -103,7 +103,7 @@ public class RoomControllerTests {
     }
     @Test
     void getRoomByIdTest()throws Exception{
-        Room room = new Room(1, "testName", RoomType.ONLINE, 10, 1);
+        Room room = new Room(1, "testName", RoomType.VIRTUAL, 10, 1);
         Mockito.when(roomService.getRoomById(1)).thenReturn(room);
 
         mvc.perform(MockMvcRequestBuilders
@@ -117,7 +117,7 @@ public class RoomControllerTests {
     void getAllRoomsTest()throws Exception{
         List<Room> rooms = new ArrayList<Room>();
         for(int i = 0; i < 5; i++){
-            Room room = new Room(1, "testName", RoomType.ONLINE, 10, 1);
+            Room room = new Room(1, "testName", RoomType.VIRTUAL, 10, 1);
             rooms.add(room);
         }
         Mockito.when(roomService.getAllRooms()).thenReturn(rooms);
@@ -129,10 +129,45 @@ public class RoomControllerTests {
                 .header("Authorization",trainerJwt))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getAllRoomsByTypeTest()throws Exception{
+        List<Room> rooms = new ArrayList<Room>();
+        for(int i = 0; i < 5; i++){
+            Room room = new Room(1, "testName", RoomType.MEETING, 10, 1);
+            rooms.add(room);
+        }
+        Mockito.when(roomService.getAllRooms()).thenReturn(rooms);
+
+        mvc.perform(MockMvcRequestBuilders
+                .get("/locations/1/buildings/1/rooms?type=MEETING")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",trainerJwt))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllRoomsByTypeExceptionTest()throws Exception{
+//        List<Room> rooms = new ArrayList<Room>();
+//        for(int i = 0; i < 5; i++){
+//            Room room = new Room(1, "testName", RoomType.VIRTUAL, 10, 1);
+//            rooms.add(room);
+//        }
+//        Mockito.when(roomService.getAllRooms()).thenReturn(rooms);
+
+        mvc.perform(MockMvcRequestBuilders
+                .get("/locations/1/buildings/1/rooms?type=STUFF")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",trainerJwt))
+                .andExpect(status().isBadRequest());
+    }
+
     @Test
     void updateRoomTest()throws Exception{
-        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"ONLINE\", \"buildingId\":1, \"capacity\":\"10\"}";
-        Room newRoom = new Room(1, "testName", RoomType.ONLINE, 10, 1);
+        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"10\"}";
+        Room newRoom = new Room(1, "testName", RoomType.VIRTUAL, 10, 1);
         Mockito.when(roomService.updateRoom(any())).thenReturn(newRoom);
 
         mvc.perform(MockMvcRequestBuilders
@@ -157,7 +192,7 @@ public class RoomControllerTests {
 
     @Test
     void createRoomForbiddenTest()throws Exception{
-        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"ONLINE\", \"buildingId\":1, \"capacity\":\"5\"}";
+        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"5\"}";
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/locations/1/buildings/1/rooms")
@@ -169,7 +204,7 @@ public class RoomControllerTests {
     }
     @Test
     void updateRoomForbiddenTest()throws Exception{
-        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"ONLINE\", \"buildingId\":1, \"capacity\":\"5\"}";
+        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"5\"}";
 
         mvc.perform(MockMvcRequestBuilders
                 .put("/locations/1/buildings/1/rooms/1")
@@ -190,7 +225,7 @@ public class RoomControllerTests {
     }
     @Test
     void createRoomUnauthorizedTest()throws Exception{
-        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"ONLINE\", \"buildingId\":1, \"capacity\":\"5\"}";
+        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"5\"}";
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/locations/1/buildings/1/rooms")
@@ -201,7 +236,7 @@ public class RoomControllerTests {
     }
     @Test
     void updateRoomUnauthorizedTest()throws Exception{
-        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"ONLINE\", \"buildingId\":1, \"capacity\":\"5\"}";
+        String json = "{\"roomId\":\"1\", \"name\":\"testName\", \"type\":\"VIRTUAL\", \"buildingId\":1, \"capacity\":\"5\"}";
 
         mvc.perform(MockMvcRequestBuilders
                 .put("/locations/1/buildings/1/rooms/1")
@@ -220,7 +255,7 @@ public class RoomControllerTests {
     }
     @Test
     void getRoomNotExistTest()throws Exception{
-        Room room = new Room(1000, "testName", RoomType.ONLINE, 10, 1);
+        Room room = new Room(1000, "testName", RoomType.VIRTUAL, 10, 1);
         Mockito.when(roomService.getRoomById(1000)).thenThrow(new RoomNotFoundException());
 
         mvc.perform(MockMvcRequestBuilders
