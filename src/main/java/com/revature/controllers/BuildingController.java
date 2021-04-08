@@ -20,7 +20,7 @@ import java.util.List;
  * <p>
  * Controller for endpoints concerned with buildings in the database
  * </p>
- * @author Stephan Maurer, Hogan Brown, Michael Bennett, Nathan J, Samuel Araga
+ * @author Stefan Maurer, Hogan Brown, Michael Bennett, Nathan J, Samuel Araga
  * @version 1.0
  */
 @Component
@@ -47,7 +47,6 @@ public class BuildingController {
      * @see com.revature.aspects.SecurityAspect
      * @see com.revature.entities.Building
      * @see com.revature.dtos.BuildingDto
-     * @see #getBuilding
      */
     @Verify
     @PostMapping("/locations/{locationId}/buildings")
@@ -55,7 +54,7 @@ public class BuildingController {
                                                    @RequestBody BuildingDto buildingDTO,
                                                    @RequestHeader(name = "Authorization", required = false) String auth) {
         if (userDto.getRole().equals(ADMIN)) {
-            Building building = getBuilding(buildingDTO, locationId);
+            Building building = new Building(buildingDTO);
             building.setBuildingId(0);
             this.buildingService.createBuilding(building);
             return ResponseEntity.status(HttpStatus.CREATED).body(building);
@@ -98,7 +97,9 @@ public class BuildingController {
                                                    @RequestHeader(name = "Authorization", required = false) String auth) {
         try {
             if (userDto.getRole().equals(ADMIN)) {
-                Building building = getBuilding(buildingDTO, locationId);
+                Building building = new Building(buildingDTO);
+                building.setBuildingId(buildingId);
+                building.setLocationId(locationId);
                 this.buildingService.updateBuilding(building);
                 return ResponseEntity.status(HttpStatus.OK).body(building);
             } else {
@@ -122,24 +123,4 @@ public class BuildingController {
 
             }
         }
-
-    /**
-     * <p>
-     *     Helper method used to get a Building object from a BuildingDTO object
-     * </p>
-     * @param dto           BuildingDTO provided by the request
-     * @param locationId    Location Id in the URI path
-     * @return  A Building object representation of the BuildingDTO
-     * @author Michael Bennett
-     * @see com.revature.dtos.BuildingDto
-     * @see com.revature.entities.Building
-     */
-        private Building getBuilding (BuildingDto dto, int locationId){
-            Building building = new Building();
-            building.setBuildingId(dto.getBuildingId());
-            building.setAddress(dto.getAddress());
-            building.setLocationId(locationId);
-            return building;
-        }
-
     }
