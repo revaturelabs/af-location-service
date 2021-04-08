@@ -1,11 +1,6 @@
 package com.revature.dtos;
 
 import com.revature.entities.Room;
-import com.revature.entities.RoomType;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 public class RoomDto {
 
@@ -17,14 +12,6 @@ public class RoomDto {
 
     public RoomDto() {
     }
-
-//    public RoomDto(int roomId, String name, String type, int capacity, int buildingId) {
-//        this.roomId = roomId;
-//        this.name = name;
-//        this.type = type;
-//        this.capacity = capacity;
-//        this.buildingId = buildingId;
-//    }
 
     public RoomDto(Room room) {
         this.roomId = room.getRoomId();

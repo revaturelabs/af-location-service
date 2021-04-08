@@ -1,11 +1,8 @@
 package com.revature.dtos;
 
+import com.revature.entities.Building;
 import com.revature.entities.Room;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 public class BuildingDto {
@@ -17,7 +14,12 @@ public class BuildingDto {
 
     public BuildingDto() {
     }
+    public BuildingDto(Building building){
+        this.buildingId = building.getBuildingId();
+        this.address = building.getAddress();
+        this.locationId = building.getLocationId();
 
+    }
     public int getBuildingId() {
         return buildingId;
     }

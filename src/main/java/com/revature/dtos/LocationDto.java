@@ -1,6 +1,7 @@
 package com.revature.dtos;
 
 import com.revature.entities.Building;
+import com.revature.entities.Location;
 
 import java.util.List;
 
@@ -15,12 +16,12 @@ public class LocationDto {
     public LocationDto() {
     }
 
-    public LocationDto(int locationId, String city, String state, String zipcode, List<Building> buildings) {
-        this.locationId = locationId;
-        this.city = city;
-        this.state = state;
-        this.zipcode = zipcode;
-        this.buildings = buildings;
+    public LocationDto(Location location){
+        this.locationId = location.getLocationId();
+        this.city = location.getCity();
+        this.state = location.getState();
+        this.zipcode = location.getZipcode();
+        this.buildings = location.getBuildings();
     }
 
     public int getLocationId() {
@@ -63,14 +64,4 @@ public class LocationDto {
         this.buildings = buildings;
     }
 
-    @Override
-    public String toString() {
-        return "LocationDto{" +
-                "locationId=" + locationId +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zipcode='" + zipcode + '\'' +
-                ", buildings=" + buildings +
-                '}';
-    }
 }

@@ -13,12 +13,6 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(int id, String email, String role) {
-        this.id = id;
-        this.email = email;
-        this.role = role;
-    }
-
     public int getId() {
         return id;
     }
@@ -43,12 +37,4 @@ public class UserDto {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
 }
