@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 @Aspect
 @Component
 public class LoggingAspect {
-//    private static Logger logger = Logger.getLogger(LoggingAspect.class);
 
     private static Logger logger = Logger.getLogger(LoggingAspect.class);
     /** Log incoming request */

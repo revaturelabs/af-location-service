@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @Service
-public class BuildingServiceImpl implements BuildingService{
+public class BuildingServiceImpl implements BuildingService {
 
     @Autowired
     BuildingRepo buildingRepo;
@@ -34,16 +34,16 @@ public class BuildingServiceImpl implements BuildingService{
         Building building;
         Optional<Building> op = buildingRepo.findById(id);
 
-        if(op.isPresent()) {
+        if (op.isPresent())
             building = op.get();
-        }else{
+        else
             throw new BuildingNotFoundException("Building not found");
-        }
+
         return building;
     }
 
     @Override
-    public List<Building> getBuildingByLocation(int locationId){
+    public List<Building> getBuildingByLocation(int locationId) {
         return buildingRepo.findByLocationIdEquals(locationId);
     }
 
@@ -51,11 +51,15 @@ public class BuildingServiceImpl implements BuildingService{
     public Building updateBuilding(Building building) throws BuildingNotFoundException {
 
         Optional<Building> op = buildingRepo.findById(building.getBuildingId());
+
         if (!op.isPresent())
             throw new BuildingNotFoundException();
+
         Building oldBuilding = op.get();
+
         if (building.getAddress() != null)
             oldBuilding.setAddress(building.getAddress());
+
         return buildingRepo.save(oldBuilding);
     }
 
@@ -64,7 +68,7 @@ public class BuildingServiceImpl implements BuildingService{
         try {
             this.buildingRepo.deleteById(id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

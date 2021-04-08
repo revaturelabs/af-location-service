@@ -53,8 +53,7 @@ public class SecurityAspect {
                 logger.info("JWT verified: " + userDTO);
                 Object[] args = pjp.getArgs();
                 args[0] = userDTO;
-                Object obj = pjp.proceed(args);
-                return obj;
+                return pjp.proceed(args);
             }
         }catch(Exception e){
             logger.error("Unable to verify JWT: " + e.getMessage());
@@ -64,6 +63,8 @@ public class SecurityAspect {
 
     }
 
+
     @Pointcut("@annotation(com.revature.aspects.Verify)")
-    private void controllerMethodsPointCut(){}
-}
+    private void controllerMethodsPointCut(){
+        // needed for pointcut expression
+    }}

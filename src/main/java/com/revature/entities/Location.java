@@ -1,7 +1,6 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.List;
@@ -77,14 +76,4 @@ public class Location {
         this.buildings = buildings;
     }
 
-    @Override
-    public String toString() {
-        return "Location{" +
-                "locationId=" + locationId +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zipcode='" + zipcode + '\'' +
-                ", buildings=" + buildings +
-                '}';
-    }
 }

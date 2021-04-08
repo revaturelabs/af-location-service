@@ -29,6 +29,7 @@ public class BuildingController {
 
     @Autowired
     BuildingService buildingService;
+    static final String ADMIN = "admin";
 
     /**
      *<p>
@@ -53,7 +54,7 @@ public class BuildingController {
     public ResponseEntity<Building> createBuilding(UserDto userDto, @PathVariable int locationId,
                                                    @RequestBody BuildingDto buildingDTO,
                                                    @RequestHeader(name = "Authorization", required = false) String auth) {
-        if (userDto.getRole().equals("admin")) {
+        if (userDto.getRole().equals(ADMIN)) {
             Building building = getBuilding(buildingDTO, locationId);
             building.setBuildingId(0);
             this.buildingService.createBuilding(building);
@@ -96,7 +97,7 @@ public class BuildingController {
                                                    @RequestBody BuildingDto buildingDTO,
                                                    @RequestHeader(name = "Authorization", required = false) String auth) {
         try {
-            if (userDto.getRole().equals("admin")) {
+            if (userDto.getRole().equals(ADMIN)) {
                 Building building = getBuilding(buildingDTO, locationId);
                 this.buildingService.updateBuilding(building);
                 return ResponseEntity.status(HttpStatus.OK).body(building);
@@ -113,7 +114,7 @@ public class BuildingController {
         public ResponseEntity<Boolean> deleteBuilding (UserDto userDto,
                                                         @PathVariable int locationId, @PathVariable int buildingId,
                                                         @RequestHeader(name = "Authorization", required = false) String auth){
-            if (userDto.getRole().equals("admin")) {
+            if (userDto.getRole().equals(ADMIN)) {
                 boolean result = buildingService.deleteBuildingById(buildingId);
                 return ResponseEntity.status(HttpStatus.OK).body(result);
             } else {
