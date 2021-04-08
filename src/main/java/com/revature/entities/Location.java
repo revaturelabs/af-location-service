@@ -1,6 +1,7 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.dtos.LocationDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,6 +35,14 @@ public class Location {
     }
 
     public Location() {
+    }
+
+    public Location(LocationDto locationDto) {
+        this.locationId = locationDto.getLocationId();
+        this.city=locationDto.getCity();
+        this.state=locationDto.getState();
+        this.zipcode = locationDto.getZipcode();
+        this.buildings = locationDto.getBuildings();
     }
 
     public int getLocationId() {
