@@ -2,7 +2,6 @@ package com.revature.repos;
 
 import com.revature.AFLocationService.AfLocationServiceApplication;
 import com.revature.entities.Building;
-import com.revature.entities.Location;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @SpringBootTest(classes= AfLocationServiceApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BuildingRepoTests {
+class BuildingRepoTests {
 
     @Autowired
     BuildingRepo buildingRepo;
@@ -65,8 +64,7 @@ public class BuildingRepoTests {
     @Order(6)
     void get_buildings_by_location_id(){
         int id = 1;
-        List<Building> buildings = this.buildingRepo.findBuildingsByLocationId(id);
-        System.out.println(buildings);
+        List<Building> buildings = this.buildingRepo.findByLocationIdEquals(id);
         for(Building b:buildings){
             Assertions.assertEquals(id,b.getLocationId());
         }

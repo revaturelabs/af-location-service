@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityAspect {
     private Logger logger = Logger.getLogger(SecurityAspect.class);
 
+    @Autowired
+    private WebClient.Builder webClientBuilder;
     public static String getEnv(String key) {
         return System.getenv(key);
     }
@@ -33,11 +36,10 @@ public class SecurityAspect {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         String auth = request.getHeader("Authorization");
 
-        WebClient webClient = WebClient.create(this.getEnv("AUTH_SERVER"));
         try{
             logger.info("TEST TEST");
-            UserDto userDTO = webClient
-                    .post().uri("/verify")
+            UserDto userDTO = webClientBuilder.build()
+                    .post().uri(System.getenv("AUTH_SERVER"))
                     .body(Mono.just(auth), String.class)
                     .retrieve()
                     .onStatus(httpStatus -> HttpStatus.UNAUTHORIZED.equals(httpStatus),
@@ -60,13 +62,6 @@ public class SecurityAspect {
         }
         return null;
 
-        // THIS IS FOR TESTING (UNABLE TO FIGURE OUT HOW TO MOCK OUT ASPECT)
-//        UserDTO userDTO = new UserDTO(1,"email@revature.com","trainer");
-//        logger.info("JWT verified: " + userDTO);
-//        Object[] args = pjp.getArgs();
-//        args[0] = userDTO;
-//        Object obj = pjp.proceed();
-//        return obj;
     }
 
     @Pointcut("@annotation(com.revature.aspects.Verify)")
