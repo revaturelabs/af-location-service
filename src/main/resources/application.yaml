@@ -1,8 +1,19 @@
 spring:
+  application:
+    name: location-service
   jpa:
     show-sql: true
   h2:
     console:
       enabled: true
+  cloud:
+    consul:
+      config:
+        enabled: false
+      discovery:
+        enabled: true
+        instanceId: location-service
+        healthCheckPath: /health
+        health-check-interval: 120s
 server:
   port: 9000
