@@ -30,8 +30,6 @@ public class BuildingController {
     @Autowired
     BuildingService buildingService;
 
-    UserDto userDto;
-
     /**
      *<p>
      *     Handler method for a post to the buildings endpoint. Used to create
