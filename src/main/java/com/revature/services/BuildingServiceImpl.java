@@ -17,17 +17,6 @@ public class BuildingServiceImpl implements BuildingService{
     @Autowired
     BuildingRepo buildingRepo;
 
-//    public BuildingServiceImpl() {
-//    }
-//
-//    public BuildingRepo getBuildingRepo() {
-//        return buildingRepo;
-//    }
-//
-//    public void setBuildingRepo(BuildingRepo buildingRepo) {
-//        this.buildingRepo = buildingRepo;
-//    }
-
     @Override
     public Building createBuilding(Building building) {
         building.setBuildingId(0);
@@ -47,7 +36,6 @@ public class BuildingServiceImpl implements BuildingService{
 
         if(op.isPresent()) {
             building = op.get();
-            System.out.println(building);
         }else{
             throw new BuildingNotFoundException("Building not found");
         }
@@ -56,17 +44,7 @@ public class BuildingServiceImpl implements BuildingService{
 
     @Override
     public List<Building> getBuildingByLocation(int locationId){
-
-        List<Building> buildings = buildingRepo.findByLocationIdEquals(locationId);
-
-        return buildings;
-//        if(op.isPresent()) {
-//            location = op.get();
-//            System.out.println(location);
-//        }else{
-//            throw new LocationNotFoundException();
-//        }
-//        return location;
+        return buildingRepo.findByLocationIdEquals(locationId);
     }
 
     @Override
@@ -78,19 +56,11 @@ public class BuildingServiceImpl implements BuildingService{
         Building oldBuilding = op.get();
         if (building.getAddress() != null)
             oldBuilding.setAddress(building.getAddress());
-        Building updatedBuilding = buildingRepo.save(oldBuilding);
-        return updatedBuilding;
+        return buildingRepo.save(oldBuilding);
     }
 
     @Override
     public boolean deleteBuildingById(int id) {
-//        try{
-//            this.buildingRepo.delete(this.buildingRepo.findById(id).orElse(null));
-//            return true;
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            return false;
-//        }
         try {
             this.buildingRepo.deleteById(id);
             return true;
