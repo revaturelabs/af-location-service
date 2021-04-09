@@ -3,9 +3,6 @@ spring:
     name: location-service
   jpa:
     show-sql: true
-  h2:
-    console:
-      enabled: true
   cloud:
     consul:
       config:

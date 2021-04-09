@@ -7,20 +7,20 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="location_")
+@Table(name = "location_")
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationId;
 
-    @Column(name = "city",nullable = false)
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "state",nullable = false)
+    @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "zipcode",nullable = false)
+    @Column(name = "zipcode", nullable = false)
     private String zipcode;
 
     @JsonIgnore
@@ -39,8 +39,8 @@ public class Location {
 
     public Location(LocationDto locationDto) {
         this.locationId = locationDto.getLocationId();
-        this.city=locationDto.getCity();
-        this.state=locationDto.getState();
+        this.city = locationDto.getCity();
+        this.state = locationDto.getState();
         this.zipcode = locationDto.getZipcode();
         this.buildings = locationDto.getBuildings();
     }

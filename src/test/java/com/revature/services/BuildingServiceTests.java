@@ -1,6 +1,6 @@
 package com.revature.services;
 
-import com.revature.AFLocationService.AfLocationServiceApplication;
+import com.revature.AfLocationServiceApplication;
 import com.revature.entities.Building;
 import com.revature.entities.Location;
 import com.revature.exceptions.BuildingNotFoundException;
@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 class BuildingServiceTests {
 
     @InjectMocks
