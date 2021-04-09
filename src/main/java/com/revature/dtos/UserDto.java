@@ -11,7 +11,6 @@ public class UserDto {
     private String role;
 
     public UserDto() {
-        //empty constructor for java bean implementation
     }
 
     public int getId() {
