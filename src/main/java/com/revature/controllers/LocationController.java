@@ -23,10 +23,11 @@ public class LocationController {
     @Autowired
     LocationService locationService;
 
+    private static final String ADMIN = "admin";
     @Verify
     @PostMapping("/locations")
     public ResponseEntity<Location> createLocation(UserDto userDto, @RequestBody LocationDto locationDTO, @RequestHeader(name = "Authorization", required = false) String auth) {
-        if (userDto.getRole().equals("admin")) {
+        if (userDto.getRole().equals(ADMIN)) {
             Location location = new Location(locationDTO);
             location.setLocationId(0);
             locationService.createLocation(location);
@@ -62,7 +63,7 @@ public class LocationController {
                                                    @PathVariable int locationId,
                                                    @RequestHeader(name = "Authorization", required = false) String auth) throws LocationNotFoundException {
 
-        if (userDto.getRole().equals("admin")) {
+        if (userDto.getRole().equals(ADMIN)) {
             try {
                 Location location = new Location(locationDTO);
                 location.setLocationId(locationId);
@@ -79,16 +80,12 @@ public class LocationController {
 
     @Verify
     @DeleteMapping("/locations/{locationId}")
-    public ResponseEntity<String> deleteLocation(UserDto userDto, @PathVariable int locationId, @RequestHeader(name = "Authorization", required = false) String auth) {
+    public ResponseEntity<Boolean> deleteLocation(UserDto userDto, @PathVariable int locationId, @RequestHeader(name = "Authorization", required = false) String auth) {
 
-        if (userDto.getRole().equals("admin")) {
-            try {
-                Location location = locationService.getLocationById(locationId);
-                locationService.deleteLocation(locationId);
-                return ResponseEntity.status(HttpStatus.OK).body("Deleted location");
-            } catch (LocationNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.OK).build();
-            }
+        if (userDto.getRole().equals(ADMIN)) {
+                Boolean result = locationService.deleteLocation(locationId);
+                return ResponseEntity.status(HttpStatus.OK).body(result);
+
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 

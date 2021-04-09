@@ -1,6 +1,6 @@
 package com.revature.controllers;
 
-import com.revature.AFLocationService.AfLocationServiceApplication;
+import com.revature.AfLocationServiceApplication;
 import com.revature.entities.Building;
 import com.revature.entities.Location;
 import com.revature.exceptions.BuildingNotFoundException;

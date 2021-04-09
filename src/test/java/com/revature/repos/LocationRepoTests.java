@@ -1,14 +1,16 @@
 package com.revature.repos;
 
-import com.revature.AFLocationService.AfLocationServiceApplication;
+import com.revature.AfLocationServiceApplication;
 import com.revature.entities.Location;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(classes= AfLocationServiceApplication.class)
+@ActiveProfiles("test")
 class LocationRepoTests {
 
     @Autowired

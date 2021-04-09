@@ -1,9 +1,7 @@
 package com.revature.services;
 
 import com.revature.entities.Building;
-import com.revature.entities.Location;
 import com.revature.exceptions.BuildingNotFoundException;
-import com.revature.exceptions.LocationNotFoundException;
 
 import java.util.List;
 
