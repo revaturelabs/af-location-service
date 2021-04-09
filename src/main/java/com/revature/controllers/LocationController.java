@@ -27,7 +27,7 @@ public class LocationController {
     @PostMapping("/locations")
     public ResponseEntity<Location> createLocation(UserDto userDto, @RequestBody LocationDto locationDTO, @RequestHeader(name = "Authorization", required = false) String auth) {
         if (userDto.getRole().equals("admin")) {
-            Location location = locationTransfer(locationDTO);
+            Location location = new Location(locationDTO);
             location.setLocationId(0);
             locationService.createLocation(location);
             return ResponseEntity.status(HttpStatus.CREATED).body(location);
@@ -64,7 +64,8 @@ public class LocationController {
 
         if (userDto.getRole().equals("admin")) {
             try {
-                Location location = locationTransfer(locationDTO);
+                Location location = new Location(locationDTO);
+                location.setLocationId(locationId);
                 location = locationService.updateLocation(location);
                 return ResponseEntity.status(HttpStatus.OK).body(location);
             } catch (LocationNotFoundException e) {
@@ -97,13 +98,5 @@ public class LocationController {
     @GetMapping("/health")
     public Boolean healthCheck(){
         return true;
-    }
-    public Location locationTransfer(LocationDto locationDTO) {
-        Location location = new Location();
-        location.setCity(locationDTO.getCity());
-        location.setState(locationDTO.getState());
-        location.setZipcode(locationDTO.getZipcode());
-        location.setBuildings(locationDTO.getBuildings());
-        return location;
     }
 }

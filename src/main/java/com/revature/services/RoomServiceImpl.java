@@ -1,17 +1,14 @@
 package com.revature.services;
 
 
-import com.revature.entities.Building;
 import com.revature.entities.Room;
 import com.revature.entities.RoomType;
-import com.revature.exceptions.BuildingNotFoundException;
 import com.revature.exceptions.RoomNotFoundException;
 import com.revature.repos.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +39,6 @@ public class RoomServiceImpl implements RoomService {
 
         if(op.isPresent()) {
             room = op.get();
-            System.out.println(room);
         }else{
             throw new RoomNotFoundException();
         }
@@ -51,8 +47,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getRoomsByBuildingId(int buildingId) {
-        List<Room> rooms = this.roomRepo.findRoomByBuildingId(buildingId);
-        return rooms;
+         return this.roomRepo.findRoomByBuildingId(buildingId);
     }
 
     @Override
@@ -78,8 +73,7 @@ public class RoomServiceImpl implements RoomService {
             oldRoom.setName(room.getName());
             oldRoom.setBuildingId(room.getBuildingId());
         }
-        Room updatedRoom = roomRepo.save(oldRoom);
-        return updatedRoom;
+        return  roomRepo.save(oldRoom);
     }
 
     @Override

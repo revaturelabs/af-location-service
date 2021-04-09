@@ -1,7 +1,7 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.context.annotation.Lazy;
+import com.revature.dtos.BuildingDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,6 +34,14 @@ public class Building {
         this.address = address;
         this.locationId = locationId;
     }
+
+    public Building (BuildingDto dto){
+        this.buildingId = dto.getBuildingId();
+        this.address = dto.getAddress();
+        this.locationId = dto.getLocationId();
+        this.rooms = dto.getRooms();
+    }
+
 
     public int getBuildingId() {
         return buildingId;

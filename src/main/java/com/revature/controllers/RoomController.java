@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,16 +20,19 @@ import java.util.List;
 @RestController
 public class RoomController {
 
-    private String adminRoll = "admin";
-    private String trainerRoll = "trainer";
+    private static final String ADMIN = "admin";
+    private static final String TRAINER = "trainer";
 
     @Autowired
     RoomService roomService;
+
     @Verify
     @PostMapping("/locations/{locationId}/buildings/{buildingId}/rooms")
-    public ResponseEntity<RoomDto> createRoom(UserDto userDto, @RequestBody RoomDto roomDto, @RequestHeader(name = "Authorization", required = false) String auth){
+    public ResponseEntity<RoomDto> createRoom(UserDto userDto,
+                                              @RequestBody RoomDto roomDto,
+                                              @RequestHeader(name = "Authorization", required = false) String auth) {
 
-        if (userDto.getRole().equals(adminRoll)) {
+        if (userDto.getRole().equals(ADMIN)) {
             Room room = new Room(roomDto);
             room = this.roomService.createRoom(room);
             return ResponseEntity.status(HttpStatus.CREATED).body(new RoomDto(room));
@@ -38,35 +40,37 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
     @Verify
     @GetMapping("/locations/{locationId}/buildings/{buildingId}/rooms/{roomId}")
-    public ResponseEntity<RoomDto> getRoomById(UserDto userDto, @PathVariable int locationId, @PathVariable int buildingId, @PathVariable int roomId, @RequestHeader(name = "Authorization", required = false) String auth){
+    public ResponseEntity<RoomDto> getRoomById(UserDto userDto,
+                                               @PathVariable int roomId,
+                                               @RequestHeader(name = "Authorization", required = false) String auth) {
 
-        try{
-            if (userDto.getRole().equals(adminRoll) || userDto.getRole().equals(trainerRoll)) {
+        try {
+            if (userDto.getRole().equals(ADMIN) || userDto.getRole().equals(TRAINER)) {
                 Room room = this.roomService.getRoomById(roomId);
                 return ResponseEntity.status(HttpStatus.OK).body(new RoomDto(room));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-        }catch(RoomNotFoundException e){
+        } catch (RoomNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
     @Verify
     @GetMapping("/locations/{locationId}/buildings/{buildingId}/rooms")
     public ResponseEntity<List<RoomDto>> getAllRooms(UserDto userDto,
-                                                     @PathVariable int locationId,
                                                      @PathVariable int buildingId,
                                                      @RequestHeader(name = "Authorization", required = false) String auth,
-                                                     @RequestParam(value="type", required = false)RoomType type){
+                                                     @RequestParam(value = "type", required = false) RoomType type) {
         List<Room> rooms;
 
-        if (userDto.getRole().equals(adminRoll) || userDto.getRole().equals(trainerRoll)) {
-            if(type == null) {
+        if (userDto.getRole().equals(ADMIN) || userDto.getRole().equals(TRAINER)) {
+            if (type == null) {
                 rooms = this.roomService.getRoomsByBuildingId(buildingId);
-            }
-            else {
+            } else {
                 rooms = this.roomService.getRoomsByType(buildingId, type);
             }
             List<RoomDto> roomDtos = new ArrayList<>();
@@ -78,25 +82,35 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
     @Verify
     @PutMapping("/locations/{locationId}/buildings/{buildingId}/rooms/{roomId}")
-    public ResponseEntity<RoomDto> updateRoom(UserDto userDto, @PathVariable int locationId, @PathVariable int buildingId,@PathVariable int roomId, @RequestBody RoomDto roomDto, @RequestHeader(name = "Authorization", required = false) String auth){
+    public ResponseEntity<RoomDto> updateRoom(UserDto userDto,
+                                              @PathVariable int buildingId,
+                                              @PathVariable int roomId,
+                                              @RequestBody RoomDto roomDto,
+                                              @RequestHeader(name = "Authorization", required = false) String auth) {
         try {
-            if (userDto.getRole().equals(adminRoll)) {
+            if (userDto.getRole().equals(ADMIN)) {
                 Room room = new Room(roomDto);
+                room.setRoomId(roomId);
+                room.setBuildingId(buildingId);
                 room = this.roomService.updateRoom(room);
                 return ResponseEntity.status(HttpStatus.OK).body(new RoomDto(room));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-        }catch(RoomNotFoundException e){
+        } catch (RoomNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
     @Verify
     @DeleteMapping("/locations/{locationId}/buildings/{buildingId}/rooms/{roomId}")
-    public ResponseEntity<Boolean> deleteRoom(UserDto userDto, @PathVariable int locationId, @PathVariable int buildingId, @PathVariable int roomId, @RequestHeader(name = "Authorization", required = false) String auth){
-        if (userDto.getRole().equals(adminRoll)) {
+    public ResponseEntity<Boolean> deleteRoom(UserDto userDto,
+                                              @PathVariable int roomId,
+                                              @RequestHeader(name = "Authorization", required = false) String auth) {
+        if (userDto.getRole().equals(ADMIN)) {
             boolean result = this.roomService.deleteRoom(roomId);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } else {

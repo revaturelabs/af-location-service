@@ -37,7 +37,7 @@ class LocationRepoTests {
     void get_location_by_id(){
         Location location = this.locationRepo.findById(2).orElse(null);
 
-        Assertions.assertTrue(location!=null);
+        Assertions.assertNotNull(location);
     }
 
     @Test

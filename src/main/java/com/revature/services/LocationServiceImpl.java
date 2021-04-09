@@ -18,18 +18,6 @@ public class LocationServiceImpl implements LocationService{
     @Autowired
     LocationRepo locationRepo;
 
-//    public LocationServiceImpl() {
-//    }
-//
-//    public LocationRepo getLocationRepo() {
-//
-//        return locationRepo;
-//    }
-//
-//    public void setLocationRepo(LocationRepo locationRepo) {
-//        this.locationRepo = locationRepo;
-//    }
-
     @Override
     public Location createLocation(Location location) {
         location.setLocationId(0);
@@ -45,13 +33,10 @@ public class LocationServiceImpl implements LocationService{
 
         if(op.isPresent()) {
             location = op.get();
-            System.out.println(location);
         }else{
             throw new LocationNotFoundException();
         }
         return location;
-
-//        return location;
     }
 
 
@@ -67,13 +52,16 @@ public class LocationServiceImpl implements LocationService{
         Optional<Location> op = locationRepo.findById(location.getLocationId());
         if (!op.isPresent())
             throw new LocationNotFoundException();
+
         Location oldLocation = op.get();
+
         if (location.getCity() != null)
             oldLocation.setCity(location.getCity());
+
         if (location.getState() != null)
             oldLocation.setState(location.getState());
-        Location updatedLocation = locationRepo.save(oldLocation);
-        return updatedLocation;
+
+        return locationRepo.save(oldLocation);
     }
 
     @Override

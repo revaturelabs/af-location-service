@@ -12,21 +12,10 @@ import java.util.Optional;
 
 @Component
 @Service
-public class BuildingServiceImpl implements BuildingService{
+public class BuildingServiceImpl implements BuildingService {
 
     @Autowired
     BuildingRepo buildingRepo;
-
-//    public BuildingServiceImpl() {
-//    }
-//
-//    public BuildingRepo getBuildingRepo() {
-//        return buildingRepo;
-//    }
-//
-//    public void setBuildingRepo(BuildingRepo buildingRepo) {
-//        this.buildingRepo = buildingRepo;
-//    }
 
     @Override
     public Building createBuilding(Building building) {
@@ -45,56 +34,41 @@ public class BuildingServiceImpl implements BuildingService{
         Building building;
         Optional<Building> op = buildingRepo.findById(id);
 
-        if(op.isPresent()) {
+        if (op.isPresent())
             building = op.get();
-            System.out.println(building);
-        }else{
+        else
             throw new BuildingNotFoundException("Building not found");
-        }
+
         return building;
     }
 
     @Override
-    public List<Building> getBuildingByLocation(int locationId){
-
-        List<Building> buildings = buildingRepo.findByLocationIdEquals(locationId);
-
-        return buildings;
-//        if(op.isPresent()) {
-//            location = op.get();
-//            System.out.println(location);
-//        }else{
-//            throw new LocationNotFoundException();
-//        }
-//        return location;
+    public List<Building> getBuildingByLocation(int locationId) {
+        return buildingRepo.findByLocationIdEquals(locationId);
     }
 
     @Override
     public Building updateBuilding(Building building) throws BuildingNotFoundException {
 
         Optional<Building> op = buildingRepo.findById(building.getBuildingId());
+
         if (!op.isPresent())
             throw new BuildingNotFoundException();
+
         Building oldBuilding = op.get();
+
         if (building.getAddress() != null)
             oldBuilding.setAddress(building.getAddress());
-        Building updatedBuilding = buildingRepo.save(oldBuilding);
-        return updatedBuilding;
+
+        return buildingRepo.save(oldBuilding);
     }
 
     @Override
     public boolean deleteBuildingById(int id) {
-//        try{
-//            this.buildingRepo.delete(this.buildingRepo.findById(id).orElse(null));
-//            return true;
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            return false;
-//        }
         try {
             this.buildingRepo.deleteById(id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
