@@ -46,7 +46,7 @@ Routes | Details | Response
 
 
 ### Room
-Rooms are objects that contain the room name, capacity, and room type. Room type is an enum that can be "ONLINE", "CLASSROOM", or NULL. The bulidingId refeerences the building at which the room is located. **All room requests require a locationId and buildingId.**
+Rooms are objects that contain the room name, capacity, and room type. Room type is an enum that can be "VIRTUAL", "REMOTE", "MEETING" or NULL. The buiLdingId references the building at which the room is located. **All room requests require a locationId and buildingId.**
 
 **Room JSON:**
 ```
