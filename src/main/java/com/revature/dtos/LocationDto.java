@@ -11,6 +11,7 @@ public class LocationDto {
     private String city;
     private String state;
     private String zipcode;
+    private String name;
     private List<Building> buildings;
 
     public LocationDto() {
@@ -22,6 +23,7 @@ public class LocationDto {
         this.state = location.getState();
         this.zipcode = location.getZipcode();
         this.buildings = location.getBuildings();
+        this.name = location.getName();
     }
 
     public int getLocationId() {
@@ -54,6 +56,14 @@ public class LocationDto {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Building> getBuildings() {

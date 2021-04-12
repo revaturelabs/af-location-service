@@ -61,6 +61,12 @@ public class LocationServiceImpl implements LocationService{
         if (location.getState() != null)
             oldLocation.setState(location.getState());
 
+        if (location.getZipcode() != null)
+            oldLocation.setZipcode(location.getZipcode());
+
+        if (location.getName() != null)
+            oldLocation.setName(location.getName());
+
         return locationRepo.save(oldLocation);
     }
 

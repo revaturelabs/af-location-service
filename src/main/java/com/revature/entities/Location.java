@@ -23,6 +23,9 @@ public class Location {
     @Column(name = "zipcode", nullable = false)
     private String zipcode;
 
+    @Column(name = "\"name\"")
+    private String name;
+
     @JsonIgnore
     @OneToMany(mappedBy = "locationId")
     private List<Building> buildings;
@@ -43,6 +46,7 @@ public class Location {
         this.state = locationDto.getState();
         this.zipcode = locationDto.getZipcode();
         this.buildings = locationDto.getBuildings();
+        this.name = locationDto.getName();
     }
 
     public int getLocationId() {
@@ -75,6 +79,14 @@ public class Location {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Building> getBuildings() {
