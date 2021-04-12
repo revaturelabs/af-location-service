@@ -53,7 +53,7 @@ Rooms are objects that contain the room name, capacity, and room type. Room type
 {
   "roomId" : INT,
   "name" : "STRING",
-  "type" : "STRING (ONLINE | CLASSROOM)",
+  "type" : "STRING (VIRTUAL | REMOTE | MEETING)",
   "capacity" : INT,
   "buildingId" : INT (References a Building object)
 }
