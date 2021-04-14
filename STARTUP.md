@@ -6,7 +6,7 @@
 # Download & Setup Source Code
 
 ## Finding The af-auth-service Repo
-The main branch of *af-auth-service* located [here](https://github.com/Batch-944-Adam-Ranieri/af-location-service)
+The main branch of *af-location-service* located [here](https://github.com/Batch-944-Adam-Ranieri/af-location-service)
 
 ### Downloading The Project
 > Clicking on 'Code' on the upper-right hand of the **GitHub** project and clicking *Download ZIP*.
