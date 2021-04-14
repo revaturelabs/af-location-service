@@ -154,13 +154,9 @@ class LocationServiceTests {
         Mockito.when(locationRepo.findById(100)).thenReturn(Optional.empty());
         Mockito.when(locationRepo.save(any())).thenReturn(illegalLocation);
 
-//        try {
             Assertions.assertThrows(LocationNotFoundException.class,()->{
                 locationService.updateLocation(illegalLocation);
             });
-//            Location location = locationService.updateLocation(illegalLocation);
-//            System.out.println(location);
-//        } catch (LocationNotFoundException e) {
-//        }
+
     }
 }
