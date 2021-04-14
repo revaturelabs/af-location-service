@@ -35,5 +35,5 @@ The main branch of *af-location-service* located [here](https://github.com/Batch
 > Docker
 
 ## Running the Project
-- `docker build -t location-service-image`
+- `docker build -t location-service-image .`
 - `docker run -p 8080:9000 location-service-image`
