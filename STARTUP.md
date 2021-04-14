@@ -1,4 +1,4 @@
-# Getting Started - af-auth-service
+# Getting Started - af-location-service
 1. Read the readme
 2. Download & setup source code
 3. Build Docker image (If docker is to be used)
